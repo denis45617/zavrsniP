@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MathSpace</string>
+    <string name="uni_ti_neistinito" translatable="false">Uništi neistinito</string>
+    <string name="math_to_space" translatable="false">Math to space 🚀</string>
+    <string name="play">Play</string>
+    <string name="backgrounddescription" translatable="false">backgroundDescription</string>
+    <string name="high_score" translatable="false">High score</string>
+</resources>
