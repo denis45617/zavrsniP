@@ -28,6 +28,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Saw saw;
 
 
+    @SuppressLint("ClickableViewAccessibility")
     public GameView(Context context) {
         super(context);
 
@@ -69,6 +70,14 @@ public class GameView extends SurfaceView implements Runnable {
 
         heart = BitmapFactory.decodeResource(getResources(), R.drawable.heart);
         heart = Bitmap.createScaledBitmap(heart, 100, 100, false);
+        OnTouchListener touchListener = (v, event) -> {
+
+            if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                saw.x = (int) event.getX();
+            }
+
+            return true;
+        };
         this.setOnTouchListener(touchListener);
     }
 
@@ -80,19 +89,6 @@ public class GameView extends SurfaceView implements Runnable {
             sleep();
         }
     }
-
-    private View.OnTouchListener touchListener = new View.OnTouchListener() {
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-
-            if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                saw.x = (int) event.getX();
-            }
-
-            return true;
-        }
-    };
 
 
     private void updateBackground() {
@@ -138,7 +134,7 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawLine(0, saw.y + (float) saw.getSaw().getHeight() / 2 - 5, screenX, saw.y + (float) saw.getSaw().getHeight() / 2 - 5, paint);
             canvas.drawLine(0, saw.y + (float) saw.getSaw().getHeight() / 2 - 6, screenX, saw.y + (float) saw.getSaw().getHeight() / 2 - 6, paint);
 
-            canvas.drawBitmap(saw.getSaw(), saw.x - (float) saw.getSaw().getWidth() / 2, saw.y, paint);
+            canvas.drawBitmap(saw.getSaw(), saw.x - (float) saw.getSaw().getWidth() / 2, saw.y, null);
 
 
             //hearts
@@ -157,7 +153,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void sleep() {
         try {
-            Thread.sleep(1); //120fps 8.333... => 8
+            Thread.sleep(8); //120fps 8.333... => 8
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

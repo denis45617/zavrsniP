@@ -7,13 +7,12 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+    <!--High score -->
     <ImageView android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:src="@drawable/a1"
                android:scaleType="centerCrop"
                android:contentDescription="@string/backgrounddescription"/>
-
-    <!--High score -->
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:textSize="32sp"
@@ -29,7 +28,6 @@
               android:textSize="48sp"
               android:text="@string/math_to_space"
               android:textColor="@color/black"
-
               android:layout_above="@+id/play"
               android:layout_below="@+id/highScore"
               android:autoSizeTextType="uniform"
@@ -37,15 +35,18 @@
               tools:targetApi="o"/>
 
     <!-- Play -->
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_centerInParent="true"
-              android:text="@string/play"
-              android:background="@drawable/rounded_corner"
-              android:textColor="@color/white"
-              android:textSize="64sp"
-              android:id="@+id/play"
+    <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/rounded_corner"
+            android:id="@+id/play"
+            android:textSize="64sp"
+            android:textColor="@color/white"
+            android:text="@string/play"
     />
+
+
 
 
 
