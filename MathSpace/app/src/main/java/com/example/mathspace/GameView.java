@@ -4,11 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.*;
-import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
-import android.view.View;
+import com.example.mathspace.visual.Background;
+import com.example.mathspace.visual.Saw;
 
 
 public class GameView extends SurfaceView implements Runnable {
@@ -59,8 +59,8 @@ public class GameView extends SurfaceView implements Runnable {
         backgrounds[17] = new Background(screenX, screenY, getResources(), R.drawable.a18);
         backgrounds[18] = new Background(screenX, screenY, getResources(), R.drawable.a18);
 
-        backgrounds[0].y = 0;
-        backgrounds[1].y = -screenY;
+        backgrounds[0].setY(0);
+        backgrounds[1].setY(-screenY);
 
         currentDownBackGround = backgrounds[0];
         currentUpBackground = backgrounds[1];
@@ -73,7 +73,7 @@ public class GameView extends SurfaceView implements Runnable {
         OnTouchListener touchListener = (v, event) -> {
 
             if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                saw.x = (int) event.getX();
+                saw.setX((int)event.getX());
             }
 
             return true;
@@ -92,20 +92,20 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     private void updateBackground() {
-        currentDownBackGround.y = currentDownBackGround.y + 5;
-        currentUpBackground.y = currentUpBackground.y + 5;
+        currentDownBackGround.setY( currentDownBackGround.getY() + 5);
+        currentUpBackground.setY(currentUpBackground.getY() + 5);
         score += 1;
 
-        if (currentDownBackGround.y > screenY) {
+        if (currentDownBackGround.getY() > screenY) {
             currentDownBackGround = currentUpBackground;
             if (currentBackgroundIndex < 18)       //ako ima još različitih slika
                 currentUpBackground = backgrounds[++currentBackgroundIndex];  //neka bude sljedeća
             else {
                 currentDownBackGround = backgrounds[17];  //Inače vrti zadnju u kruh
-                currentDownBackGround.y = 0;
+                currentDownBackGround.setY(0);
                 currentUpBackground = backgrounds[18];
             }
-            currentUpBackground.y = -screenY;
+            currentUpBackground.setY(-screenY);
         }
     }
 
@@ -114,8 +114,8 @@ public class GameView extends SurfaceView implements Runnable {
         if (getHolder().getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
             //pozadina
-            canvas.drawBitmap(currentUpBackground.background, currentUpBackground.x, currentUpBackground.y, paint);
-            canvas.drawBitmap(currentDownBackGround.background, currentDownBackGround.x, currentDownBackGround.y, paint);
+            canvas.drawBitmap(currentUpBackground.getBackground(), currentUpBackground.getX(), currentUpBackground.getY(), paint);
+            canvas.drawBitmap(currentDownBackGround.getBackground(), currentDownBackGround.getX(), currentDownBackGround.getY(), paint);
 
             //score
             paint.setTextSize(100);
@@ -127,14 +127,15 @@ public class GameView extends SurfaceView implements Runnable {
             canvas.drawText("Collect: " + whatToCollect, 20, screenY + 100, paint);
 
             paint.setColor(Color.RED);
-            canvas.drawLine(0, saw.y + (float) saw.getSaw().getHeight() / 2 - 1, screenX, saw.y + (float) saw.getSaw().getHeight() / 2 - 1, paint);
-            canvas.drawLine(0, saw.y + (float) saw.getSaw().getHeight() / 2 - 2, screenX, saw.y + (float) saw.getSaw().getHeight() / 2 - 2, paint);
-            canvas.drawLine(0, saw.y + (float) saw.getSaw().getHeight() / 2 - 3, screenX, saw.y + (float) saw.getSaw().getHeight() / 2 - 3, paint);
-            canvas.drawLine(0, saw.y + (float) saw.getSaw().getHeight() / 2 - 4, screenX, saw.y + (float) saw.getSaw().getHeight() / 2 - 4, paint);
-            canvas.drawLine(0, saw.y + (float) saw.getSaw().getHeight() / 2 - 5, screenX, saw.y + (float) saw.getSaw().getHeight() / 2 - 5, paint);
-            canvas.drawLine(0, saw.y + (float) saw.getSaw().getHeight() / 2 - 6, screenX, saw.y + (float) saw.getSaw().getHeight() / 2 - 6, paint);
+            canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 1, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 1, paint);
+            canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 2, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 2, paint);
+            canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 3, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 3, paint);
+            canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 4, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 4, paint);
+            canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 5, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 5, paint);
+            canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 6, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 6, paint);
 
-            canvas.drawBitmap(saw.getSaw(), saw.x - (float) saw.getSaw().getWidth() / 2, saw.y, null);
+            canvas.drawBitmap(saw.getSaw(), saw.getX() - (float) saw.getSaw().getWidth() / 2, saw.getY(), null);
+
 
 
             //hearts
