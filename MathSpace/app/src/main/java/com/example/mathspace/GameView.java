@@ -7,8 +7,17 @@ import android.graphics.*;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
+import com.example.mathspace.fallingobj.Circle;
+import com.example.mathspace.fallingobj.FallingObject;
+import com.example.mathspace.fallingobj.Square;
 import com.example.mathspace.visual.Background;
 import com.example.mathspace.visual.Saw;
+import com.google.android.material.bottomappbar.BottomAppBar;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class GameView extends SurfaceView implements Runnable {
@@ -26,6 +35,8 @@ public class GameView extends SurfaceView implements Runnable {
     private Bitmap heart;
     private String whatToCollect = "even numbers";
     private Saw saw;
+    private List<FallingObject> fallingObjectList = new LinkedList<>();
+    private int generateFallingObjectFrequency = 10;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -73,7 +84,7 @@ public class GameView extends SurfaceView implements Runnable {
         OnTouchListener touchListener = (v, event) -> {
 
             if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                saw.setX((int)event.getX());
+                saw.setX((int) event.getX());
             }
 
             return true;
@@ -83,16 +94,50 @@ public class GameView extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                GameView.this.addNewFallingObjectIfNeeded();
+            }
+        }, 0, 2500);
+
+
         while (isNotPaused) {
             updateBackground();
+            updateFallingObjects();
             draw();
             sleep();
         }
     }
 
+    private void updateFallingObjects() {
+        for (int i = 0; i < fallingObjectList.size(); ++i) {
+            fallingObjectList.get(i).setCenterY(fallingObjectList.get(i).getCenterY() + 5);
+            if (fallingObjectList.get(i).getCenterY() - 150 > screenY) {
+                //dodati u listu missed
+                fallingObjectList.remove(i--);
+                score -= 1000;
+            }
+        }
+
+    }
+
+    private void addNewFallingObjectIfNeeded() {
+        if (fallingObjectList.size() < 15) {
+            switch ((int) Math.floor(Math.random() * 2)) {
+                case 0:
+                    fallingObjectList.add(new Square(String.valueOf((int)Math.floor(Math.random() * 21))));
+                    break;
+                case 1:
+                    fallingObjectList.add(new Circle(String.valueOf((int)Math.floor(Math.random() * 21))));
+            }
+        }
+    }
+
 
     private void updateBackground() {
-        currentDownBackGround.setY( currentDownBackGround.getY() + 5);
+        currentDownBackGround.setY(currentDownBackGround.getY() + 5);
         currentUpBackground.setY(currentUpBackground.getY() + 5);
         score += 1;
 
@@ -114,47 +159,64 @@ public class GameView extends SurfaceView implements Runnable {
         if (getHolder().getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
             //pozadina
-            canvas.drawBitmap(currentUpBackground.getBackground(), currentUpBackground.getX(), currentUpBackground.getY(), paint);
-            canvas.drawBitmap(currentDownBackGround.getBackground(), currentDownBackGround.getX(), currentDownBackGround.getY(), paint);
-
+            drawBackground(canvas);
             //score
-            paint.setTextSize(100);
-            paint.setColor(Color.WHITE);
-            canvas.drawText("Score: " + score / 10, 20, 100, paint);
-
-            //what to collect
-            paint.setTextSize(50);
-            canvas.drawText("Collect: " + whatToCollect, 20, screenY + 100, paint);
-
-            paint.setColor(Color.RED);
-            canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 1, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 1, paint);
-            canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 2, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 2, paint);
-            canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 3, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 3, paint);
-            canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 4, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 4, paint);
-            canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 5, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 5, paint);
-            canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 6, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 6, paint);
-
-            canvas.drawBitmap(saw.getSaw(), saw.getX() - (float) saw.getSaw().getWidth() / 2, saw.getY(), null);
-
-
-
+            drawScore(canvas);
+            //faling objects
+            drawFallingObjects(canvas);
+            //saw and moving line
+            drawSaw(canvas);
             //hearts
-            for (int i = 0; i < numberOfLives; ++i) {
-                canvas.drawBitmap(heart, screenX - 100 - heart.getWidth() * i, 10, paint);
-            }
-
-            if (score == 1000) {
-                numberOfLives--;
-                whatToCollect = "numbers greater than 10";
-            }
-
+            drawHearts(canvas);
+            //what to collect
+            drawTask(canvas);
             getHolder().unlockCanvasAndPost(canvas);
+        }
+    }
+
+    private void drawFallingObjects(Canvas canvas) {
+        for (int i = 0; i < fallingObjectList.size(); ++i) {
+            fallingObjectList.get(i).drawFallingObject(canvas);
+        }
+
+    }
+
+
+    private void drawBackground(Canvas canvas) {
+        canvas.drawBitmap(currentUpBackground.getBackground(), currentUpBackground.getX(), currentUpBackground.getY(), paint);
+        canvas.drawBitmap(currentDownBackGround.getBackground(), currentDownBackGround.getX(), currentDownBackGround.getY(), paint);
+    }
+
+    private void drawScore(Canvas canvas) {
+        paint.setTextSize(100);
+        paint.setColor(Color.WHITE);
+        canvas.drawText("Score: " + score / 10, 20, 100, paint);
+    }
+
+    private void drawTask(Canvas canvas) {
+        paint.setTextSize(50);
+        canvas.drawText("Collect: " + whatToCollect, 20, screenY + 100, paint);
+    }
+
+    private void drawSaw(Canvas canvas) {
+        //line on which saw can move
+        paint.setColor(Color.RED);
+        canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 1, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 1, paint);
+        canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 2, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 2, paint);
+
+        //saw object
+        canvas.drawBitmap(saw.getSaw(), saw.getX() - (float) saw.getSaw().getWidth() / 2, saw.getY(), null);
+    }
+
+    private void drawHearts(Canvas canvas) {
+        for (int i = 0; i < numberOfLives; ++i) {
+            canvas.drawBitmap(heart, screenX - 100 - heart.getWidth() * i, 10, paint);
         }
     }
 
     private void sleep() {
         try {
-            Thread.sleep(8); //120fps 8.333... => 8
+            Thread.sleep(1); //120fps 8.333... => 8
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
