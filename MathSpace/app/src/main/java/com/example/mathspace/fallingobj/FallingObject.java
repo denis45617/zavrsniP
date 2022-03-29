@@ -12,7 +12,9 @@ public abstract class FallingObject {
 
     public abstract void drawFallingObject(Canvas canvas);
 
-    abstract void checkCollision(Saw saw);
+    public abstract boolean checkCollision(Saw saw);
+
+    public abstract int getLowestPoint();
 
     public FallingObject(String text, Shape shape) {
         this.text = text;

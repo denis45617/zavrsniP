@@ -4,6 +4,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Saw {
     private int x;
     private int y;
@@ -12,19 +15,21 @@ public class Saw {
     private Bitmap saw2;
     private Bitmap currentSaw;
     private int counter = 0;
+    private int WIDTH_HEIGHT = 256;
 
 
     public Saw(int screenX, int screenY, Resources res, int image1, int image2) {
         saw1 = BitmapFactory.decodeResource(res, image1);
-        saw1 = Bitmap.createScaledBitmap(saw1, 256, 256, false);
+        saw1 = Bitmap.createScaledBitmap(saw1, WIDTH_HEIGHT, WIDTH_HEIGHT, false);
 
         saw2 = BitmapFactory.decodeResource(res, image2);
-        saw2 = Bitmap.createScaledBitmap(saw2, 256, 256, false);
+        saw2 = Bitmap.createScaledBitmap(saw2, WIDTH_HEIGHT, WIDTH_HEIGHT, false);
 
         x = screenX / 2;
-        y = screenY - 256;
+        y = screenY - WIDTH_HEIGHT;
         currentSaw = saw1;
     }
+
 
     public Bitmap getSaw() {
         if (counter % 20 == 0) {
@@ -37,6 +42,22 @@ public class Saw {
         }
         counter++;
         return currentSaw;
+    }
+
+    public int getCenterX() {
+        return this.getX();// + this.WIDTH_HEIGHT / 2;
+    }
+
+    public int getCenterY() {
+        return this.getY() + this.WIDTH_HEIGHT / 2;
+    }
+
+    public int getRadius() {
+        return (int) (this.WIDTH_HEIGHT / 2 - this.WIDTH_HEIGHT * 0.1); //-10% da ne reagira baš na najmanji detalj
+    }
+
+    public int getWIDTH_HEIGHT() {
+        return WIDTH_HEIGHT;
     }
 
     public int getX() {
@@ -53,5 +74,26 @@ public class Saw {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public List<Point> getPoints() {
+        List<Point> points = new LinkedList<>();
+
+        int sawCenterX = this.getCenterX();
+        int sawCenterY = this.getCenterY();
+        int sawRadius = this.getRadius();
+        int xyNE = (int) (sawRadius/1.4142);
+
+        points.add(new Point(sawCenterX - sawRadius, sawCenterY));  //west
+        points.add(new Point(sawCenterX + sawRadius, sawCenterY));  //north
+        points.add(new Point(sawCenterX, sawCenterY-sawRadius));    //east
+        points.add(new Point(sawCenterX, sawCenterY+sawRadius));    //south
+        points.add(new Point(sawCenterX+xyNE, sawCenterY+xyNE)); //north-east
+        points.add(new Point(sawCenterX-xyNE, sawCenterY-xyNE)); //south-west
+        points.add(new Point(sawCenterX+xyNE, sawCenterY-xyNE)); //south-east
+        points.add(new Point(sawCenterX-xyNE, sawCenterY+xyNE)); //north-west
+
+
+        return points;
     }
 }

@@ -10,14 +10,13 @@ import android.view.SurfaceView;
 import com.example.mathspace.fallingobj.Circle;
 import com.example.mathspace.fallingobj.FallingObject;
 import com.example.mathspace.fallingobj.Square;
+import com.example.mathspace.task.Task;
+import com.example.mathspace.task.TaskType;
 import com.example.mathspace.visual.Background;
 import com.example.mathspace.visual.Saw;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 
 public class GameView extends SurfaceView implements Runnable {
@@ -35,13 +34,18 @@ public class GameView extends SurfaceView implements Runnable {
     private Bitmap heart;
     private String whatToCollect = "even numbers";
     private Saw saw;
-    private List<FallingObject> fallingObjectList = new LinkedList<>();
+    private List<FallingObject> fallingObjectList = new ArrayList<>();
+    private List<Task> tasks = new LinkedList<>();
     private int generateFallingObjectFrequency = 10;
+    private int currentTaskIndex = 0;
 
 
     @SuppressLint("ClickableViewAccessibility")
     public GameView(Context context) {
         super(context);
+
+        tasks.add(new Task("Collect even numbers", TaskType.EVEN, 0, null, null));
+
 
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -114,9 +118,23 @@ public class GameView extends SurfaceView implements Runnable {
     private void updateFallingObjects() {
         for (int i = 0; i < fallingObjectList.size(); ++i) {
             fallingObjectList.get(i).setCenterY(fallingObjectList.get(i).getCenterY() + 5);
+
+            boolean isCollected = false;
+            //provjera da li je pokupljen
+            if (fallingObjectList.get(i).getLowestPoint() >= saw.getY()) {   //provjeravaj kolizije samo za one koji se mogu...
+                 isCollected = fallingObjectList.get(i).checkCollision(saw);
+                if (isCollected) {
+                    // okej, makni ga bez obzira šta je za sada
+                    fallingObjectList.remove(i--);
+                    continue;
+                }
+            }
+
+            //provjera je li pobjegao s ekrana
             if (fallingObjectList.get(i).getCenterY() - 150 > screenY) {
-                //dodati u listu missed
-                fallingObjectList.remove(i--);
+                //provjeri da li je trebao biti pokupljen
+                //ako nije onda continue
+                fallingObjectList.remove(i--);    //dodati u listu missed
                 score -= 1000;
             }
         }
@@ -127,10 +145,10 @@ public class GameView extends SurfaceView implements Runnable {
         if (fallingObjectList.size() < 15) {
             switch ((int) Math.floor(Math.random() * 2)) {
                 case 0:
-                    fallingObjectList.add(new Square(String.valueOf((int)Math.floor(Math.random() * 21))));
+                    fallingObjectList.add(new Square(String.valueOf((int) Math.floor(Math.random() * 21))));
                     break;
                 case 1:
-                    fallingObjectList.add(new Circle(String.valueOf((int)Math.floor(Math.random() * 21))));
+                    fallingObjectList.add(new Circle(String.valueOf((int) Math.floor(Math.random() * 21))));
             }
         }
     }
@@ -175,7 +193,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void drawFallingObjects(Canvas canvas) {
-        for (int i = 0; i < fallingObjectList.size(); ++i) {
+        for (int i = 0; i < fallingObjectList.size(); ++i) {     //treba običan for ili multithread safe lista
             fallingObjectList.get(i).drawFallingObject(canvas);
         }
 
@@ -195,7 +213,8 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void drawTask(Canvas canvas) {
         paint.setTextSize(50);
-        canvas.drawText("Collect: " + whatToCollect, 20, screenY + 100, paint);
+        //moći će biti više taskova, pa za svaki...
+        canvas.drawText("Collect: " + tasks.get(currentTaskIndex).getTaskText(), 20, screenY + 100, paint);
     }
 
     private void drawSaw(Canvas canvas) {

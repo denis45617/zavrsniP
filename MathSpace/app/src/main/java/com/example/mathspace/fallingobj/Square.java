@@ -3,14 +3,20 @@ package com.example.mathspace.fallingobj;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import com.example.mathspace.visual.Point;
 import com.example.mathspace.visual.Saw;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class Square extends FallingObject {
     private int width;
     private int height;
+    private Rect rect;
 
 
-    public Square(String text){
+    public Square(String text) {
         super(text, Shape.SQUARE);
         this.width = (int) (150);
         this.height = (int) (150);
@@ -33,12 +39,24 @@ public class Square extends FallingObject {
     }
 
     private void drawRectangle(Canvas canvas, Paint paint) {
-        canvas.drawRect((float) (this.getCenterX() - width / 2.0), (float) (this.getCenterY() - height / 2.0),
-                (float) (this.getCenterX() + width / 2.0), (float) (this.getCenterY() + height / 2.0), paint);
+        rect = new Rect((int) (this.getCenterX() - width / 2.0), (int) (this.getCenterY() - height / 2.0),
+                (int) (this.getCenterX() + width / 2.0), (int) (this.getCenterY() + height / 2.0));
+        canvas.drawRect(rect, paint);
     }
 
     @Override
-    void checkCollision(Saw saw) {
+    public boolean checkCollision(Saw saw) {
+        List<Point> points = saw.getPoints();
+        for (Point point : points) {
+            if (rect.contains(point.getX(), point.getY()))
+                return true;
+        }
 
+        return false;
+    }
+
+    @Override
+    public int getLowestPoint() {
+        return this.getCenterY() + this.height / 2;
     }
 }

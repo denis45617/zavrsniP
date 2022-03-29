@@ -12,6 +12,14 @@ public class Task {
     private Set<String> words;
 
 
+    public Task(String taskText, TaskType taskType, Integer relativeNumber, Shape askedShape, Set<String> words) {
+        this.taskText = taskText;
+        this.taskType = taskType;
+        this.relativeNumber = relativeNumber;
+        this.askedShape = askedShape;
+        this.words = words;
+    }
+
     public String getTaskText() {
         return taskText;
     }
