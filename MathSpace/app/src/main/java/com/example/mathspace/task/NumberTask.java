@@ -16,23 +16,27 @@ public class NumberTask extends Task {
 
     @Override
     public boolean checkCollectedIsValid(FallingObject fallingObject) {
-        switch (this.getTaskType()) {    //neki strategy  I guess bolje!
-            case EVEN:
-                return Integer.parseInt(fallingObject.getText()) % 2 == 0;
-            case ODD:
-                return Integer.parseInt(fallingObject.getText()) % 2 != 0;
-            case EQUAL:
-                return Integer.parseInt(fallingObject.getText()) == this.relativeNumber;
-            case GREATER:
-                return Integer.parseInt(fallingObject.getText()) > this.relativeNumber;
-            case GREATEREQUAL:
-                return Integer.parseInt(fallingObject.getText()) >= this.relativeNumber;
-            case LOWER:
-                return Integer.parseInt(fallingObject.getText()) < this.relativeNumber;
-            case LOWEREQUAL:
-                return Integer.parseInt(fallingObject.getText()) <= this.relativeNumber;
+        try {
+            switch (this.getTaskType()) {    //neki strategy  I guess bolje!
+                case EVEN:
+                    return Integer.parseInt(fallingObject.getText()) % 2 == 0;
+                case ODD:
+                    return Integer.parseInt(fallingObject.getText()) % 2 != 0;
+                case EQUAL:
+                    return Integer.parseInt(fallingObject.getText()) == this.relativeNumber;
+                case GREATER:
+                    return Integer.parseInt(fallingObject.getText()) > this.relativeNumber;
+                case GREATEREQUAL:
+                    return Integer.parseInt(fallingObject.getText()) >= this.relativeNumber;
+                case LOWER:
+                    return Integer.parseInt(fallingObject.getText()) < this.relativeNumber;
+                case LOWEREQUAL:
+                    return Integer.parseInt(fallingObject.getText()) <= this.relativeNumber;
+            }
+        } catch (Exception e) {  //trenutno kad se switcha sa rječi na brojeve pokuša se castati text na integer pa baca exception
+                                //napraviti vrijeme prijelaza između stvari da to ne bude slučaj
+            return true;
         }
-
         return false;
     }
 }

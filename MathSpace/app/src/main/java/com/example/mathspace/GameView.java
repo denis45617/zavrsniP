@@ -9,10 +9,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceView;
 import com.example.mathspace.fallingobj.Circle;
 import com.example.mathspace.fallingobj.FallingObject;
+import com.example.mathspace.fallingobj.Shape;
 import com.example.mathspace.fallingobj.Square;
-import com.example.mathspace.task.NumberTask;
-import com.example.mathspace.task.Task;
-import com.example.mathspace.task.TaskType;
+import com.example.mathspace.task.*;
 import com.example.mathspace.visual.Background;
 import com.example.mathspace.visual.Saw;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -36,7 +35,7 @@ public class GameView extends SurfaceView implements Runnable {
     private String whatToCollect = "even numbers";
     private Saw saw;
     private List<FallingObject> fallingObjectList = new ArrayList<>();
-    private List<Task> tasks = new LinkedList<>();
+    private List<Task> tasks = new ArrayList<>();
     private int generateFallingObjectFrequency = 10;
     private int currentTaskIndex = 0;
 
@@ -45,7 +44,18 @@ public class GameView extends SurfaceView implements Runnable {
     public GameView(Context context) {
         super(context);
 
-        tasks.add(new NumberTask("Collect even numbers", TaskType.EVEN, 0));
+        //tasks test
+        tasks.add(new NumberTask(" even numbers", TaskType.EVEN, 0));
+        tasks.add(new NumberTask(" numbers greater than 10", TaskType.GREATER, 10));
+        tasks.add(new ShapeTask(" squares", TaskType.SHAPE, Shape.SQUARE));
+        List<String> trazeni = new ArrayList<>();
+        trazeni.add("Visibaba");
+        trazeni.add("Jaglac");
+        List<String> krivi = new ArrayList<>();
+        krivi.add("Patliđan");
+        krivi.add("Paprika");
+        tasks.add(new WordsTask(" proljetnice", TaskType.WORDCONTAINED, trazeni, krivi));
+        //tasks test end
 
 
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
@@ -97,6 +107,10 @@ public class GameView extends SurfaceView implements Runnable {
         this.setOnTouchListener(touchListener);
     }
 
+    public void changeTask() {
+        currentTaskIndex = (int) Math.floor(Math.random() * tasks.size());
+    }
+
     @Override
     public void run() {
         Timer timer = new Timer();
@@ -106,6 +120,14 @@ public class GameView extends SurfaceView implements Runnable {
                 GameView.this.addNewFallingObjectIfNeeded();
             }
         }, 0, 2500);
+
+        Timer timer2 = new Timer();
+        timer2.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                GameView.this.changeTask();
+            }
+        }, 0, 30000);  //mijenja task svakih pol minute
 
 
         while (isNotPaused) {
@@ -152,12 +174,24 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void addNewFallingObjectIfNeeded() {
         if (fallingObjectList.size() < 15) {
-            switch ((int) Math.floor(Math.random() * 2)) {
-                case 0:
-                    fallingObjectList.add(new Square(String.valueOf((int) Math.floor(Math.random() * 21))));
-                    break;
-                case 1:
-                    fallingObjectList.add(new Circle(String.valueOf((int) Math.floor(Math.random() * 21))));
+            if(tasks.get(currentTaskIndex) instanceof NumberTask || tasks.get(currentTaskIndex) instanceof ShapeTask) {
+                switch ((int) Math.floor(Math.random() * 2)) {
+                    case 0:
+                        fallingObjectList.add(new Square(String.valueOf((int) Math.floor(Math.random() * 21))));
+                        break;
+                    case 1:
+                        fallingObjectList.add(new Circle(String.valueOf((int) Math.floor(Math.random() * 21))));
+                }
+            }else if(tasks.get(currentTaskIndex) instanceof WordsTask){
+                int size =  ((WordsTask) tasks.get(currentTaskIndex)).getCorrectWords().size();
+                switch ((int) Math.floor(Math.random() * 2)) {
+                    case 0:
+                        fallingObjectList.add(
+                                new Square(((WordsTask) tasks.get(currentTaskIndex)).getCorrectWords().get((int)Math.floor(Math.random()* size))));
+                        break;
+                    case 1:
+                        fallingObjectList.add( new Circle(((WordsTask) tasks.get(currentTaskIndex)).getIncorrectWords().get((int)Math.floor(Math.random()* size))));
+                }
             }
         }
     }

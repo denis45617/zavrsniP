@@ -2,24 +2,25 @@ package com.example.mathspace.task;
 
 import com.example.mathspace.fallingobj.FallingObject;
 
+import java.util.List;
 import java.util.Set;
 
 public class WordsTask extends Task{
-    private Set<String> correctWords;
-    private Set<String> incorrectWords;
+    private List<String> correctWords;
+    private List<String> incorrectWords;
 
 
-    public WordsTask(String taskText, TaskType taskType, Set<String> correctWords, Set<String> incorrectWords) {
+    public WordsTask(String taskText, TaskType taskType, List<String> correctWords, List<String> incorrectWords) {
         super(taskText, taskType);
         this.correctWords = correctWords;
         this.incorrectWords = incorrectWords;
     }
 
-    public Set<String> getCorrectWords() {
+    public List<String> getCorrectWords() {
         return correctWords;
     }
 
-    public Set<String> getIncorrectWords() {
+    public List<String> getIncorrectWords() {
         return incorrectWords;
     }
 
