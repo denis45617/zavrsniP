@@ -35,8 +35,8 @@ public class Circle extends FallingObject {
         int sawCenterY = saw.getCenterY();
         int sawRadius = saw.getRadius();
 
-        int distSq = (sawCenterX - this.getCenterX()) * (sawCenterX - this.getCenterX()) +
-                (sawCenterY - this.getCenterY()) * (sawCenterY - this.getCenterY());
+        int distSq = (int) (Math.pow(sawCenterX - this.getCenterX(), 2) +
+                Math.pow(sawCenterY - this.getCenterY(), 2));
         int radSumSq = (sawRadius + this.radius) * (sawRadius + this.radius);
         if (distSq == radSumSq)
             return true;

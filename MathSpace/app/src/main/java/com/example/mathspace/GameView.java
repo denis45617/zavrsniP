@@ -10,6 +10,7 @@ import android.view.SurfaceView;
 import com.example.mathspace.fallingobj.Circle;
 import com.example.mathspace.fallingobj.FallingObject;
 import com.example.mathspace.fallingobj.Square;
+import com.example.mathspace.task.NumberTask;
 import com.example.mathspace.task.Task;
 import com.example.mathspace.task.TaskType;
 import com.example.mathspace.visual.Background;
@@ -44,7 +45,7 @@ public class GameView extends SurfaceView implements Runnable {
     public GameView(Context context) {
         super(context);
 
-        tasks.add(new Task("Collect even numbers", TaskType.EVEN, 0, null, null));
+        tasks.add(new NumberTask("Collect even numbers", TaskType.EVEN, 0));
 
 
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
@@ -117,14 +118,21 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void updateFallingObjects() {
         for (int i = 0; i < fallingObjectList.size(); ++i) {
-            fallingObjectList.get(i).setCenterY(fallingObjectList.get(i).getCenterY() + 5);
+            fallingObjectList.get(i).setCenterY(fallingObjectList.get(i).getCenterY() + fallingObjectList.get(i).getSpeed());
 
             boolean isCollected = false;
             //provjera da li je pokupljen
             if (fallingObjectList.get(i).getLowestPoint() >= saw.getY()) {   //provjeravaj kolizije samo za one koji se mogu...
-                 isCollected = fallingObjectList.get(i).checkCollision(saw);
+                isCollected = fallingObjectList.get(i).checkCollision(saw);
                 if (isCollected) {
-                    // okej, makni ga bez obzira šta je za sada
+                    boolean shouldHaveBeenCollected = tasks.get(currentTaskIndex).checkCollectedIsValid(fallingObjectList.get(i));
+                    if (shouldHaveBeenCollected) {
+                        score += 1000;
+                    } else {
+                        numberOfLives--;
+                        //i logaj kao pogrešku negdje
+                    }
+
                     fallingObjectList.remove(i--);
                     continue;
                 }
@@ -132,10 +140,11 @@ public class GameView extends SurfaceView implements Runnable {
 
             //provjera je li pobjegao s ekrana
             if (fallingObjectList.get(i).getCenterY() - 150 > screenY) {
-                //provjeri da li je trebao biti pokupljen
-                //ako nije onda continue
+                boolean shouldHaveBeenCollected = tasks.get(currentTaskIndex).checkCollectedIsValid(fallingObjectList.get(i));
+                if (shouldHaveBeenCollected)
+                    score -= 1000;
                 fallingObjectList.remove(i--);    //dodati u listu missed
-                score -= 1000;
+
             }
         }
 
@@ -255,5 +264,4 @@ public class GameView extends SurfaceView implements Runnable {
             e.printStackTrace();
         }
     }
-
 }

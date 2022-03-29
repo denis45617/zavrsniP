@@ -9,6 +9,7 @@ public abstract class FallingObject {
     protected int centerX;
     protected int centerY;
     protected boolean destroyed;
+    protected int speed;
 
     public abstract void drawFallingObject(Canvas canvas);
 
@@ -22,6 +23,15 @@ public abstract class FallingObject {
         this.centerX = (int) (Math.random()*1080);
         this.centerY = -150;
         this.destroyed = false;
+        speed = (int) (5+Math.random()*10);
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public String getText() {

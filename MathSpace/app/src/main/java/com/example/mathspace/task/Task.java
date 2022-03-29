@@ -1,24 +1,21 @@
 package com.example.mathspace.task;
 
+import com.example.mathspace.fallingobj.FallingObject;
 import com.example.mathspace.fallingobj.Shape;
 
 import java.util.Set;
 
-public class Task {
-    private String taskText;
-    private TaskType taskType;
-    private Integer relativeNumber;
-    private Shape askedShape;
-    private Set<String> words;
+public abstract class Task {
+    protected String taskText;
+    protected TaskType taskType;
 
 
-    public Task(String taskText, TaskType taskType, Integer relativeNumber, Shape askedShape, Set<String> words) {
+    public Task(String taskText, TaskType taskType) {
         this.taskText = taskText;
         this.taskType = taskType;
-        this.relativeNumber = relativeNumber;
-        this.askedShape = askedShape;
-        this.words = words;
     }
+
+    public abstract boolean checkCollectedIsValid(FallingObject fallingObject);
 
     public String getTaskText() {
         return taskText;
@@ -36,27 +33,4 @@ public class Task {
         this.taskType = taskType;
     }
 
-    public Integer getRelativeNumber() {
-        return relativeNumber;
-    }
-
-    public void setRelativeNumber(Integer relativeNumber) {
-        this.relativeNumber = relativeNumber;
-    }
-
-    public Shape getAskedShape() {
-        return askedShape;
-    }
-
-    public void setAskedShape(Shape askedShape) {
-        this.askedShape = askedShape;
-    }
-
-    public Set<String> getWords() {
-        return words;
-    }
-
-    public void setWords(Set<String> words) {
-        this.words = words;
-    }
 }
