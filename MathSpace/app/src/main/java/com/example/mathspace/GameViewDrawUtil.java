@@ -93,4 +93,11 @@ public class GameViewDrawUtil {
             canvas.drawBitmap(heart, screenX - 100 - heart.getWidth() * i, 10, paint);
         }
     }
+
+    static void drawNewTaskText(Canvas canvas, int screenX, int screenY, Task task, Paint taskPaint) {
+        taskPaint.setColor(Color.WHITE);
+        canvas.drawRect(150,(int)(screenY/2.0-50), screenX-150, (int)(screenY/2.0+50), taskPaint);
+        taskPaint.setColor(Color.BLACK);
+        canvas.drawText("Now collect : " + task.getTaskText(), (float)(screenX/2.0),(float)(screenY/2.0), taskPaint);
+    }
 }

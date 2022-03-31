@@ -14,6 +14,10 @@ public class NumberTask extends Task {
         return relativeNumber;
     }
 
+    public void setRelativeNumber(Integer relativeNumber) {
+        this.relativeNumber = relativeNumber;
+    }
+
     @Override
     public boolean checkCollectedIsValid(FallingObject fallingObject) {
         try {

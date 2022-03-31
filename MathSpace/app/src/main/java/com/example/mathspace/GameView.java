@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.*;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -13,7 +14,10 @@ import com.example.mathspace.fallingobj.Square;
 import com.example.mathspace.task.*;
 import com.example.mathspace.visual.Background;
 import com.example.mathspace.visual.Saw;
+import android.os.Vibrator;
 
+
+import java.sql.Timestamp;
 import java.util.*;
 
 
@@ -34,9 +38,11 @@ public class GameView extends SurfaceView implements Runnable {
      */
     private Background currentUpBackground;
 
+
     private int currentBackgroundIndex = 1;
     private int screenX, screenY;
     private Paint paint = new Paint();
+    private Paint taskPaint = new Paint();
     private int score = 0;
     private int numberOfLives = 3;
     private Bitmap heart;
@@ -46,7 +52,10 @@ public class GameView extends SurfaceView implements Runnable {
     private int generateFallingObjectFrequency = 10;
     private int currentTaskIndex = 0;
     private Timer fallingObjectTimer;
+    private Timer changeTaskTimer;
     private int fallingObjectTimerPeriod = 1500;
+    private boolean allowGeneratingFallingObjects = true;
+    private Long showTaskTextUntil;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -54,6 +63,10 @@ public class GameView extends SurfaceView implements Runnable {
         super(context);
         //get tasks
         tasks = GameViewInitUtil.getTasks();
+
+
+        taskPaint.setTextAlign(Paint.Align.CENTER);
+        taskPaint.setTextSize(30);
 
         //get display details
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
@@ -89,11 +102,35 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
 
-    public void changeTask() {
+    /**
+     * Method used for changing tasks. uuuh samo problem ako thread.sleep, a mobitel...
+     *
+     * @throws InterruptedException cuz of thread.sleep
+     */
+    public void changeTask() throws InterruptedException {
+        allowGeneratingFallingObjects = false;   //zabrani stvaranje novih objekata
+
+
+        while (fallingObjectList.size() > 0) {   //čekaj BAREM 4 sekund od kako nema niti jednog
+            Thread.sleep(4000);
+        }
+
+        //dohvati novi task :)
         int prosliCurrentIndex = currentTaskIndex;
         do {
             currentTaskIndex = (int) Math.floor(Math.random() * tasks.size());
         } while (prosliCurrentIndex == currentTaskIndex);
+
+        if (tasks.get(prosliCurrentIndex) instanceof NumberTask) {  //ako je prošli task matematički, promijeni mu relative number
+            ((NumberTask) tasks.get(prosliCurrentIndex)).setRelativeNumber((int) (Math.random() * 20 + 1));
+        }
+
+
+        showTaskTextUntil = System.currentTimeMillis() + 4000;
+        //sad ovdje možda ispisati na ekranu NEW TASK JE::::..
+
+
+        allowGeneratingFallingObjects = true;    //dozvoli stvaranje novih objekata
     }
 
     @Override
@@ -142,9 +179,12 @@ public class GameView extends SurfaceView implements Runnable {
 
     }
 
+    /**
+     * Adds new falling object to list of falling objects
+     */
     private void addNewFallingObjectIfNeeded() {
         try {
-            if (fallingObjectList.size() < 15) {
+            if (fallingObjectList.size() < 15 && allowGeneratingFallingObjects) {
                 if (tasks.get(currentTaskIndex) instanceof NumberTask || tasks.get(currentTaskIndex) instanceof ShapeTask) {
                     switch ((int) Math.floor(Math.random() * 2)) {
                         case 0:
@@ -154,7 +194,6 @@ public class GameView extends SurfaceView implements Runnable {
                             fallingObjectList.add(new Circle(String.valueOf((int) Math.floor(Math.random() * 21))));
                     }
                 } else if (tasks.get(currentTaskIndex) instanceof WordsTask) {
-                    int size = ((WordsTask) tasks.get(currentTaskIndex)).getCorrectWords().size();
                     switch ((int) Math.floor(Math.random() * 4)) {
                         case 0:
                             fallingObjectList.add(
@@ -172,12 +211,15 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             //do nothing ... dogodi se expcetion kad se novi stvara dok se istovremeno promijeni task
         }
     }
 
 
+    /**
+     * Updates background
+     */
     private void updateBackground() {
         currentDownBackGround.setY(currentDownBackGround.getY() + 5);
         currentUpBackground.setY(currentUpBackground.getY() + 5);
@@ -197,6 +239,9 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
 
+    /**
+     * Draw all content on the screen
+     */
     private void draw() {
         if (getHolder().getSurface().isValid()) {
             Canvas canvas = getHolder().lockCanvas();
@@ -212,11 +257,21 @@ public class GameView extends SurfaceView implements Runnable {
             GameViewDrawUtil.drawHearts(canvas, numberOfLives, heart, screenX, paint);
             //what to collect
             GameViewDrawUtil.drawTask(canvas, tasks, currentTaskIndex, screenY, paint);
+
+            if (showTaskTextUntil != null && System.currentTimeMillis() < showTaskTextUntil) {
+                GameViewDrawUtil.drawNewTaskText(canvas, screenX, screenY, tasks.get(currentTaskIndex), taskPaint);
+            } else {
+                showTaskTextUntil = null;
+            }
+
             getHolder().unlockCanvasAndPost(canvas);
         }
     }
 
 
+    /**
+     * Eh joj ovo će biti problemi (prebrzo na dobrim mobitelima, presporo na lošim); AAAAAAAAAA
+     */
     private void sleep() {
         try {
             Thread.sleep(1); //120fps 8.333... => 8 //igra se presporo obavlja već svejedno :kekl: pfffff
@@ -231,7 +286,7 @@ public class GameView extends SurfaceView implements Runnable {
         thread.start();
 
         //dodaj falling object svakih neki period
-        fallingObjectTimer = new Timer();                  //hmm jel ovo u novoj dretvi?
+        fallingObjectTimer = new Timer();
         fallingObjectTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -240,12 +295,16 @@ public class GameView extends SurfaceView implements Runnable {
         }, fallingObjectTimerPeriod, fallingObjectTimerPeriod);
 
 
-        //mijenja task svakih pol minute počevši nakon pola minute       //hmm jel ovo u novoj dretvi?
-        Timer timer2 = new Timer();
-        timer2.scheduleAtFixedRate(new TimerTask() {
+        //mijenja task svakih pol minute počevši nakon pola minute
+        changeTaskTimer = new Timer();                             //nije najbolje mjesto za inicijalizaciju jer
+        changeTaskTimer.scheduleAtFixedRate(new TimerTask() {      //bi se pause mogao abuse da stalno bude isti task
             @Override
             public void run() {
-                GameView.this.changeTask();
+                try {
+                    GameView.this.changeTask();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }, 30000, 30000);
     }
@@ -253,6 +312,7 @@ public class GameView extends SurfaceView implements Runnable {
     public void pause() {
         try {
             fallingObjectTimer.cancel();
+            changeTaskTimer.cancel();
 
             isNotPaused = false;
             thread.join();
