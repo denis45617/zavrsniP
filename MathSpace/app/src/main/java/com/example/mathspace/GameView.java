@@ -3,21 +3,25 @@ package com.example.mathspace;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.*;
-import android.util.Log;
+import android.os.Build;
+import android.os.Looper;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
+import android.view.View;
 import com.example.mathspace.fallingobj.Circle;
 import com.example.mathspace.fallingobj.FallingObject;
 import com.example.mathspace.fallingobj.Square;
+import com.example.mathspace.hs.HighScore;
 import com.example.mathspace.task.*;
 import com.example.mathspace.visual.Background;
 import com.example.mathspace.visual.Saw;
-import android.os.Vibrator;
 
 
-import java.sql.Timestamp;
 import java.util.*;
 
 
@@ -56,11 +60,13 @@ public class GameView extends SurfaceView implements Runnable {
     private int fallingObjectTimerPeriod = 1500;
     private boolean allowGeneratingFallingObjects = true;
     private Long showTaskTextUntil;
+    private Activity activity;
 
 
     @SuppressLint("ClickableViewAccessibility")
-    public GameView(Context context) {
-        super(context);
+    public GameView(GameActivity activity) {
+        super(activity);
+        this.activity = activity;
         //get tasks
         tasks = GameViewInitUtil.getTasks();
 
@@ -136,12 +142,53 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         while (isNotPaused) {
-            if (numberOfLives <= 0) pause();  // pause + animacija + novi screen vjerojatno ili tako nešta
-
             updateBackground();
             updateFallingObjects();
             draw();
             sleep();
+            if (numberOfLives <= 0) { // pause + animacija + novi screen vjerojatno ili tako nešta
+                Looper.prepare();
+                HighScore hs = new HighScore(getContext().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE), score / 10);
+                hs.saveHighScore();
+                gameOverScreen();
+                break;
+            }
+        }
+    }
+
+    private void gameOverScreen() {
+        try {
+            Thread.sleep(100);   //čekaj 0.1 sekundu
+
+            SharedPreferences sharedPreferences = getContext().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+            int highScore = sharedPreferences.getInt("HIGH_SCORE", 0);
+            //pokaži taj end screen thing
+            if (getHolder().getSurface().isValid()) {
+                Canvas canvas = getHolder().lockCanvas();
+                GameViewDrawUtil.drawBackground(canvas, currentUpBackground, currentDownBackGround, paint);
+                GameViewDrawUtil.drawScore(canvas, score, paint);
+                GameViewDrawUtil.drawGameOverScreen(canvas, screenX, screenY, score, highScore, paint);
+                getHolder().unlockCanvasAndPost(canvas);
+            }
+
+            Thread.sleep(250);
+            @SuppressLint("ClickableViewAccessibility") OnTouchListener touchListener2 = new OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                        if (motionEvent.getX() > 0.4 * screenX && motionEvent.getX() < (screenX - 0.4 * screenX)
+                                && motionEvent.getY() > (0.4 * screenY) && motionEvent.getY() < (screenY - 0.4 * screenY)) {
+                            activity.finish();
+                        }
+                    }
+
+                    return true;
+                }
+            };
+            this.setOnTouchListener(touchListener2);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -159,6 +206,7 @@ public class GameView extends SurfaceView implements Runnable {
                         score += 1000;
                     } else {
                         numberOfLives--;
+                        vibrate(300);
                         //i logaj kao pogrešku negdje
                     }
 
@@ -170,13 +218,26 @@ public class GameView extends SurfaceView implements Runnable {
             //provjera je li pobjegao s ekrana
             if (fallingObjectList.get(i).getCenterY() - 150 > screenY) {
                 boolean shouldHaveBeenCollected = tasks.get(currentTaskIndex).checkCollectedIsValid(fallingObjectList.get(i));
-                if (shouldHaveBeenCollected)
+                if (shouldHaveBeenCollected) {
                     score -= 1000;
+                    vibrate(50);
+                }
                 fallingObjectList.remove(i--);    //dodati u listu missed
 
             }
         }
 
+    }
+
+
+    private void vibrate(int miliseconds) {
+        Vibrator v = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(miliseconds, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            //deprecated in API 26
+            v.vibrate(miliseconds);
+        }
     }
 
     /**
@@ -310,14 +371,15 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     public void pause() {
-        try {
-            fallingObjectTimer.cancel();
-            changeTaskTimer.cancel();
+        fallingObjectTimer.cancel();
+        changeTaskTimer.cancel();
 
-            isNotPaused = false;
+        isNotPaused = false;
+        try {
             thread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 }

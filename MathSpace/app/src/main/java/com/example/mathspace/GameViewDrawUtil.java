@@ -11,11 +11,15 @@ import com.example.mathspace.visual.Saw;
 
 import java.util.List;
 
+/**
+ * Util class for drawing objects on given canvases
+ */
 public class GameViewDrawUtil {
 
     /**
      * Method used for drawing falling object on given canvas
-     * @param canvas canvas
+     *
+     * @param canvas            canvas
      * @param fallingObjectList list of falling objects
      */
     static void drawFallingObjects(Canvas canvas, List<FallingObject> fallingObjectList) {
@@ -26,22 +30,23 @@ public class GameViewDrawUtil {
 
     /**
      * Method used for drawing background
-     * @param canvas canvas
-     * @param currentUpBackground upper background
+     *
+     * @param canvas                canvas
+     * @param currentUpBackground   upper background
      * @param currentDownBackGround down bacgkround
-     * @param paint paint
+     * @param paint                 paint
      */
-     static void drawBackground(Canvas canvas, Background currentUpBackground, Background currentDownBackGround, Paint paint) {
+    static void drawBackground(Canvas canvas, Background currentUpBackground, Background currentDownBackGround, Paint paint) {
         canvas.drawBitmap(currentUpBackground.getBackground(), currentUpBackground.getX(), currentUpBackground.getY(), paint);
         canvas.drawBitmap(currentDownBackGround.getBackground(), currentDownBackGround.getX(), currentDownBackGround.getY(), paint);
     }
 
     /**
      * Method used for showing score on the screen
+     *
      * @param canvas canvas
-     * @param score score value
-     * @param paint paint
-
+     * @param score  score value
+     * @param paint  paint
      */
     static void drawScore(Canvas canvas, int score, Paint paint) {
         paint.setTextSize(100);
@@ -51,13 +56,14 @@ public class GameViewDrawUtil {
 
     /**
      * Method used for displaying task text
-     * @param canvas canvas
-     * @param tasks list of tasks
-     * @param currentTaskIndex  index of current task
-     * @param screenY position on Y axis
-     * @param paint paint
+     *
+     * @param canvas           canvas
+     * @param tasks            list of tasks
+     * @param currentTaskIndex index of current task
+     * @param screenY          position on Y axis
+     * @param paint            paint
      */
-     static void drawTask(Canvas canvas, List<Task> tasks, int currentTaskIndex, int screenY,  Paint paint) {
+    static void drawTask(Canvas canvas, List<Task> tasks, int currentTaskIndex, int screenY, Paint paint) {
         paint.setTextSize(50);
         //moći će biti više taskova, pa za svaki...
         canvas.drawText("Collect: " + tasks.get(currentTaskIndex).getTaskText(), 20, screenY + 100, paint);
@@ -65,12 +71,13 @@ public class GameViewDrawUtil {
 
     /**
      * Method used for drawing saw on the screen
-     * @param canvas canvas
-     * @param saw saw
+     *
+     * @param canvas  canvas
+     * @param saw     saw
      * @param screenX saw position on x axis
-     * @param paint paint
+     * @param paint   paint
      */
-     static void drawSaw(Canvas canvas,  Saw saw, int screenX, Paint paint) {
+    static void drawSaw(Canvas canvas, Saw saw, int screenX, Paint paint) {
         //line on which saw can move
         paint.setColor(Color.RED);
         canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 1, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 1, paint);
@@ -82,13 +89,14 @@ public class GameViewDrawUtil {
 
     /**
      * Method used for drawing number of lives on the screen in the form of hearts
-     * @param canvas canvas
+     *
+     * @param canvas        canvas
      * @param numberOfLives number of lives
-     * @param heart heart bitmap
-     * @param screenX position on X axis
-     * @param paint paint
+     * @param heart         heart bitmap
+     * @param screenX       position on X axis
+     * @param paint         paint
      */
-     static void drawHearts(Canvas canvas, int numberOfLives, Bitmap heart, int screenX, Paint paint) {
+    static void drawHearts(Canvas canvas, int numberOfLives, Bitmap heart, int screenX, Paint paint) {
         for (int i = 0; i < numberOfLives; ++i) {
             canvas.drawBitmap(heart, screenX - 100 - heart.getWidth() * i, 10, paint);
         }
@@ -96,8 +104,30 @@ public class GameViewDrawUtil {
 
     static void drawNewTaskText(Canvas canvas, int screenX, int screenY, Task task, Paint taskPaint) {
         taskPaint.setColor(Color.WHITE);
-        canvas.drawRect(150,(int)(screenY/2.0-50), screenX-150, (int)(screenY/2.0+50), taskPaint);
+        canvas.drawRect(150, (int) (screenY / 2.0 - 50), screenX - 150, (int) (screenY / 2.0 + 50), taskPaint);
         taskPaint.setColor(Color.BLACK);
-        canvas.drawText("Now collect : " + task.getTaskText(), (float)(screenX/2.0),(float)(screenY/2.0), taskPaint);
+        canvas.drawText("Now collect : " + task.getTaskText(), (float) (screenX / 2.0), (float) (screenY / 2.0), taskPaint);
+    }
+
+
+    public static void drawGameOverScreen(Canvas canvas, int screenX, int screenY, int score, int highScore, Paint paint) {
+        //pozadina
+        paint.setColor(Color.BLACK);
+        canvas.drawRoundRect((float) 0.1 * screenX, (float) 0.15 * screenY,
+                (float) (screenX - 0.1 * screenX), (float) (screenY - 0.15 * screenY),
+                100, 100, paint);
+
+        //button za main menu
+        paint.setColor(Color.WHITE);
+        canvas.drawRect((float) 0.4 * screenX, (float) 0.4 * screenY, (float) (screenX - 0.4 * screenX), (float) (screenY - 0.4 * screenY), paint);
+        //text na battonu za main menu
+        paint.setColor(Color.RED);
+        canvas.drawText("Back to menu", (float) 0.4 * screenX, (float) 0.4 * screenY, paint);
+
+        //button za try again
+
+
+        //text na buttonu za try again;
+
     }
 }

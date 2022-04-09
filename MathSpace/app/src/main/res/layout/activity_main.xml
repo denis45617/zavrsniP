@@ -32,6 +32,7 @@
               android:layout_below="@+id/highScore"
               android:autoSizeTextType="uniform"
               android:layout_margin="24sp"
+              android:id="@+id/gameTitle"
               tools:targetApi="o"/>
 
     <!-- Play -->
@@ -44,6 +45,20 @@
             android:textSize="64sp"
             android:textColor="@color/white"
             android:text="@string/play"
+    />
+
+    <!-- Play -->
+    <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/rounded_corner"
+            android:id="@+id/clearHighScore"
+            android:textSize="15sp"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/white"
+            android:layout_above="@+id/gameTitle"
+            android:text="Clear highscore"
     />
 
 

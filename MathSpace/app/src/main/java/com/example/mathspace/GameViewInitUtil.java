@@ -16,7 +16,7 @@ import java.util.Set;
 public class GameViewInitUtil {
     /**
      * Method for getting all tasks
-     * @return
+     * @return List of tasks
      */
     public static List<Task> getTasks() {
         List<Task> tasks = new ArrayList<>();
@@ -120,8 +120,8 @@ public class GameViewInitUtil {
 
     /**
      * Method for getting scaled heart instance
-     * @param resources
-     * @return
+     * @param resources resource
+     * @return Bitmap of heart
      */
     public static Bitmap getHeart(Resources resources, int screenX, int screenY) {
         Bitmap heart;
