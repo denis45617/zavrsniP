@@ -3,6 +3,7 @@ package com.example.mathspace;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.*;
 import android.os.Build;
@@ -172,12 +173,20 @@ public class GameView extends SurfaceView implements Runnable {
             }
 
             Thread.sleep(250);
-            @SuppressLint("ClickableViewAccessibility") OnTouchListener touchListener2 = new OnTouchListener() {
+
+            OnTouchListener touchListener2 = new OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
                     if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                        if (motionEvent.getX() > 0.4 * screenX && motionEvent.getX() < (screenX - 0.4 * screenX)
-                                && motionEvent.getY() > (0.4 * screenY) && motionEvent.getY() < (screenY - 0.4 * screenY)) {
+                        if ((motionEvent.getX() > (0.15 * screenX)) && (motionEvent.getX() < (0.45 * screenX))
+                                && motionEvent.getY() > (screenY - 0.3 * screenY) && motionEvent.getY() < (screenY - 0.2 * screenY)) {
+                            activity.finish();
+                        }
+
+                        if ((motionEvent.getX() > (0.55 * screenX)) && (motionEvent.getX() < (0.85 * screenX))
+                                && motionEvent.getY() > (screenY - 0.3 * screenY) && motionEvent.getY() < (screenY - 0.2 * screenY)) {
+                            Intent intent = new Intent(activity.getApplicationContext(), GameActivity.class);
+                            activity.startActivity(intent);
                             activity.finish();
                         }
                     }
@@ -185,7 +194,13 @@ public class GameView extends SurfaceView implements Runnable {
                     return true;
                 }
             };
+
             this.setOnTouchListener(touchListener2);
+
+
+
+
+
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -196,7 +211,7 @@ public class GameView extends SurfaceView implements Runnable {
         for (int i = 0; i < fallingObjectList.size(); ++i) {
             fallingObjectList.get(i).setCenterY(fallingObjectList.get(i).getCenterY() + fallingObjectList.get(i).getSpeed());
 
-            boolean isCollected = false;
+            boolean isCollected;
             //provjera da li je pokupljen
             if (fallingObjectList.get(i).getLowestPoint() >= saw.getY()) {   //provjeravaj kolizije samo za one koji se mogu...
                 isCollected = fallingObjectList.get(i).checkCollision(saw);

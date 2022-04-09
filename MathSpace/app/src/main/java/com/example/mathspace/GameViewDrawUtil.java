@@ -1,9 +1,6 @@
 package com.example.mathspace;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.graphics.*;
 import com.example.mathspace.fallingobj.FallingObject;
 import com.example.mathspace.task.Task;
 import com.example.mathspace.visual.Background;
@@ -111,23 +108,65 @@ public class GameViewDrawUtil {
 
 
     public static void drawGameOverScreen(Canvas canvas, int screenX, int screenY, int score, int highScore, Paint paint) {
-        //pozadina
+        //===============================================POZADINA=======================================================
+        //crveni obrbu
+        paint.setColor(Color.RED);
+        canvas.drawRoundRect((float) 0.1 * screenX - 4, (float) 0.15 * screenY - 4,
+                (float) (screenX - 0.1 * screenX + 4), (float) (screenY - 0.10 * screenY + 4),
+                100, 100, paint);
+        //pozadina - pozadina
         paint.setColor(Color.BLACK);
         canvas.drawRoundRect((float) 0.1 * screenX, (float) 0.15 * screenY,
-                (float) (screenX - 0.1 * screenX), (float) (screenY - 0.15 * screenY),
+                (float) (screenX - 0.1 * screenX), (float) (screenY - 0.10 * screenY),
                 100, 100, paint);
 
-        //button za main menu
+        paint.setTextAlign(Paint.Align.CENTER);
+
+        //===============================================G4M3 0V3R======================================================
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        paint.setTextSize(120);
         paint.setColor(Color.WHITE);
-        canvas.drawRect((float) 0.4 * screenX, (float) 0.4 * screenY, (float) (screenX - 0.4 * screenX), (float) (screenY - 0.4 * screenY), paint);
+        canvas.drawText("G4M3 0V3R", (float) (screenX / 2.0), (float) (0.26 * screenY), paint);
+
+        paint.setTextSize(80);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+        //===============================================HIGHSCORE======================================================
+        paint.setColor(Color.WHITE);
+        canvas.drawText("HIGH SCORE: ", (float) (screenX / 2.0), (float) (0.37 * screenY), paint);
+        canvas.drawText(String.valueOf(highScore), (float) (screenX / 2.0), (float) (0.42 * screenY), paint);
+
+        paint.setTextSize(100);
+        //===================================================SCORE======================================================
+        paint.setColor(Color.WHITE);
+        canvas.drawText("SCORE: ", (float) (screenX / 2.0), (float) (0.52 * screenY), paint);
+        canvas.drawText(String.valueOf(score / 10), (float) (screenX / 2.0), (float) (0.57 * screenY), paint);
+
+
+        paint.setTextSize(75);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+
+        Paint.FontMetrics fontMetrics = paint.getFontMetrics();
+        //==============================================MAIN-MENU=======================================================
+        //pozadina od buttona
+        paint.setColor(Color.WHITE);
+        canvas.drawRoundRect((float) 0.15 * screenX, (float) (screenY - 0.3 * screenY),
+                (float) (0.45 * screenX), (float) (screenY - 0.2 * screenY), 20, 20, paint);
         //text na battonu za main menu
         paint.setColor(Color.RED);
-        canvas.drawText("Back to menu", (float) 0.4 * screenX, (float) 0.4 * screenY, paint);
+        canvas.drawText("MENU", (float) 0.3 * screenX, (float) (screenY - 0.25 * screenY - fontMetrics.ascent / 4), paint);
 
-        //button za try again
+        //==============================================TRY-AGAIN=======================================================
 
-
-        //text na buttonu za try again;
+        paint.setColor(Color.WHITE);
+        canvas.drawRoundRect((float) 0.55 * screenX, (float) (screenY - 0.3 * screenY),
+                (float) (0.85 * screenX), (float) (screenY - 0.2 * screenY), 20, 20, paint);
+        //text na buttonu za main menu
+        paint.setColor(Color.RED);
+        canvas.drawText("PLAY", (float) 0.7 * screenX,
+                (float) (screenY - 0.25 * screenY + fontMetrics.ascent / 2 - fontMetrics.ascent / 4), paint);
+        canvas.drawText("AGAIN", (float) 0.7 * screenX,
+                (float) (screenY - 0.25 * screenY - fontMetrics.ascent / 2 - fontMetrics.ascent / 4), paint);
+        //==============================================TRY-AGAIN=======================================================
 
     }
 }
