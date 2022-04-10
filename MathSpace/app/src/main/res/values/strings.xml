@@ -5,4 +5,5 @@
     <string name="play">Play</string>
     <string name="backgrounddescription" translatable="false">backgroundDescription</string>
     <string name="high_score" translatable="false">High score</string>
+    <string name="settings">Settings</string>
 </resources>

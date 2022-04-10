@@ -46,24 +46,34 @@
             android:textColor="@color/white"
             android:text="@string/play"
     />
-
-    <!-- Play -->
+    <!-- Settings -->
     <androidx.appcompat.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@drawable/rounded_corner"
-            android:id="@+id/clearHighScore"
-            android:textSize="15sp"
-            android:layout_alignParentEnd="true"
+            android:id="@+id/settings"
+            android:textSize="30sp"
             android:textColor="@color/white"
-            android:layout_above="@+id/gameTitle"
-            android:text="Clear highscore"
+            android:text="@string/settings"
+            android:layout_below="@+id/play"
+            android:layout_marginTop="15dp"
     />
 
 
-
-
+    <!-- Clear HighScore -->
+    <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:id="@+id/clearHighScore"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:text="Clear highscore"
+            android:layout_below="@+id/settings"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="100dp"
+    />
 
 
 </RelativeLayout>

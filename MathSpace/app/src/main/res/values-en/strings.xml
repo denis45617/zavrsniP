@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">MathSpace</string>
     <string name="play">Play</string>
+    <string name="settings">Settings</string>
 </resources>
