@@ -10,6 +10,13 @@ public class NumberTask extends Task {
         this.relativeNumber = relativeNumber;
     }
 
+    @Override
+    public String getTaskText() {
+        if (relativeNumber != null)
+            return super.getTaskText() + relativeNumber;
+        return super.getTaskText();
+    }
+
     public Integer getRelativeNumber() {
         return relativeNumber;
     }
@@ -38,7 +45,7 @@ public class NumberTask extends Task {
                     return Integer.parseInt(fallingObject.getText()) <= this.relativeNumber;
             }
         } catch (Exception e) {  //trenutno kad se switcha sa rječi na brojeve pokuša se castati text na integer pa baca exception
-                                //napraviti vrijeme prijelaza između stvari da to ne bude slučaj
+            //napraviti vrijeme prijelaza između stvari da to ne bude slučaj
             return true;
         }
         return false;

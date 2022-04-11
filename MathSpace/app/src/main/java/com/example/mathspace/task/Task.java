@@ -33,4 +33,8 @@ public abstract class Task {
         this.taskType = taskType;
     }
 
+    @Override
+    public String toString() {
+        return taskText;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.mathspace;
 
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,33 +17,35 @@ import java.util.Set;
 public class GameViewInitUtil {
     /**
      * Method for getting all tasks
+     *
      * @return List of tasks
      */
-    public static List<Task> getTasks() {
+    public static List<Task> getAllTasks() {
         List<Task> tasks = new ArrayList<>();
 
         //========================================== default tasks =====================================================
         //even
-        int relativeNumber = (int) (1+ Math.floor(Math.random()*1000));
-        tasks.add(new NumberTask(" even numbers", TaskType.EVEN, relativeNumber));
-        //odd
-        tasks.add(new NumberTask(" even numbers", TaskType.EVEN, relativeNumber));
 
+        tasks.add(new NumberTask(" even numbers", TaskType.EVEN, null));
+        //odd
+        tasks.add(new NumberTask(" odd numbers", TaskType.ODD, null));
+
+        int relativeNumber = (int) (1 + Math.floor(Math.random() * 1000));
         //greater
-        relativeNumber = (int) (1+ Math.floor(Math.random()*20));
-        tasks.add(new NumberTask(" numbers greater than " + relativeNumber , TaskType.GREATER, relativeNumber));
+        relativeNumber = (int) (1 + Math.floor(Math.random() * 20));
+        tasks.add(new NumberTask(" numbers greater than ", TaskType.GREATER, relativeNumber));
 
         //greaterequal
-        relativeNumber = (int) (1+ Math.floor(Math.random()*20));
-        tasks.add(new NumberTask(" numbers greater or equal than " + relativeNumber , TaskType.GREATEREQUAL, relativeNumber));
+        relativeNumber = (int) (1 + Math.floor(Math.random() * 20));
+        tasks.add(new NumberTask(" numbers greater or equal than ", TaskType.GREATEREQUAL, relativeNumber));
 
         //lower
-        relativeNumber = (int) (5 + Math.floor(Math.random()*20));
-        tasks.add(new NumberTask(" numbers lower than " + relativeNumber , TaskType.LOWER, relativeNumber));
+        relativeNumber = (int) (5 + Math.floor(Math.random() * 20));
+        tasks.add(new NumberTask(" numbers lower than ", TaskType.LOWER, relativeNumber));
 
         //lowerequal
-        relativeNumber = (int) (5 + Math.floor(Math.random()*20));
-        tasks.add(new NumberTask(" numbers lower or equal than " + relativeNumber , TaskType.LOWEREQUAL, relativeNumber));
+        relativeNumber = (int) (5 + Math.floor(Math.random() * 20));
+        tasks.add(new NumberTask(" numbers lower or equal than ", TaskType.LOWEREQUAL, relativeNumber));
 
         //shape square
         tasks.add(new ShapeTask(" squares", TaskType.SHAPE, Shape.SQUARE));
@@ -69,9 +72,29 @@ public class GameViewInitUtil {
     }
 
     /**
+     * Method that returns only default tasks that are enabled in settings
+     * @param sharedPreferences shared preferences
+     * @return List of tasks
+     */
+    public static List<Task> getSelectedTasks(SharedPreferences sharedPreferences) {
+        List<Task> selectedTasks = new ArrayList<>();
+        List<Task> allTasks = getAllTasks();
+
+        for (int i = 0; i < allTasks.size(); ++i) {
+            if (sharedPreferences.getBoolean("DEFAULT_SETTING:" + i, true)) {
+                selectedTasks.add(allTasks.get(i));
+            }
+        }
+
+        return selectedTasks;
+    }
+
+
+    /**
      * Method for making Array of background, takes screen size to be scaled on and reference to resources
-     * @param screenX screen width (in pixels)
-     * @param screenY screen height (in pixels)
+     *
+     * @param screenX   screen width (in pixels)
+     * @param screenY   screen height (in pixels)
      * @param resources resources
      * @return Background[] full of background photos
      */
@@ -107,11 +130,12 @@ public class GameViewInitUtil {
 
     /**
      * Method for getting saw instance
-     * @param screenX screen width (in pixels)
-     * @param screenY screen height (in pixels)
+     *
+     * @param screenX   screen width (in pixels)
+     * @param screenY   screen height (in pixels)
      * @param resources resources
-     * @param saw1 saw resource1
-     * @param saw2 saw resource 2
+     * @param saw1      saw resource1
+     * @param saw2      saw resource 2
      * @return Saw instance
      */
     public static Saw getSaw(int screenX, int screenY, Resources resources, int saw1, int saw2) {
@@ -120,6 +144,7 @@ public class GameViewInitUtil {
 
     /**
      * Method for getting scaled heart instance
+     *
      * @param resources resource
      * @return Bitmap of heart
      */

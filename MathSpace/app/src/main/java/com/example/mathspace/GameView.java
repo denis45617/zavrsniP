@@ -14,6 +14,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Toast;
 import com.example.mathspace.fallingobj.Circle;
 import com.example.mathspace.fallingobj.FallingObject;
 import com.example.mathspace.fallingobj.Square;
@@ -55,7 +56,7 @@ public class GameView extends SurfaceView implements Runnable {
     private List<FallingObject> fallingObjectList = new ArrayList<>();
     private List<Task> tasks;
     private int generateFallingObjectFrequency = 10;
-    private int currentTaskIndex = 0;
+    private int currentTaskIndex;
     private Timer fallingObjectTimer;
     private Timer changeTaskTimer;
     private int fallingObjectTimerPeriod = 1500;
@@ -69,8 +70,9 @@ public class GameView extends SurfaceView implements Runnable {
         super(activity);
         this.activity = activity;
         //get tasks
-        tasks = GameViewInitUtil.getTasks();
+        tasks = GameViewInitUtil.getSelectedTasks(getContext().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE));
 
+        currentTaskIndex = (int) Math.floor(Math.random() * tasks.size());
 
         taskPaint.setTextAlign(Paint.Align.CENTER);
         taskPaint.setTextSize(30);
@@ -115,6 +117,13 @@ public class GameView extends SurfaceView implements Runnable {
      * @throws InterruptedException cuz of thread.sleep
      */
     public void changeTask() throws InterruptedException {
+
+        if (tasks.size() <= 1 && (tasks.get(currentTaskIndex).getTaskType().equals(TaskType.EVEN))
+                || (tasks.get(currentTaskIndex).getTaskType().equals(TaskType.ODD))
+                || (tasks.get(currentTaskIndex).getTaskType().equals(TaskType.SHAPE))
+                || (tasks.get(currentTaskIndex).getTaskType().equals(TaskType.WORDCONTAINED)))
+            return; //ako je samo jedan task nema se šta mijenjati! //OSIM kod onih taskova kojima treba izmijeniti relative NUMBER!
+
         allowGeneratingFallingObjects = false;   //zabrani stvaranje novih objekata
 
 
@@ -125,6 +134,7 @@ public class GameView extends SurfaceView implements Runnable {
         //dohvati novi task :)
         int prosliCurrentIndex = currentTaskIndex;
         do {
+            if (tasks.size() == 1) break;
             currentTaskIndex = (int) Math.floor(Math.random() * tasks.size());
         } while (prosliCurrentIndex == currentTaskIndex);
 
@@ -196,11 +206,6 @@ public class GameView extends SurfaceView implements Runnable {
             };
 
             this.setOnTouchListener(touchListener2);
-
-
-
-
-
 
         } catch (InterruptedException e) {
             e.printStackTrace();

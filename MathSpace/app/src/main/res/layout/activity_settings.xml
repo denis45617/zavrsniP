@@ -8,63 +8,20 @@
         tools:context=".SettingsActivity">
 
 
-        <ScrollView android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    android:layout_centerInParent="true">
 
-                <LinearLayout android:orientation="vertical" android:layout_height="wrap_content"
-                              android:layout_width="match_parent">
-
-                        <Switch android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Even numbers"
-
-                        />
-
-
-                        <Switch android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Odd numbers"
-                        />
-
-                        <Switch android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Numbers greater than"
-                        />
-
-                        <Switch android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Numbers greater or equal to"
-                        />
-
-                        <Switch android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Numbers lower then"
-                        />
-
-                        <Switch android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Numbers lower or equal to"
-                        />
-
-                        <Switch android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Numbers lower or equal to"
-                        />
-
-
-                        <Button android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Save settings"/>
-
-                        <Button android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Clear settings"/>
-
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/linear"
+                >
 
 
                 </LinearLayout>
-        </ScrollView>
+
+
+
+
 
 
 
