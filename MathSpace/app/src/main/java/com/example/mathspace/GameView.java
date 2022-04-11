@@ -118,10 +118,10 @@ public class GameView extends SurfaceView implements Runnable {
      */
     public void changeTask() throws InterruptedException {
 
-        if (tasks.size() <= 1 && (tasks.get(currentTaskIndex).getTaskType().equals(TaskType.EVEN))
+        if (tasks.size() <= 1 && ((tasks.get(currentTaskIndex).getTaskType().equals(TaskType.EVEN))
                 || (tasks.get(currentTaskIndex).getTaskType().equals(TaskType.ODD))
                 || (tasks.get(currentTaskIndex).getTaskType().equals(TaskType.SHAPE))
-                || (tasks.get(currentTaskIndex).getTaskType().equals(TaskType.WORDCONTAINED)))
+                || (tasks.get(currentTaskIndex).getTaskType().equals(TaskType.WORDCONTAINED))))
             return; //ako je samo jedan task nema se šta mijenjati! //OSIM kod onih taskova kojima treba izmijeniti relative NUMBER!
 
         allowGeneratingFallingObjects = false;   //zabrani stvaranje novih objekata
@@ -144,7 +144,6 @@ public class GameView extends SurfaceView implements Runnable {
 
 
         showTaskTextUntil = System.currentTimeMillis() + 4000;
-        //sad ovdje možda ispisati na ekranu NEW TASK JE::::..
 
 
         allowGeneratingFallingObjects = true;    //dozvoli stvaranje novih objekata
