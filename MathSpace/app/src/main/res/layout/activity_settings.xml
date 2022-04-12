@@ -5,29 +5,85 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".SettingsActivity">
+        tools:context=".DefaultSettingsActivity"
+        android:background="@drawable/a8"
+>
 
 
-
-                <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/linear"
-                >
-
-
-                </LinearLayout>
-
-
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/settingsTitle"
+              android:text="Settings"
+              android:textSize="60dp"
+              android:textAlignment="center"
+              android:layout_marginTop="80dp"
+              android:background="@drawable/rounded_corner_text_background"
+              android:textColor="@color/white"
+    />
 
 
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@+id/settingsTitle"
+                  android:layout_marginTop="50dp"
+                  android:orientation="vertical"
+    >
+
+        <Switch android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/usedSettingsSwitch"
+                android:background="@drawable/rounded_corner"
+                android:textColor="@color/white"
+                android:textOff="Default"
+                android:textOn="Downloaded"
+                android:showText="true"
+                android:enabled="false"
+        />
+
+    </LinearLayout>
 
 
+    <!-- Edit default settings -->
+    <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:id="@+id/defaultSettings"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:text="Edit default settings"
+            android:layout_margin="40dp"
+            android:layout_centerInParent="true"
+    />
+
+    <!-- Edit default settings -->
+    <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:id="@+id/downloadSettings"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:text="Download Settings"
+            android:layout_centerInParent="true"
+            android:layout_margin="40dp"
+            android:layout_below="@+id/defaultSettings"
+    />
 
 
-
-
+    <!-- Clear HighScore -->
+    <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner"
+            android:id="@+id/clearHighScore"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:text="Clear highscore"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/downloadSettings"
+    />
 
 
 </RelativeLayout>

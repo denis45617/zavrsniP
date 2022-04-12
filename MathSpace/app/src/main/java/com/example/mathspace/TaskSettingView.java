@@ -3,6 +3,8 @@ package com.example.mathspace;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
@@ -49,7 +51,7 @@ public class TaskSettingView extends RelativeLayout {
         taskSwitch.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                editor.putBoolean("DEFAULT_SETTING:" + defaultId, taskSwitch.isChecked());
+                editor.putBoolean("DEFAULT_SETTING:" + TaskSettingView.this.defaultId, taskSwitch.isChecked());
                 editor.apply();
             }
         });

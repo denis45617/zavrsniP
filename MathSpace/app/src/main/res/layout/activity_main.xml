@@ -61,19 +61,5 @@
     />
 
 
-    <!-- Clear HighScore -->
-    <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corner"
-            android:id="@+id/clearHighScore"
-            android:textSize="15sp"
-            android:textColor="@color/white"
-            android:text="Clear highscore"
-            android:layout_below="@+id/settings"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="100dp"
-    />
-
 
 </RelativeLayout>

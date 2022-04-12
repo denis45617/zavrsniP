@@ -11,7 +11,11 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.MathSpace">
+        <activity android:name=".DefaultSettingsActivity">
+        </activity>
         <activity android:name=".SettingsActivity">
+        </activity>
+        <activity android:name=".DownloadSettingsActivity">
         </activity>
         <activity
                 android:name=".GameActivity"
