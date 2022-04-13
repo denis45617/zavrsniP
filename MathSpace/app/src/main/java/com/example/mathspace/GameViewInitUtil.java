@@ -26,32 +26,37 @@ public class GameViewInitUtil {
         //========================================== default tasks =====================================================
         //even
 
-        tasks.add(new NumberTask(" even numbers", TaskType.EVEN, null));
+        Task evenTask = new NumberTask(" even numbers", TaskType.EVEN, null);
+        tasks.add(evenTask);
         //odd
-        tasks.add(new NumberTask(" odd numbers", TaskType.ODD, null));
+        Task oddTask = new NumberTask(" odd numbers", TaskType.ODD, null);
+        tasks.add(oddTask);
 
-        int relativeNumber = (int) (1 + Math.floor(Math.random() * 1000));
+        int relativeNumber = (int) (1 + Math.floor(Math.random() * 20));
         //greater
-        relativeNumber = (int) (1 + Math.floor(Math.random() * 20));
         tasks.add(new NumberTask(" numbers greater than ", TaskType.GREATER, relativeNumber));
 
         //greaterequal
         relativeNumber = (int) (1 + Math.floor(Math.random() * 20));
-        tasks.add(new NumberTask(" numbers greater or equal than ", TaskType.GREATEREQUAL, relativeNumber));
+        Task greaterEqualTask = new NumberTask(" numbers greater or equal than ", TaskType.GREATEREQUAL, relativeNumber);
+        tasks.add(greaterEqualTask);
 
         //lower
         relativeNumber = (int) (5 + Math.floor(Math.random() * 20));
-        tasks.add(new NumberTask(" numbers lower than ", TaskType.LOWER, relativeNumber));
+        Task lowerTask = new NumberTask(" numbers lower than ", TaskType.LOWER, relativeNumber);
+        tasks.add(lowerTask);
 
         //lowerequal
         relativeNumber = (int) (5 + Math.floor(Math.random() * 20));
         tasks.add(new NumberTask(" numbers lower or equal than ", TaskType.LOWEREQUAL, relativeNumber));
 
         //shape square
-        tasks.add(new ShapeTask(" squares", TaskType.SHAPE, Shape.SQUARE));
+        Task squareTask = new ShapeTask(" squares", TaskType.SHAPE, Shape.SQUARE);
+        tasks.add(squareTask);
 
         //shape circle
-        tasks.add(new ShapeTask(" circles", TaskType.SHAPE, Shape.CIRCLE));
+        Task circleTask = new ShapeTask(" circles", TaskType.SHAPE, Shape.CIRCLE);
+        tasks.add(circleTask);
 
         //wordcontained
         Set<String> geomLikovi = new HashSet<>();
@@ -65,14 +70,45 @@ public class GameViewInitUtil {
         geomTijela.add("Valjak");
         geomTijela.add("Stožac");
         geomTijela.add("Kugla");
-        tasks.add(new WordsTask(" geometrijske likove", TaskType.WORDCONTAINED, geomLikovi, geomTijela));
+        Task geomLikoviTask = new WordsTask(" geometrijske likove", TaskType.WORDCONTAINED, geomLikovi, geomTijela);
+        tasks.add(geomLikoviTask);
         tasks.add(new WordsTask(" geometrijska tijela", TaskType.WORDCONTAINED, geomTijela, geomLikovi));
+
+
+        //parni broj koji je veći ili jednak
+        List<Task> complexTasks = new ArrayList<>();
+        complexTasks.add(greaterEqualTask);
+        complexTasks.add(evenTask);
+        Task greaterOrEqualEvenNumber = new ComplexTask("greater or equal to x numbers that are even",
+                TaskType.COMPLEXTASK, complexTasks);
+
+        tasks.add(greaterOrEqualEvenNumber);
+
+        //geometrijski likovi unutar kruga -- nema previše smisla
+        List<Task> complexTasks2 = new ArrayList<>();
+        complexTasks2.add(geomLikoviTask);
+        complexTasks2.add(circleTask);
+        Task geometrijskiLikoviInsideCircle = new ComplexTask("Geometrijski likovi u kružnici",
+                TaskType.COMPLEXTASK, complexTasks2);
+
+        tasks.add(geometrijskiLikoviInsideCircle);
+
+        //neparni broj, manji jednak u kvadratu
+        List<Task> complexTasks3 = new ArrayList<>();
+        complexTasks3.add(squareTask);
+        complexTasks3.add(oddTask);
+        complexTasks3.add(lowerTask);
+        Task squareLowerThenOdd = new ComplexTask("Square, odd, lower then x ",
+                TaskType.COMPLEXTASK, complexTasks3);
+
+        tasks.add(squareLowerThenOdd);
 
         return tasks;
     }
 
     /**
      * Method that returns only default tasks that are enabled in settings
+     *
      * @param sharedPreferences shared preferences
      * @return List of tasks
      */

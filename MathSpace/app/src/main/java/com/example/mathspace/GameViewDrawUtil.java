@@ -2,6 +2,7 @@ package com.example.mathspace;
 
 import android.graphics.*;
 import com.example.mathspace.fallingobj.FallingObject;
+import com.example.mathspace.task.ComplexTask;
 import com.example.mathspace.task.Task;
 import com.example.mathspace.visual.Background;
 import com.example.mathspace.visual.Saw;
@@ -61,7 +62,11 @@ public class GameViewDrawUtil {
      * @param paint            paint
      */
     static void drawTask(Canvas canvas, List<Task> tasks, int currentTaskIndex, int screenY, Paint paint) {
-        paint.setTextSize(50);
+        if (tasks.get(currentTaskIndex) instanceof ComplexTask) {
+            paint.setTextSize(25);
+        } else {
+            paint.setTextSize(50);
+        }
         //moći će biti više taskova, pa za svaki...
         canvas.drawText("Collect: " + tasks.get(currentTaskIndex).getTaskText(), 20, screenY + 100, paint);
     }

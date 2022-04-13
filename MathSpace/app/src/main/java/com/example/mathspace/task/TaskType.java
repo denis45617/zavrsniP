@@ -36,5 +36,9 @@ public enum TaskType {
     /**
      *  TaskType for checking if collected object's text is containted in...
      */
-    WORDCONTAINED
+    WORDCONTAINED,
+    /**
+     * Task containing multiple simple tasks
+     */
+    COMPLEXTASK
 }

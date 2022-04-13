@@ -117,12 +117,25 @@ public class GameView extends SurfaceView implements Runnable {
      * @throws InterruptedException cuz of thread.sleep
      */
     public void changeTask() throws InterruptedException {
-
-        if (tasks.size() <= 1 && ((tasks.get(currentTaskIndex).getTaskType().equals(TaskType.EVEN))
-                || (tasks.get(currentTaskIndex).getTaskType().equals(TaskType.ODD))
-                || (tasks.get(currentTaskIndex).getTaskType().equals(TaskType.SHAPE))
-                || (tasks.get(currentTaskIndex).getTaskType().equals(TaskType.WORDCONTAINED))))
+        Task currentTask = tasks.get(currentTaskIndex);
+        if (tasks.size() <= 1 && (
+                (currentTask.getTaskType().equals(TaskType.EVEN))
+                        || (currentTask.getTaskType().equals(TaskType.ODD))
+                        || (currentTask.getTaskType().equals(TaskType.SHAPE))
+                        || (currentTask.getTaskType().equals(TaskType.WORDCONTAINED))))
             return; //ako je samo jedan task nema se šta mijenjati! //OSIM kod onih taskova kojima treba izmijeniti relative NUMBER!
+
+
+        if (currentTask instanceof ComplexTask) {
+            ComplexTask complexTask = (ComplexTask) tasks.get(currentTaskIndex);
+            List<Task> complexTaskTasks = complexTask.getTasks();
+            for (Task task : complexTaskTasks) {
+                if (task instanceof NumberTask && ((NumberTask) task).getRelativeNumber() != null) {
+                    ((NumberTask) task).setRelativeNumber((int) (Math.random() * 20 + 1));
+                }
+            }
+            ((ComplexTask) currentTask).changeTaskText();
+        }
 
         allowGeneratingFallingObjects = false;   //zabrani stvaranje novih objekata
 
@@ -265,35 +278,49 @@ public class GameView extends SurfaceView implements Runnable {
     private void addNewFallingObjectIfNeeded() {
         try {
             if (fallingObjectList.size() < 15 && allowGeneratingFallingObjects) {
-                if (tasks.get(currentTaskIndex) instanceof NumberTask || tasks.get(currentTaskIndex) instanceof ShapeTask) {
-                    switch ((int) Math.floor(Math.random() * 2)) {
-                        case 0:
-                            fallingObjectList.add(new Square(String.valueOf((int) Math.floor(Math.random() * 21))));
-                            break;
-                        case 1:
-                            fallingObjectList.add(new Circle(String.valueOf((int) Math.floor(Math.random() * 21))));
-                    }
-                } else if (tasks.get(currentTaskIndex) instanceof WordsTask) {
-                    switch ((int) Math.floor(Math.random() * 4)) {
-                        case 0:
-                            fallingObjectList.add(
-                                    new Square(((((WordsTask) tasks.get(currentTaskIndex)).getRandomCorrectWord()))));
-                            break;
-                        case 1:
-                            fallingObjectList.add(new Circle(((((WordsTask) tasks.get(currentTaskIndex)).getRandomCorrectWord()))));
-                            break;
-                        case 2:
-                            fallingObjectList.add(new Circle(((((WordsTask) tasks.get(currentTaskIndex)).getRandomIncorrectWord()))));
-                            break;
-                        case 3:
-                            fallingObjectList.add(new Square(((((WordsTask) tasks.get(currentTaskIndex)).getRandomIncorrectWord()))));
-                            break;
-                    }
+                Task task = tasks.get(currentTaskIndex);
+                if (task instanceof ComplexTask) {
+                    List<Task> tasksFromComplexTask = ((ComplexTask) task).getTasks();
+                    task = tasksFromComplexTask.get((int) (Math.random() * tasksFromComplexTask.size()));
                 }
+                addNewFallingObject(task);
+
             }
         } catch (Exception e) {
             //do nothing ... dogodi se expcetion kad se novi stvara dok se istovremeno promijeni task
         }
+    }
+
+    private boolean addNewFallingObject(Task task) {
+
+        if (task instanceof NumberTask || task instanceof ShapeTask) {
+            switch ((int) Math.floor(Math.random() * 2)) {
+                case 0:
+                    fallingObjectList.add(new Square(String.valueOf((int) Math.floor(Math.random() * 21))));
+                    return true;
+                case 1:
+                    fallingObjectList.add(new Circle(String.valueOf((int) Math.floor(Math.random() * 21))));
+                    return true;
+            }
+        } else if (task instanceof WordsTask) {
+            switch ((int) Math.floor(Math.random() * 4)) {
+                case 0:
+                    fallingObjectList.add(
+                            new Square(((((WordsTask) task).getRandomCorrectWord()))));
+                    return true;
+                case 1:
+                    fallingObjectList.add(new Circle(((((WordsTask) task).getRandomCorrectWord()))));
+                    return true;
+                case 2:
+                    fallingObjectList.add(new Circle(((((WordsTask) task).getRandomIncorrectWord()))));
+                    return true;
+                case 3:
+                    fallingObjectList.add(new Square(((((WordsTask) task).getRandomIncorrectWord()))));
+                    return true;
+
+            }
+        }
+        return false;
     }
 
 

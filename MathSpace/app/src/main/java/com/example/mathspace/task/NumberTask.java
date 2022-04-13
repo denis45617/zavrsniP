@@ -28,7 +28,7 @@ public class NumberTask extends Task {
     @Override
     public boolean checkCollectedIsValid(FallingObject fallingObject) {
         try {
-            switch (this.getTaskType()) {    //neki strategy  I guess bolje!
+            switch (this.getTaskType()) {
                 case EVEN:
                     return Integer.parseInt(fallingObject.getText()) % 2 == 0;
                 case ODD:
@@ -46,6 +46,7 @@ public class NumberTask extends Task {
             }
         } catch (Exception e) {  //trenutno kad se switcha sa rječi na brojeve pokuša se castati text na integer pa baca exception
             //napraviti vrijeme prijelaza između stvari da to ne bude slučaj
+            //okej, vrijeme između prijelaza je dodano, ali nek ovo ostane just in case ^-^
             return true;
         }
         return false;
