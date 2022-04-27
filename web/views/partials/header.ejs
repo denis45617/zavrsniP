@@ -1,0 +1,13 @@
+<header class="header primary-color-bg">
+    <nav class="navigation container">
+        <div class="menu">
+            <a href="/" style="margin-right: 15px" class="link  <%if (linkActive === 'home') {%>  link-active  <%}%>">Home</a>
+            <% if( user !== undefined ) {%>
+            <a href="/user"  style="margin-right: 15px" class="link  <%if (linkActive === 'user') {%>  link-active  <%}%>">User</a>
+            <a href="/logout" style="margin-right: 15px" class="link  <%if (linkActive === 'logout') {%>  link-active  <%}%>">Logout</a>
+            <% } else {%>
+            <a href="/login" style="margin-right: 15px" class="link  <%if (linkActive === 'login') {%>  link-active  <%}%>">Login</a>
+            <% } %>
+        </div>
+    </nav>
+</header>

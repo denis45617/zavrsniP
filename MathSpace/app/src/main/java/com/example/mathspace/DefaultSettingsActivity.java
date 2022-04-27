@@ -22,12 +22,10 @@ public class DefaultSettingsActivity extends AppCompatActivity {
         taskList = GameViewInitUtil.getAllTasks();
 
 
-        for(int i = 0; i< taskList.size();++i){
-            TaskSettingView taskSettingView = new TaskSettingView(this, taskList.get(i).toString(),i);
+        for (int i = 0; i < taskList.size(); ++i) {
+            TaskSettingView taskSettingView = new TaskSettingView(this, taskList.get(i).toString(), i);
             linearLayout.addView(taskSettingView);
         }
-
-
 
     }
 }

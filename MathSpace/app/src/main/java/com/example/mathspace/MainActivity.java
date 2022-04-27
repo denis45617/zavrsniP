@@ -12,6 +12,7 @@ import com.example.mathspace.hs.HighScore;
 public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         highScoreLabel.setText("High score: " + sharedPreferences.getInt("HIGH_SCORE", 0));
 
         ActivityUtil.setFlags(this.getWindow());
-
 
 
         findViewById(R.id.play).setOnClickListener(new View.OnClickListener() {
@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -55,10 +54,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateHighScoreLabel() {
-        TextView highScoreLabel =(TextView) findViewById(R.id.highScore);
+        TextView highScoreLabel = (TextView) findViewById(R.id.highScore);
         highScoreLabel.setText("High score: " + sharedPreferences.getInt("HIGH_SCORE", 0));
     }
-
-
 
 }
