@@ -2,53 +2,28 @@ package com.example.mathspace.task;
 
 import com.example.mathspace.fallingobj.FallingObject;
 
-public class NumberTask extends Task {
-    private Integer relativeNumber;
+public abstract class NumberTask extends Task {
+    private Integer minNumber;
+    private Integer maxNumber;
 
-    public NumberTask(String taskText, TaskType taskType, Integer relativeNumber) {
+    public NumberTask(String taskText, TaskType taskType, Integer minNumber, Integer maxNumber ) {
         super(taskText, taskType);
-        this.relativeNumber = relativeNumber;
+        this.minNumber = minNumber;
+        this.maxNumber = maxNumber;
+    }
+
+    public Integer getMinNumber() {
+        return minNumber;
+    }
+
+    public Integer getMaxNumber() {
+        return maxNumber;
     }
 
     @Override
-    public String getTaskText() {
-        if (relativeNumber != null)
-            return super.getTaskText() + relativeNumber;
-        return super.getTaskText();
-    }
+    public  abstract String getTaskText();
 
-    public Integer getRelativeNumber() {
-        return relativeNumber;
-    }
-
-    public void setRelativeNumber(Integer relativeNumber) {
-        this.relativeNumber = relativeNumber;
-    }
 
     @Override
-    public boolean checkCollectedIsValid(FallingObject fallingObject) {
-        try {
-            switch (this.getTaskType()) {
-                case EVEN:
-                    return Integer.parseInt(fallingObject.getText()) % 2 == 0;
-                case ODD:
-                    return Integer.parseInt(fallingObject.getText()) % 2 != 0;
-                case EQUAL:
-                    return Integer.parseInt(fallingObject.getText()) == this.relativeNumber;
-                case GREATER:
-                    return Integer.parseInt(fallingObject.getText()) > this.relativeNumber;
-                case GREATEREQUAL:
-                    return Integer.parseInt(fallingObject.getText()) >= this.relativeNumber;
-                case LOWER:
-                    return Integer.parseInt(fallingObject.getText()) < this.relativeNumber;
-                case LOWEREQUAL:
-                    return Integer.parseInt(fallingObject.getText()) <= this.relativeNumber;
-            }
-        } catch (Exception e) {  //trenutno kad se switcha sa rječi na brojeve pokuša se castati text na integer pa baca exception
-            //napraviti vrijeme prijelaza između stvari da to ne bude slučaj
-            //okej, vrijeme između prijelaza je dodano, ali nek ovo ostane just in case ^-^
-            return true;
-        }
-        return false;
-    }
+    public abstract boolean checkCollectedIsValid(FallingObject fallingObject);
 }

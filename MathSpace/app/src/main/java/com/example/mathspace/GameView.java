@@ -130,8 +130,8 @@ public class GameView extends SurfaceView implements Runnable {
             ComplexTask complexTask = (ComplexTask) tasks.get(currentTaskIndex);
             List<Task> complexTaskTasks = complexTask.getTasks();
             for (Task task : complexTaskTasks) {
-                if (task instanceof NumberTask && ((NumberTask) task).getRelativeNumber() != null) {
-                    ((NumberTask) task).setRelativeNumber((int) (Math.random() * 20 + 1));
+                if (task instanceof RelativeNumberTask) {
+                    ((RelativeNumberTask) task).setRelativeNumber((int) (Math.random() * 20 + 1));
                 }
             }
             ((ComplexTask) currentTask).changeTaskText();
@@ -151,8 +151,12 @@ public class GameView extends SurfaceView implements Runnable {
             currentTaskIndex = (int) Math.floor(Math.random() * tasks.size());
         } while (prosliCurrentIndex == currentTaskIndex);
 
-        if (tasks.get(prosliCurrentIndex) instanceof NumberTask) {  //ako je prošli task matematički, promijeni mu relative number
-            ((NumberTask) tasks.get(prosliCurrentIndex)).setRelativeNumber((int) (Math.random() * 20 + 1));
+        //ako je prošli task relativenumbertask, promijeni mu relative number ako je tako zadano!
+        if (tasks.get(prosliCurrentIndex) instanceof RelativeNumberTask &&
+                ((RelativeNumberTask) tasks.get(prosliCurrentIndex)).isAllowRelativeNumberChange()) {
+            RelativeNumberTask relativeNumberTask = (RelativeNumberTask) tasks.get(prosliCurrentIndex);
+            relativeNumberTask.setRelativeNumber((int) (relativeNumberTask.getMinNumber() +
+                    Math.random() * (relativeNumberTask.getMaxNumber() + 1 - relativeNumberTask.getMinNumber())));
         }
 
 
@@ -293,13 +297,26 @@ public class GameView extends SurfaceView implements Runnable {
 
     private boolean addNewFallingObject(Task task) {
 
-        if (task instanceof NumberTask || task instanceof ShapeTask) {
+        if (task instanceof ShapeTask) {
+
             switch ((int) Math.floor(Math.random() * 2)) {
                 case 0:
                     fallingObjectList.add(new Square(String.valueOf((int) Math.floor(Math.random() * 21))));
                     return true;
                 case 1:
                     fallingObjectList.add(new Circle(String.valueOf((int) Math.floor(Math.random() * 21))));
+                    return true;
+            }
+        } else if (task instanceof NumberTask) {
+            NumberTask numberTask = (NumberTask) task;
+            switch ((int) Math.floor(Math.random() * 2)) {
+                case 0:
+                    fallingObjectList.add(new Square(String.valueOf((int) (numberTask.getMinNumber() +
+                            Math.random() * (numberTask.getMaxNumber() + 1 - numberTask.getMinNumber())))));
+                    return true;
+                case 1:
+                    fallingObjectList.add(new Circle(String.valueOf((int) (numberTask.getMinNumber() +
+                            Math.random() * (numberTask.getMaxNumber() + 1 - numberTask.getMinNumber())))));
                     return true;
             }
         } else if (task instanceof WordsTask) {

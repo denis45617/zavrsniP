@@ -26,29 +26,29 @@ public class GameViewInitUtil {
         //========================================== default tasks =====================================================
         //even
 
-        Task evenTask = new NumberTask(" even numbers", TaskType.EVEN, null);
+        Task evenTask = new UnrelativeNumberTask(" even numbers", TaskType.EVEN, 0, 500);
         tasks.add(evenTask);
         //odd
-        Task oddTask = new NumberTask(" odd numbers", TaskType.ODD, null);
+        Task oddTask = new UnrelativeNumberTask(" odd numbers", TaskType.ODD, 100, 250);
         tasks.add(oddTask);
 
         int relativeNumber = (int) (1 + Math.floor(Math.random() * 20));
         //greater
-        tasks.add(new NumberTask(" numbers greater than ", TaskType.GREATER, relativeNumber));
+        tasks.add(new RelativeNumberTask(" numbers greater than ", TaskType.GREATER, -50, 50, 5, true));
 
         //greaterequal
         relativeNumber = (int) (1 + Math.floor(Math.random() * 20));
-        Task greaterEqualTask = new NumberTask(" numbers greater or equal than ", TaskType.GREATEREQUAL, relativeNumber);
+        Task greaterEqualTask = new RelativeNumberTask(" numbers greater or equal than ", TaskType.GREATEREQUAL, 0, 20, relativeNumber, true);
         tasks.add(greaterEqualTask);
 
         //lower
         relativeNumber = (int) (5 + Math.floor(Math.random() * 20));
-        Task lowerTask = new NumberTask(" numbers lower than ", TaskType.LOWER, relativeNumber);
+        Task lowerTask = new RelativeNumberTask(" numbers lower than ", TaskType.LOWER, 0, 20, relativeNumber, true);
         tasks.add(lowerTask);
 
         //lowerequal
         relativeNumber = (int) (5 + Math.floor(Math.random() * 20));
-        tasks.add(new NumberTask(" numbers lower or equal than ", TaskType.LOWEREQUAL, relativeNumber));
+        tasks.add(new RelativeNumberTask(" numbers lower or equal than ", TaskType.LOWEREQUAL, 0, 20, relativeNumber, true));
 
         //shape square
         Task squareTask = new ShapeTask(" squares", TaskType.SHAPE, Shape.SQUARE);
