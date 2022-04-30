@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import com.example.mathspace.fallingobj.Shape;
 import com.example.mathspace.task.*;
 import com.example.mathspace.visual.Background;
@@ -14,10 +13,7 @@ import java.net.*;
 import java.io.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class GameViewInitUtil {
     /**
@@ -124,7 +120,9 @@ public class GameViewInitUtil {
         if (useDefaultSettings) {
             allTasks = getAllTasks();
         } else {
-            allTasks = getTasksFromInternet();
+
+            allTasks = getTasksFromInternet(sharedPreferences.getString("SAVEDCODE","1"));
+            return allTasks;
         }
 
         for (int i = 0; i < allTasks.size(); ++i) {
@@ -136,24 +134,127 @@ public class GameViewInitUtil {
         return selectedTasks;
     }
 
-    private static List<Task> getTasksFromInternet() {
+    private static List<Task> getTasksFromInternet(String savedCode) {
+        List<String> tasksListString = getDataFromInternet(savedCode);
         List<Task> tasks = new ArrayList<>();
-        Object content = null;
+
+        for (String s : tasksListString) {
+            Map<String, String> values = new HashMap<>();
+            String[] keyDvalue = s.split(";");      //minNumber:-50;maxNumber:50 =>  minNumber:-50  i maxNumber:50
+            for (String s2 : keyDvalue) {
+                String[] keyValue = s2.split(":"); //minNumber:-50 =>  minNumber i -50
+                values.put(keyValue[0], keyValue[1]); //dodaj u mapu par minNumber,-50
+            }
+
+            String taskTypeString = values.get("taskType");
+            TaskType taskType = null;
+            taskTypeString = taskTypeString.toUpperCase(Locale.ROOT).trim();
+
+            if (taskTypeString.equals("SHAPE")) {
+                taskType = TaskType.SHAPE;
+            }
+            if (taskTypeString.equals("EQUAL")) {
+                taskType = TaskType.EQUAL;
+            }
+            if (taskTypeString.equals("GREATER")) {
+                taskType = TaskType.GREATER;
+            }
+            if (taskTypeString.equals("GREATEREQUAL")) {
+                taskType = TaskType.GREATEREQUAL;
+            }
+            if (taskTypeString.equals("LOWER")) {
+                taskType = TaskType.LOWER;
+            }
+            if (taskTypeString.equals("LOWEREQUAL")) {
+                taskType = TaskType.LOWEREQUAL;
+            }
+            if (taskTypeString.equals("DIVIDABLE")) {
+                taskType = TaskType.DIVIDABLE;
+            }
+
+            if (taskTypeString.equals("ODD")) {
+                taskType = TaskType.ODD;
+            }
+            if (taskTypeString.equals("EVEN")) {
+                taskType = TaskType.EVEN;
+            }
+            if (taskTypeString.equals("WORDCONTAINED")) {
+                taskType = TaskType.WORDCONTAINED;
+            }
+
+            System.out.println("============TASK TYPE: " + taskTypeString + "==================");
+
+            switch (values.get("taskObjectType").toLowerCase(Locale.ROOT)) {
+                case "relativenumbertask": {
+                    tasks.add(new RelativeNumberTask(values.get("taskText"), taskType,
+                            Integer.valueOf(Objects.requireNonNull(values.get("minNumber"))),
+                            Integer.valueOf(Objects.requireNonNull(values.get("maxNumber"))),
+                            Integer.valueOf(Objects.requireNonNull(values.get("relativeNumber"))),
+                            Boolean.parseBoolean(values.get("allowRelativeNumberChange"))));
+                    break;
+                }
+                case "unrelativenumbertask": {
+                    tasks.add(new UnrelativeNumberTask(values.get("taskText"), taskType,
+                            Integer.valueOf(Objects.requireNonNull(values.get("minNumber"))),
+                            Integer.valueOf(Objects.requireNonNull(values.get("maxNumber")))));
+                    break;
+                }
+                case "wordstask": {
+                    String[] correctWordsArray = Objects.requireNonNull(values.get("correctWords")).split(",");
+                    String[] incorrectWordsArray = Objects.requireNonNull(values.get("incorrectWords")).split(",");
+                    Set<String> correctWords = new HashSet<>(Arrays.asList(correctWordsArray));
+                    Set<String> incorrectWords = new HashSet<>(Arrays.asList(incorrectWordsArray));
+
+                    tasks.add(new WordsTask(values.get("taskText"), taskType, correctWords, incorrectWords));
+                    break;
+                }
+                case "shapetask": {
+                    Shape askedShape = Shape.SQUARE;
+                    if (Objects.requireNonNull(values.get("askedShape")).equals("circle")) {
+                        askedShape = Shape.CIRCLE;
+                    }
+                    tasks.add(new ShapeTask(values.get("taskText"), taskType, askedShape));
+                    break;
+                }
+                default:
+                    //do nothing
+            }
+        }
+
+        return tasks;
+    }
+
+
+    private static List<String> getDataFromInternet(String id) {
+        List<String> tasksListString = new ArrayList<>();
         try {
-            URL reqURL = new URL("https://denismath.herokuapp.com/gamecode/mobile/settings/1"); //the URL we will send the request to
+            URL reqURL = new URL("https://denismath.herokuapp.com/gamecode/mobile/settings/" + id); //the URL we will send the request to
             HttpURLConnection request = (HttpURLConnection) (reqURL.openConnection());
             request.setRequestMethod("GET");
             request.connect();
-            content = request.getContent();
 
+            InputStreamReader in = new InputStreamReader((InputStream) request.getContent());
+            BufferedReader buff = new BufferedReader(in);
+            String line;
+            StringBuilder text = new StringBuilder();
+            do {
+                line = buff.readLine();
+                text.append(line);
+            } while (line != null);
+
+
+            String[] tasks = text.toString().split("#DELIMITER#");
+
+            for (String s : tasks) {
+                if (!Objects.equals(s, "null")) {
+                    tasksListString.add(s);
+                    System.out.println("Added to list:" + s);
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-        String content2 = (String) content;
-        Log.e("response", content2);
-        return tasks;
+        return tasksListString;
     }
 
 

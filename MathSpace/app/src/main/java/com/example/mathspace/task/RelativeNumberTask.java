@@ -44,6 +44,8 @@ public class RelativeNumberTask extends NumberTask {
                     return Integer.parseInt(fallingObject.getText()) < this.relativeNumber;
                 case LOWEREQUAL:
                     return Integer.parseInt(fallingObject.getText()) <= this.relativeNumber;
+                case DIVIDABLE:
+                    return Integer.parseInt(fallingObject.getText()) % this.relativeNumber == 0;
             }
         } catch (Exception e) {  //trenutno kad se switcha sa rječi na brojeve pokuša se castati text na integer pa baca exception
             //napraviti vrijeme prijelaza između stvari da to ne bude slučaj

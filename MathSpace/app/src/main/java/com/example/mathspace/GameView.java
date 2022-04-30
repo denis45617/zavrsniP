@@ -70,8 +70,21 @@ public class GameView extends SurfaceView implements Runnable {
         super(activity);
         this.activity = activity;
         //get tasks
-        tasks = GameViewInitUtil.getSelectedTasks(getContext().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE));
 
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                tasks = GameViewInitUtil.getSelectedTasks(getContext().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE));
+            }
+        });
+        thread.start();
+
+
+        try {
+            Thread.sleep(25000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         currentTaskIndex = (int) Math.floor(Math.random() * tasks.size());
 
         taskPaint.setTextAlign(Paint.Align.CENTER);
