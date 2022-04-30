@@ -121,7 +121,7 @@ router.post('/createNewWordsTask', authHandler, async function (req, res, next) 
     objekt = objekt + "taskText:" + req.body.taskText + ";";
     objekt = objekt + "taskType:WORDCONTAINED;";
     objekt = objekt + "correctWords:" + req.body.correctWords + ";";
-    objekt = objekt + "incorrectWords:" + req.body.correctWords;
+    objekt = objekt + "incorrectWords:" + req.body.incorrectWords;
 
     await (async () => {
         await Setting.createNewTask(req.body.taskText, objekt, req.session.game_code)
@@ -138,6 +138,18 @@ router.get('/remove/:id', authHandler, async function (req, res, next) {
     })();
 
     res.redirect('/gamecode/display/' + req.session.game_code);
+});
+
+
+//========================================================MOBITEL=======================================================
+router.get('/mobile/settings/:id', async function (req, res, next) {
+    let gameCodeSettings;
+
+    await (async () => {
+        gameCodeSettings = await Setting.getGameCodeSettings(req.params.id);
+    })();
+
+    return res.send(gameCodeSettings);
 });
 
 module.exports = router;

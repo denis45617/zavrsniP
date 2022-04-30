@@ -46,6 +46,5 @@ app.use('/signup', signupRoute);
 app.use('/user', userRoute);
 app.use('/gamecode', gameCodeRoute);
 
-//pokretanje poslužitelja na portu 3000
-app.listen(3000);
-
+const port = process.env.PORT || 3000
+app.listen(port);

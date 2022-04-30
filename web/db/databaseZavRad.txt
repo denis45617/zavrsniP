@@ -1,0 +1,60 @@
+﻿DROP TABLE IF EXISTs Users cascade;
+drop table if exists game_settings cascade;
+drop table if exists result cascade;
+drop table if exists setting cascade;
+drop table if exists session cascade;
+
+CREATE TABLE Users
+(
+  user_name VARCHAR(40),
+  password VARCHAR(260) NOT NULL,
+  PRIMARY KEY (user_name)
+);
+
+CREATE UNIQUE INDEX INDEX_USERNAME ON USERS(USER_NAME);
+
+CREATE TABLE Game_Settings
+(
+  game_code INT GENERATED ALWAYS AS identity not null,
+  user_name VARCHAR(40) NOT NULL,
+  is_deleted int not null,
+  PRIMARY KEY (game_code),
+  FOREIGN KEY (user_name) REFERENCES Users(user_name)
+);
+
+
+CREATE TABLE Setting
+(
+  setting_id INT GENERATED ALWAYS AS identity not null,
+  setting_desc VARCHAR(50) NOT NULL,
+  setting_text VARCHAR(400) NOT NULL,
+  is_deleted int not null,
+  game_code INT NOT NULL,
+  PRIMARY KEY (setting_id),
+  FOREIGN KEY (game_code) REFERENCES Game_Settings(game_code)
+);
+
+CREATE TABLE Result
+(
+  result_id INT GENERATED ALWAYS AS identity not null,
+  time VARCHAR(500) NOT NULL,
+  player_nickname VARCHAR(40) NOT NULL,
+  result VARCHAR(1500) NOT NULL,
+  game_code INT NOT NULL,
+  PRIMARY KEY (result_id),
+  FOREIGN KEY (game_code) REFERENCES Game_Settings(game_code)
+);
+
+CREATE TABLE session (
+    sid varchar NOT NULL COLLATE "default",
+    sess json NOT NULL,
+    expire timestamp(6) NOT NULL
+  )
+  WITH (OIDS=FALSE);
+
+ALTER TABLE session ADD CONSTRAINT session_pkey PRIMARY KEY (sid) NOT DEFERRABLE INITIALLY IMMEDIATE;
+CREATE INDEX IDX_session_expire ON session(expire);
+
+
+
+INSERT INTO users (user_name,  password) VALUES ('admin', 'admin');
