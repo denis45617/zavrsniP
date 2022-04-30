@@ -18,8 +18,9 @@ module.exports = class GameCode {
             console.log("ERROR getting GameCodes : " + JSON.stringify(this));
             throw err;
         }
-
     }
+
+
 
 
     //stvaranje nove igre

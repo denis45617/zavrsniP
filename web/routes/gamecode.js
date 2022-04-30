@@ -146,7 +146,7 @@ router.get('/mobile/settings/:id', async function (req, res, next) {
     let gameCodeSettings;
 
     await (async () => {
-        gameCodeSettings = await Setting.getGameCodeSettings(req.params.id);
+        gameCodeSettings = await Setting.getGameCodeSettingsMobile(req.params.id);
     })();
 
     return res.send(gameCodeSettings);

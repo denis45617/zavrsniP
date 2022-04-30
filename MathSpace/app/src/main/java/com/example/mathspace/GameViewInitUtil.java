@@ -4,11 +4,16 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import com.example.mathspace.fallingobj.Shape;
 import com.example.mathspace.task.*;
 import com.example.mathspace.visual.Background;
 import com.example.mathspace.visual.Saw;
 
+import java.net.*;
+import java.io.*;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -114,7 +119,13 @@ public class GameViewInitUtil {
      */
     public static List<Task> getSelectedTasks(SharedPreferences sharedPreferences) {
         List<Task> selectedTasks = new ArrayList<>();
-        List<Task> allTasks = getAllTasks();
+        List<Task> allTasks;
+        boolean useDefaultSettings = sharedPreferences.getBoolean("USEDEFAULT", true);
+        if (useDefaultSettings) {
+            allTasks = getAllTasks();
+        } else {
+            allTasks = getTasksFromInternet();
+        }
 
         for (int i = 0; i < allTasks.size(); ++i) {
             if (sharedPreferences.getBoolean("DEFAULT_SETTING:" + i, true)) {
@@ -123,6 +134,26 @@ public class GameViewInitUtil {
         }
 
         return selectedTasks;
+    }
+
+    private static List<Task> getTasksFromInternet() {
+        List<Task> tasks = new ArrayList<>();
+        Object content = null;
+        try {
+            URL reqURL = new URL("https://denismath.herokuapp.com/gamecode/mobile/settings/1"); //the URL we will send the request to
+            HttpURLConnection request = (HttpURLConnection) (reqURL.openConnection());
+            request.setRequestMethod("GET");
+            request.connect();
+            content = request.getContent();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        String content2 = (String) content;
+        Log.e("response", content2);
+        return tasks;
     }
 
 
