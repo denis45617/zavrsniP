@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>MathSpace! User</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+</head>
+
+<body class="content">
+
+<%- include(`partials/header`); %>
+
+<main class="main">
+    <section class="primary-color-bg">
+        <div class="container">
+            <div class="centered-container">
+                <h1>Game code: <%= settingsId %>  </h1>
+                <form action="/gamecode/createNewUnrelativeNumberTask" method="POST">
+
+                    <div>
+                        <label for="taskObjectType"> Task Object Type: </label>
+                        <input id="taskObjectType" name="taskObjectType" type="text" disabled value="WordsTask">
+                    </div>
+
+                    <div>
+                        <label for="taskType"> Task Type: </label>
+                        <input id="taskType" name="taskType" type="text" disabled value="WORDCONTAINED">
+                    </div>
+
+
+                    <div>
+                        <label for="taskText"> Task text: </label>
+                        <input id="taskText" name="taskText" type="text" required>
+                    </div>
+
+                    <div>
+                        <label for="correctWords">Enter correct words :</label>
+                        <textarea id="correctWords" name="correctWords" placeholder="(split with ',')"> </textarea>
+                    </div>
+
+                    <div>
+                        <label for="incorrectWords">Enter incorrect words</label>
+                        <textarea id="incorrectWords" name="incorrectWords" placeholder="(split with ',')"> </textarea>
+                    </div>
+
+
+                    <input type="submit" value="Add task to game">
+                    <input type="reset" value="Reset form">
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include(`partials/footer`); %>
+
+</body>
+
+</html>
+
+<script>
+    function remove(id) {
+        if (confirm("Are you sure you want to delete game with game code: " + id)) {
+            window.location.href = "/gamecode/remove/" + id;
+        }
+    }
+</script>
