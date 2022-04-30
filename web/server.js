@@ -14,6 +14,7 @@ const loginRoute = require('./routes/login.routes');
 const logoutRoute = require('./routes/logout.routes');
 const signupRoute = require('./routes/signup.routes');
 const userRoute = require('./routes/user.routes');
+const gameCodeRoute = require('./routes/gamecode')
 
 //middleware - predlošci (ejs)
 app.set('views', path.join(__dirname, 'views'));
@@ -24,7 +25,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //middleware - dekodiranje parametara
 app.use(express.urlencoded({extended: true}));
-
 
 
 //pohrana sjednica u postgres bazu korštenjem connect-pg-simple modula
@@ -38,14 +38,13 @@ app.use(session({
 }));
 
 
-
-
 //definicija ruta
 app.use('/', homeRouter);
 app.use('/login', loginRoute);
 app.use('/logout', logoutRoute);
 app.use('/signup', signupRoute);
 app.use('/user', userRoute);
+app.use('/gamecode', gameCodeRoute);
 
 //pokretanje poslužitelja na portu 3000
 app.listen(3000);

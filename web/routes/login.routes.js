@@ -13,6 +13,8 @@ router.get('/', function (req, res, next) {
 
 });
 
+
+
 router.post('/', function (req, res, next) {
     (async () => {
         let user = await User.fetchByUsername(req.body.user);

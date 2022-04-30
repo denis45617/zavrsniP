@@ -17,17 +17,9 @@
     <section class="primary-color-bg">
         <div class="container">
             <div class="centered-container">
-                <h1>Your games! </h1>
-                <% for(let code of codes){ %>
-                    <div>
-                        <a>Game <%= code.game_code %></a>
-                        <a style="color: #ff0f0f">Game Code : <%= code.game_code %></a>
-                        <a class="btn" href="/gamecode/display/<%= code.game_code %>">Pick</a>
-                        <button class="btn" onclick="remove(<%= code.game_code %>)">X</button>
-                    </div>
-                <% } %>
+                <h1>Game code: <%= settingsId %>  </h1>
+                <form action="" method="POST"></form>
 
-                <a class="btn" href="/user/createnew">Create new settings</a>
             </div>
         </div>
     </section>
@@ -42,7 +34,7 @@
 <script>
     function remove(id) {
         if (confirm("Are you sure you want to delete game with game code: " + id)) {
-            window.location.href = "/user/remove/" + id;
+            window.location.href = "/gamecode/remove/" + id;
         }
     }
 </script>
