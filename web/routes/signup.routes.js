@@ -33,7 +33,7 @@ router.post('/', function (req, res, next) {
 
 
         //ako korisnik postoji, javi grešku
-        if (user.id !== undefined) {
+        if (user.user_name !== undefined) {
             res.render('Signup', {
                 title: 'Register a new user',
                 linkActive: 'signup',
