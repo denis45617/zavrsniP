@@ -168,16 +168,15 @@ router.post('/mobile/result', async function (req, res, next) {
     let highscore = req.body.highscore;
     let player_nickname = req.body.player_nickname;
     let game_code = req.body.game_code;
-    let result = req.body.result;
+    let result = JSON.stringify(req.body.result);
+
 
     await (async () => {
-         await GameResult.saveResult(highscore, player_nickname, result, game_code)
+        await GameResult.saveResult(highscore, player_nickname, result, game_code)
     })();
 
     return res.send("OK");
 });
-
-
 
 
 module.exports = router;
