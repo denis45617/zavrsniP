@@ -14,6 +14,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Toast;
 import com.example.mathspace.fallingobj.Circle;
 import com.example.mathspace.fallingobj.FallingObject;
 import com.example.mathspace.fallingobj.Square;
@@ -62,6 +63,7 @@ public class GameView extends SurfaceView implements Runnable {
     private boolean allowGeneratingFallingObjects = true;
     private Long showTaskTextUntil;
     private Activity activity;
+    private List<Log> logs;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -71,9 +73,10 @@ public class GameView extends SurfaceView implements Runnable {
         //get tasks
 
         tasks = GameViewInitUtil.getSelectedTasks(getContext().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE));
-
-
+        logs = new ArrayList<>();
+        logs.add(new Log("Igra započeta"));
         currentTaskIndex = (int) Math.floor(Math.random() * tasks.size());
+        logs.add(new Log("Zadatak: " + tasks.get(currentTaskIndex).getTaskText()));
 
         taskPaint.setTextAlign(Paint.Align.CENTER);
         taskPaint.setTextSize(30);
@@ -160,10 +163,9 @@ public class GameView extends SurfaceView implements Runnable {
                     Math.random() * (relativeNumberTask.getMaxNumber() + 1 - relativeNumberTask.getMinNumber())));
         }
 
-
         showTaskTextUntil = System.currentTimeMillis() + 4000;
 
-
+        logs.add(new Log("Changed task to " + tasks.get(currentTaskIndex).getTaskText()));
         allowGeneratingFallingObjects = true;    //dozvoli stvaranje novih objekata
     }
 
@@ -176,9 +178,33 @@ public class GameView extends SurfaceView implements Runnable {
             sleep();
             if (numberOfLives <= 0) { // pause + animacija + novi screen vjerojatno ili tako nešta
                 Looper.prepare();
-                HighScore hs = new HighScore(getContext().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE), score / 10);
+                int highscore = score / 10;
+                HighScore hs = new HighScore(getContext().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE), highscore);
                 hs.saveHighScore();
                 gameOverScreen();
+
+                SharedPreferences sharedPreferences = getContext().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+
+                //ako se koriste postavke s interneta, potrebno je spremiti rezultat na internet
+                if (!sharedPreferences.getBoolean("USEDEFAULT", true)) {
+                    String gameCode = sharedPreferences.getString("SAVEDCODE", "");
+                    String nickname = sharedPreferences.getString("NICKNAME", "guest");
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Map<String, String> mapa = new HashMap<>();
+                            mapa.put("highscore", String.valueOf(highscore));
+                            mapa.put("player_nickname", nickname);
+                            mapa.put("result", Log.toJson(logs));
+                            mapa.put("game_code", gameCode);
+                            Network.postMethod("result", mapa);
+                        }
+                    });
+                    thread.start();
+                    Toast.makeText(getContext(), "Post", Toast.LENGTH_LONG).show();
+                }
+
+
                 break;
             }
         }
@@ -237,18 +263,21 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void updateFallingObjects() {
         for (int i = 0; i < fallingObjectList.size(); ++i) {
-            fallingObjectList.get(i).setCenterY(fallingObjectList.get(i).getCenterY() + fallingObjectList.get(i).getSpeed());
+            FallingObject fallingObject = fallingObjectList.get(i);
+            fallingObject.setCenterY(fallingObject.getCenterY() + fallingObject.getSpeed());
 
             boolean isCollected;
             //provjera da li je pokupljen
-            if (fallingObjectList.get(i).getLowestPoint() >= saw.getY()) {   //provjeravaj kolizije samo za one koji se mogu...
-                isCollected = fallingObjectList.get(i).checkCollision(saw);
+            if (fallingObject.getLowestPoint() >= saw.getY()) {   //provjeravaj kolizije samo za one koji se mogu...
+                isCollected = fallingObject.checkCollision(saw);
                 if (isCollected) {
-                    boolean shouldHaveBeenCollected = tasks.get(currentTaskIndex).checkCollectedIsValid(fallingObjectList.get(i));
+                    boolean shouldHaveBeenCollected = tasks.get(currentTaskIndex).checkCollectedIsValid(fallingObject);
                     if (shouldHaveBeenCollected) {
                         score += 1000;
+                        logs.add(new Log("+100 Collected :" + fallingObject.getText()));
                     } else {
                         numberOfLives--;
+                        logs.add(new Log("-Life !!!collected :" + fallingObject.getText() + " and lost life!!!"));
                         vibrate(300);
                         //i logaj kao pogrešku negdje
                     }
@@ -260,10 +289,11 @@ public class GameView extends SurfaceView implements Runnable {
 
             //provjera je li pobjegao s ekrana
             if (fallingObjectList.get(i).getCenterY() - 150 > screenY) {
-                boolean shouldHaveBeenCollected = tasks.get(currentTaskIndex).checkCollectedIsValid(fallingObjectList.get(i));
+                boolean shouldHaveBeenCollected = tasks.get(currentTaskIndex).checkCollectedIsValid(fallingObject);
                 if (shouldHaveBeenCollected) {
                     score -= 1000;
                     vibrate(50);
+                    logs.add(new Log("-100 Failed to collect: " + fallingObject.getText()));
                 }
                 fallingObjectList.remove(i--);    //dodati u listu missed
 
