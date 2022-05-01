@@ -1,6 +1,6 @@
 const db = require('../db')
 
-//razred User enkapsulira korisnika web trgovine
+
 module.exports = class Task {
 
     //konstruktor korisnika

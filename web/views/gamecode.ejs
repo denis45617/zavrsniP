@@ -38,6 +38,23 @@
 
             <div class="centered-container">
                 <h2>Results:</h2>
+                <table style="border-spacing: 20px;">
+                    <tr>
+                        <th>Player</th>
+                        <th>Time</th>
+                        <th>Highscore</th>
+                        <th>More</th>
+                    </tr>
+                    <% for(let rezultat of results){ %>
+                        <tr>
+                            <td><%= rezultat.player_nickname %></td>
+                            <td><%= rezultat.time %></td>
+                            <td><%= rezultat.highscore %></td>
+                            <td><a class="btn" href="/gamecode/display/details/<%= rezultat.result_id %>">Pick</a></td>
+                        </tr>
+                    <% } %>
+                </table>
+
             </div>
 
         </div>

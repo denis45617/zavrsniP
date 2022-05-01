@@ -2,10 +2,15 @@ const express = require('express');
 const router = express.Router();
 const authHandler = require('./helpers/auth-handler');
 const Setting = require("../models/SettingModel");
+const GameResult = require("../models/ResultModel");
+const bodyParser = require('body-parser');
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({extended: true}));
 
 
 router.get('/display/:id', authHandler, async function (req, res, next) {
     let gameCodeSettings;
+    let results;
 
     req.session.game_code = req.params.id;
 
@@ -13,10 +18,16 @@ router.get('/display/:id', authHandler, async function (req, res, next) {
         gameCodeSettings = await Setting.getGameCodeSettings(req.params.id);
     })();
 
+    await (async () => {
+        results = await GameResult.getResults(req.params.id);
+    })();
+
+
     res.render('gamecode', {
         title: 'MathSpace! Game settings!',
         settingsId: req.session.game_code,
         settings: gameCodeSettings,
+        results: results,
         user: req.session.user,
         linkActive: 'user'
     });
@@ -151,5 +162,22 @@ router.get('/mobile/settings/:id', async function (req, res, next) {
 
     return res.send(gameCodeSettings);
 });
+
+
+router.post('/mobile/result', async function (req, res, next) {
+    let highscore = req.body.highscore;
+    let player_nickname = req.body.player_nickname;
+    let game_code = req.body.game_code;
+    let result = req.body.result;
+
+    await (async () => {
+         await GameResult.saveResult(highscore, player_nickname, result, game_code)
+    })();
+
+    return res.send("OK");
+});
+
+
+
 
 module.exports = router;
