@@ -24,10 +24,20 @@ public class HighScore extends AppCompatActivity {
 
     public void saveHighScore() {
         int highscore = sharedPreferences.getInt("HIGH_SCORE", 0);
+        String whatHighscore = "HIGH_SCORE";
+
+        boolean useDefault = sharedPreferences.getBoolean("USEDEFAULT", true);
+        if (!useDefault) {
+            String gameCode = sharedPreferences.getString("SAVEDCODE", "");
+            highscore = sharedPreferences.getInt("HIGH_SCORE" + gameCode, 0);
+            whatHighscore = "HIGH_SCORE" + gameCode;
+        }
+
+
         if (score > highscore) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("HIGH_SCORE", score);
-            editor.commit();
+            editor.putInt(whatHighscore, score);
+            editor.apply();
 
         }
     }

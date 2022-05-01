@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.mathspace.hs.HighScore;
 import com.example.mathspace.task.Task;
@@ -51,7 +52,14 @@ public class SettingsActivity extends AppCompatActivity {
         findViewById(R.id.clearHighScore).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hs.clearHighScore("");
+                String gameCode = "";
+                boolean useDefault = sharedPreferences.getBoolean("USEDEFAULT", true);
+                if (!useDefault) {
+                    gameCode = sharedPreferences.getString("SAVEDCODE", "");
+                }
+
+                hs.clearHighScore(gameCode);
+                Toast.makeText(SettingsActivity.this, "Highscore cleared", Toast.LENGTH_LONG).show();
             }
         });
 

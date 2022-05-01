@@ -14,7 +14,6 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
-import android.widget.Toast;
 import com.example.mathspace.fallingobj.Circle;
 import com.example.mathspace.fallingobj.FallingObject;
 import com.example.mathspace.fallingobj.Square;
@@ -188,9 +187,15 @@ public class GameView extends SurfaceView implements Runnable {
     private void gameOverScreen() {
         try {
             Thread.sleep(100);   //čekaj 0.1 sekundu
-
             SharedPreferences sharedPreferences = getContext().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+
             int highScore = sharedPreferences.getInt("HIGH_SCORE", 0);
+            boolean useDefault = sharedPreferences.getBoolean("USEDEFAULT", true);
+            if (!useDefault) {
+                String gameCode = sharedPreferences.getString("SAVEDCODE", "");
+                highScore = sharedPreferences.getInt("HIGH_SCORE" + gameCode, 0);
+            }
+
             //pokaži taj end screen thing
             if (getHolder().getSurface().isValid()) {
                 Canvas canvas = getHolder().lockCanvas();
