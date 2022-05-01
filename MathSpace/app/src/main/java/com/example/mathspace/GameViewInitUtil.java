@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
+import android.widget.Toast;
 import com.example.mathspace.fallingobj.Shape;
 import com.example.mathspace.task.*;
 import com.example.mathspace.visual.Background;
@@ -120,8 +122,7 @@ public class GameViewInitUtil {
         if (useDefaultSettings) {
             allTasks = getAllTasks();
         } else {
-
-            allTasks = getTasksFromInternet(sharedPreferences.getString("SAVEDCODE","1"));
+            allTasks = getTasksFromInternet(sharedPreferences);
             return allTasks;
         }
 
@@ -134,11 +135,13 @@ public class GameViewInitUtil {
         return selectedTasks;
     }
 
-    private static List<Task> getTasksFromInternet(String savedCode) {
-        List<String> tasksListString = getDataFromInternet(savedCode);
+    private static List<Task> getTasksFromInternet(SharedPreferences sharedPreferences) {
+        List<String> tasksListString = getDataFromInternet(sharedPreferences);
         List<Task> tasks = new ArrayList<>();
 
         for (String s : tasksListString) {
+            Log.d(s,s);
+            System.out.println(s);
             Map<String, String> values = new HashMap<>();
             String[] keyDvalue = s.split(";");      //minNumber:-50;maxNumber:50 =>  minNumber:-50  i maxNumber:50
             for (String s2 : keyDvalue) {
@@ -225,34 +228,15 @@ public class GameViewInitUtil {
     }
 
 
-    private static List<String> getDataFromInternet(String id) {
+    private static List<String> getDataFromInternet(SharedPreferences sharedPreferences) {
+        String text = sharedPreferences.getString("DOWNLOADED_SETTINGS", "null");
+        String[] tasks = text.toString().split("#DELIMITER#");
         List<String> tasksListString = new ArrayList<>();
-        try {
-            URL reqURL = new URL("https://denismath.herokuapp.com/gamecode/mobile/settings/" + id); //the URL we will send the request to
-            HttpURLConnection request = (HttpURLConnection) (reqURL.openConnection());
-            request.setRequestMethod("GET");
-            request.connect();
 
-            InputStreamReader in = new InputStreamReader((InputStream) request.getContent());
-            BufferedReader buff = new BufferedReader(in);
-            String line;
-            StringBuilder text = new StringBuilder();
-            do {
-                line = buff.readLine();
-                text.append(line);
-            } while (line != null);
-
-
-            String[] tasks = text.toString().split("#DELIMITER#");
-
-            for (String s : tasks) {
-                if (!Objects.equals(s, "null")) {
-                    tasksListString.add(s);
-                    System.out.println("Added to list:" + s);
-                }
+        for (String s : tasks) {
+            if (!Objects.equals(s, "null")) {
+                tasksListString.add(s);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return tasksListString;
     }

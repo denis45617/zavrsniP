@@ -7,11 +7,14 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.appcompat.widget.AppCompatButton;
 import com.example.mathspace.hs.HighScore;
 
 public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
+    private AppCompatButton playButton;
+    private AppCompatButton settingButton;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -19,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        playButton = findViewById(R.id.play);
+        settingButton = findViewById(R.id.settings);
 
         sharedPreferences = getSharedPreferences("GAME_DATA", 0);
         TextView highScoreLabel = findViewById(R.id.highScore);
@@ -27,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         ActivityUtil.setFlags(this.getWindow());
 
 
-        findViewById(R.id.play).setOnClickListener(new View.OnClickListener() {
+        playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), GameActivity.class);
@@ -35,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.settings).setOnClickListener(new View.OnClickListener() {
+        settingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
