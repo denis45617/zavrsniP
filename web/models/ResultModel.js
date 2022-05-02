@@ -3,22 +3,23 @@ const db = require('../db')
 
 module.exports = class GameResult {
 
-    //konstruktor korisnika
-    constructor(result_id, highscore, player_nickname, result, game_code) {
+    //konstruktor rezultata
+    constructor(result_id, highscore, time, player_nickname, result, game_code) {
         this.result_id = undefined
         this.highscore = highscore
+        this.time = time
         this.player_nickname = player_nickname
         this.result = result
         this.game_code = game_code
     }
 
-    //dohvat korisnika na osnovu korisničkog imena
+    //dohvat rezultat na osnovu korisničkog imena
     static async fetchById(id) {
         let results = await dbGetById(id)
         let newResult = new GameResult;
 
         if (results.length > 0) {
-            newResult = new GameResult(results[0].highscore, results[0].player_nickname, results[0].result, results[0].game_code)
+            newResult = new GameResult(undefined, results[0].highscore, results[0].time, results[0].player_nickname, results[0].result_text, results[0].game_code)
             newResult.id = results[0].id
         }
         return newResult
@@ -35,8 +36,6 @@ module.exports = class GameResult {
     }
 
 
-
-
     //dohvaćanje svih rezultata za neki game code
     static async getResults(game_code) {
         try {
@@ -50,14 +49,15 @@ module.exports = class GameResult {
 }
 
 
-//umetanje zapisa o korisniku u bazu podataka
+//dohvat podataka o rezultatu po rezultatu id-a
 dbGetById = async (id) => {
     const sql = `SELECT *
                  from results
                  where result_id = ${id}`;
 
     try {
-        return await db.query(sql, []).rows;
+        let result = await db.query(sql, []);
+        return result.rows;
     } catch (err) {
         console.log(err);
         throw err
@@ -85,7 +85,7 @@ dbSaveResult = async (highscore, player_nickname, result, game_code) => {
                  VALUES (CURRENT_TIMESTAMP, ${highscore}, '${player_nickname}', '${result}', '${game_code}')`;
 
     try {
-         await db.query(sql, []);
+        await db.query(sql, []);
     } catch (err) {
         console.log(err);
         throw err

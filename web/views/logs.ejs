@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>MathSpace! User</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+</head>
+
+<body class="content">
+
+<%- include(`partials/header`); %>
+
+<main class="main">
+    <section class="primary-color-bg">
+        <div class="container">
+            <div class="centered-container">
+                <h1>Player: <%= logs.player_nickname %> achieved score: <%= logs.highscore %> </h1>
+                <h1>Time of submission: <%= logs.time %>  </h1>
+
+                <table style="border-spacing: 20px; width: 100%">
+                    <tr>
+                        <th style="text-align: center; width: 50%">Log</th>
+                        <th style="text-align: center; width: 50%">Time</th>
+                    </tr>
+                    <% for(let log of logs.result){ %>
+                        <tr>
+                            <td style="text-align: left; width: 50%"><%= log.event %></td>
+                            <td style="text-align: right; width: 50%"><%= log.time %></td>
+                        </tr>
+                    <% } %>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+
+<%- include(`partials/footer`); %>
+
+</body>
+
+</html>
+
+<script>
+    function remove(id) {
+        if (confirm("Are you sure you want to delete game with game code: " + id)) {
+            window.location.href = "/gamecode/remove/" + id;
+        }
+    }
+</script>

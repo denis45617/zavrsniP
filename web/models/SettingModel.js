@@ -3,14 +3,14 @@ const db = require('../db')
 
 module.exports = class Task {
 
-    //konstruktor korisnika
+    //konstruktor za Task
     constructor(setting, game_code) {
         this.setting_id = undefined
         this.setting = setting
         this.game_code = game_code
     }
 
-    //dohvat korisnika na osnovu korisničkog imena
+    //dohvat postavki na osnovu game_code imena
     static async getGameCodeSettings(game_code) {
         try {
             let rezultat = await dbGetGameCodeSettings(game_code);
@@ -21,7 +21,7 @@ module.exports = class Task {
         }
     }
 
-    //dohvat korisnika na osnovu korisničkog imena formatirano za mobitel
+    //dohvat postavki na osnovu game_code imena formatirano za mobitel
     static async getGameCodeSettingsMobile(game_code) {
         try {
             let rezultat = await dbGetGameCodeSettingsMobile(game_code);
@@ -81,7 +81,7 @@ dbGetGameCodeSettings = async (game_code) => {
     }
 };
 
-//dohvat gamecode iz baze podataka na osnovu korisničkog imena (stupac user_name) formatirano za mobitel
+//dohvat gamecode iz baze podataka na osnovu game_code (stupac game_code) formatirano za mobitel
 dbGetGameCodeSettingsMobile = async (game_code) => {
     const sql = `SELECT *
                  FROM setting

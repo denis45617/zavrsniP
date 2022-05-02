@@ -22,12 +22,31 @@ router.get('/display/:id', authHandler, async function (req, res, next) {
         results = await GameResult.getResults(req.params.id);
     })();
 
-
     res.render('gamecode', {
         title: 'MathSpace! Game settings!',
         settingsId: req.session.game_code,
         settings: gameCodeSettings,
         results: results,
+        user: req.session.user,
+        linkActive: 'user'
+    });
+});
+
+router.get('/display/details/:id', authHandler, async function (req, res, next) {
+    let result_id = req.params.id;
+    let logs;
+
+    await (async () => {
+        logs = await GameResult.fetchById(result_id);
+    })();
+
+    logs.result = JSON.parse(logs.result);
+
+
+    res.render('logs', {
+        title: 'MathSpace! Logs!',
+        settingsId: req.session.game_code,
+        logs: logs,
         user: req.session.user,
         linkActive: 'user'
     });
