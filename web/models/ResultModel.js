@@ -46,6 +46,28 @@ module.exports = class GameResult {
         }
     }
 
+
+    //dohvaćanje svih rezultata za neki game code
+    static async getLeaderboardMobile(game_code) {
+        try {
+            let results = await dbGetLeaderboard(game_code);
+            results = results.rows;
+
+            let formatiraniRezultat = "";
+            for (let i = 0; i < results.length; ++i) {
+                formatiraniRezultat += results[i].player_nickname;
+                formatiraniRezultat += ":";
+                formatiraniRezultat += results[i].highscore;
+                formatiraniRezultat += "#DELIMITER#";
+            }
+
+            return formatiraniRezultat;
+        } catch (err) {
+            console.log("Error saving result " + JSON.stringify(this))
+        }
+    }
+
+
 }
 
 
@@ -86,6 +108,22 @@ dbSaveResult = async (highscore, player_nickname, result, game_code) => {
 
     try {
         await db.query(sql, []);
+    } catch (err) {
+        console.log(err);
+        throw err
+    }
+}
+
+//dohvat svih rezultata za neki game code
+dbGetLeaderboard = async (game_code) => {
+    const sql = `select player_nickname, max(highscore) as highscore
+                 from results
+                 where game_code = '${game_code}'
+                 group by player_nickname
+                 order by highscore desc`;
+
+    try {
+        return await db.query(sql, []);
     } catch (err) {
         console.log(err);
         throw err

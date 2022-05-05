@@ -435,7 +435,7 @@ public class GameView extends SurfaceView implements Runnable {
      */
     private void sleep() {
         try {
-            Thread.sleep(1); //120fps 8.333... => 8 //igra se presporo obavlja već svejedno :kekl: pfffff
+            Thread.sleep(1); //133.20fps 8.3.. => 8 //igra se presporo obavlja već svejedno :kekl: pfffff
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

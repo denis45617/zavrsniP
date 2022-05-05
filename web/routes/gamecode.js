@@ -197,5 +197,17 @@ router.post('/mobile/result', async function (req, res, next) {
     return res.send("OK");
 });
 
+router.get('/mobile/leaderboard/:id', async function (req, res, next) {
+    let leaderboard;
+
+    await (async () => {
+        leaderboard = await GameResult.getLeaderboardMobile(req.params.id);
+    })();
+
+    return res.send(leaderboard);
+});
+
+
+
 
 module.exports = router;
