@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private AppCompatButton playButton;
     private AppCompatButton settingButton;
+    private AppCompatButton leaderboardButton;
     private TextView highScoreLabel;
 
     @SuppressLint("SetTextI18n")
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         playButton = findViewById(R.id.play);
         settingButton = findViewById(R.id.settings);
         highScoreLabel = findViewById(R.id.highScore);
+        leaderboardButton = findViewById(R.id.leaderboardButton);
 
         sharedPreferences = getSharedPreferences("GAME_DATA", 0);
 
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         playButton.setOnClickListener(view -> {
-            Toast.makeText(MainActivity.this, "Please wait while game loads...", Toast.LENGTH_LONG).show();
+            playButton.setText("Loading...");
             Intent intent = new Intent(getApplicationContext(), GameActivity.class);
             startActivity(intent);
         });
@@ -44,14 +46,35 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        leaderboardButton.setOnClickListener(view -> {
+            leaderboardButton.setText("Loading...");
+            Intent intent = new Intent(getApplicationContext(), LeaderboardActivity.class);
+            startActivity(intent);
+
+        });
+
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
+        playButton.setText("Play");
+        leaderboardButton.setText("Leaderboard");
+
         updateHighScoreLabel();
+        updateLeaderboardButtonVisibility();
         ActivityUtil.setFlags(this.getWindow());
+    }
+
+    private void updateLeaderboardButtonVisibility() {
+        boolean useDefault = sharedPreferences.getBoolean("USEDEFAULT", true);
+
+        if (useDefault) {
+            leaderboardButton.setVisibility(View.INVISIBLE);
+        } else {
+            leaderboardButton.setVisibility(View.VISIBLE);
+        }
     }
 
     public void updateHighScoreLabel() {
@@ -63,9 +86,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (useDefault) {
             highScoreLabel.setText("High score: " + sharedPreferences.getInt("HIGH_SCORE", 0));
+            leaderboardButton.setVisibility(View.INVISIBLE);
         } else {
             highScoreLabel.setText("High score for " + gameCode + " is : " +
                     sharedPreferences.getInt("HIGH_SCORE" + gameCode, 0));
+            leaderboardButton.setVisibility(View.VISIBLE);
         }
     }
 
