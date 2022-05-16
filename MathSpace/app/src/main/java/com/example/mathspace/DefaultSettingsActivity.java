@@ -10,16 +10,13 @@ import java.util.List;
 
 public class DefaultSettingsActivity extends AppCompatActivity {
 
-    LinearLayout linearLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_default_settings);
 
-        linearLayout = findViewById(R.id.linear);
-        List<Task> taskList = new ArrayList<>();
-        taskList = GameViewInitUtil.getAllTasks();
+        LinearLayout linearLayout = findViewById(R.id.linear);
+        List<Task> taskList = GameViewInitUtil.getAllTasks();
 
 
         for (int i = 0; i < taskList.size(); ++i) {

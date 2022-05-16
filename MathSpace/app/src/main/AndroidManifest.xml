@@ -12,16 +12,22 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.MathSpace">
-        <activity android:name=".DefaultSettingsActivity">
+        <activity android:name=".DefaultSettingsActivity"
+                  android:exported="true">
         </activity>
-        <activity android:name=".SettingsActivity">
+        <activity
+                android:name=".SettingsActivity"
+                android:exported="true">
         </activity>
-        <activity android:name=".DownloadSettingsActivity">
+        <activity android:name=".DownloadSettingsActivity"
+                  android:exported="true">
         </activity>
-        <activity android:name=".LeaderboardActivity">
+        <activity android:name=".LeaderboardActivity"
+                  android:exported="true">
         </activity>
         <activity
                 android:name=".GameActivity"
+                android:exported="true"
                 android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         </activity>
         <activity

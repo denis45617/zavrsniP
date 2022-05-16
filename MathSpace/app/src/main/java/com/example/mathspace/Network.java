@@ -10,7 +10,7 @@ import java.util.Map;
 
 
 public class Network {
-    private static String BASE_URL = "https://denismath.herokuapp.com/gamecode/mobile/";
+    private static final String BASE_URL = "https://denismath.herokuapp.com/gamecode/mobile/";
 
     public static String getMethod(String url) {
 
@@ -24,7 +24,7 @@ public class Network {
 
             InputStreamReader in = new InputStreamReader((InputStream) request.getContent());
             BufferedReader buff = new BufferedReader(in);
-            String line = "";
+            String line;
             do {
                 line = buff.readLine();
                 text.append(line);

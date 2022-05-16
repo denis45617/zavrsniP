@@ -17,6 +17,8 @@ public abstract class Task {
 
     public abstract boolean checkCollectedIsValid(FallingObject fallingObject);
 
+    public abstract FallingObject makeFallingObject();
+
     public String getTaskText() {
         return taskText;
     }

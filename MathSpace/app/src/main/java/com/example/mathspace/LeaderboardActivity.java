@@ -60,12 +60,10 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         for (int i = 0; i < polje.length; ++i) {
             if (polje[i] != null && Objects.requireNonNull(polje[i]).contains(":")) {
-                System.out.println(polje[i]);
                 String[] zapis = polje[i].split(":");
                 mapa.put(zapis[0], zapis[1]);
             }
         }
-
 
         return mapa;
     }
@@ -74,7 +72,6 @@ public class LeaderboardActivity extends AppCompatActivity {
     // https://stackoverflow.com/a/11744398   weight za text view
     private void addToTable(Map<String, String> dataMap) {
         int position = 1;
-
 
         for (Map.Entry<String, String> entry : dataMap.entrySet()) {
             //izrada reda
@@ -107,7 +104,6 @@ public class LeaderboardActivity extends AppCompatActivity {
         positionTextView.setTextColor(Color.BLACK);
         positionTextView.setTextSize(14);
         positionTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-
 
         return positionTextView;
     }

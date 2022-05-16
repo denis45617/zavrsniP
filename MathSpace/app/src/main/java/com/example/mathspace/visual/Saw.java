@@ -93,7 +93,6 @@ public class Saw {
         points.add(new Point(sawCenterX+xyNE, sawCenterY-xyNE)); //south-east
         points.add(new Point(sawCenterX-xyNE, sawCenterY+xyNE)); //north-west
 
-
         return points;
     }
 }

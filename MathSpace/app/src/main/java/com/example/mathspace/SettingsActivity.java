@@ -33,44 +33,31 @@ public class SettingsActivity extends AppCompatActivity {
         setDynamicElements();
 
 
-        findViewById(R.id.defaultSettings).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), DefaultSettingsActivity.class);
-                startActivity(intent);
-            }
+        findViewById(R.id.defaultSettings).setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), DefaultSettingsActivity.class);
+            startActivity(intent);
         });
 
-        findViewById(R.id.downloadSettings).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), DownloadSettingsActivity.class);
-                startActivity(intent);
-            }
+        findViewById(R.id.downloadSettings).setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), DownloadSettingsActivity.class);
+            startActivity(intent);
         });
 
-        findViewById(R.id.clearHighScore).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String gameCode = "";
-                boolean useDefault = sharedPreferences.getBoolean("USEDEFAULT", true);
-                if (!useDefault) {
-                    gameCode = sharedPreferences.getString("SAVEDCODE", "");
-                }
-
-                hs.clearHighScore(gameCode);
-                Toast.makeText(SettingsActivity.this, "Highscore cleared", Toast.LENGTH_LONG).show();
+        findViewById(R.id.clearHighScore).setOnClickListener(view -> {
+            String gameCode = "";
+            boolean useDefault = sharedPreferences.getBoolean("USEDEFAULT", true);
+            if (!useDefault) {
+                gameCode = sharedPreferences.getString("SAVEDCODE", "");
             }
+
+            hs.clearHighScore(gameCode);
+            Toast.makeText(SettingsActivity.this, "Highscore cleared", Toast.LENGTH_LONG).show();
         });
 
-        settingsToUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                editor.putBoolean("USEDEFAULT", !settingsToUse.isChecked());
-                editor.apply();
-            }
+        settingsToUse.setOnCheckedChangeListener((compoundButton, b) -> {
+            editor.putBoolean("USEDEFAULT", !settingsToUse.isChecked());
+            editor.apply();
         });
-
     }
 
     private void setDynamicElements() {
@@ -79,9 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         boolean useDefaultSettings = sharedPreferences.getBoolean("USEDEFAULT", true);
         settingsToUse.setChecked(!useDefaultSettings);
-
     }
-
 
     @Override
     protected void onResume() {

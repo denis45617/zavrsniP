@@ -1,16 +1,18 @@
 package com.example.mathspace.task;
 
+import com.example.mathspace.fallingobj.Circle;
 import com.example.mathspace.fallingobj.FallingObject;
+import com.example.mathspace.fallingobj.Square;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 public class WordsTask extends Task {
-    private Set<String> correctWords;
-    private Set<String> incorrectWords;
-    private List<String> correctWordsList = new ArrayList<>();
-    private List<String> incorrectWordsList = new ArrayList<>();
+    private final Set<String> correctWords;
+    private final Set<String> incorrectWords;
+    private final List<String> correctWordsList = new ArrayList<>();
+    private final List<String> incorrectWordsList = new ArrayList<>();
 
 
     public WordsTask(String taskText, TaskType taskType, Set<String> correctWords, Set<String> incorrectWords) {
@@ -22,13 +24,6 @@ public class WordsTask extends Task {
 
     }
 
-    public Set<String> getCorrectWords() {
-        return correctWords;
-    }
-
-    public Set<String> getIncorrectWords() {
-        return incorrectWords;
-    }
 
     public String getRandomCorrectWord() {
         return correctWordsList.get((int) Math.floor(Math.random() * correctWordsList.size()));
@@ -42,5 +37,19 @@ public class WordsTask extends Task {
     @Override
     public boolean checkCollectedIsValid(FallingObject fallingObject) {
         return correctWords.contains(fallingObject.getText());
+    }
+
+    @Override
+    public FallingObject makeFallingObject() {
+        switch ((int) Math.floor(Math.random() * 4)) {
+            case 0:
+                return new Square(this.getRandomCorrectWord());
+            case 1:
+                return new Circle(this.getRandomCorrectWord());
+            case 2:
+                return new Circle(this.getRandomIncorrectWord());
+            default:
+                return new Square(this.getRandomIncorrectWord());
+        }
     }
 }

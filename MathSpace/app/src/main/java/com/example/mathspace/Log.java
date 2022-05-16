@@ -5,8 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Log {
-    private String event;
-    private String time;
+    private final String event;
+    private final String time;
 
     public Log(String event) {
         this.event = event;
@@ -28,7 +28,7 @@ public class Log {
 
 
     private static String getCurrentTime() {
-        DateTimeFormatter dtf = null;
+        DateTimeFormatter dtf;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             dtf = DateTimeFormatter.ofPattern("dd/MM/yyy HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();

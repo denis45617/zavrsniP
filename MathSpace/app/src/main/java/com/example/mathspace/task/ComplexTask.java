@@ -41,6 +41,13 @@ public class ComplexTask extends Task {
     }
 
     @Override
+    public FallingObject makeFallingObject() {
+        int randomTask = (int) (Math.random() * tasks.size());
+        return tasks.get(randomTask).makeFallingObject();
+    }
+
+
+    @Override
     public String getTaskText() {
         return this.taskText;
     }

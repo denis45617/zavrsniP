@@ -105,10 +105,25 @@ public class GameViewDrawUtil {
     }
 
     static void drawNewTaskText(Canvas canvas, int screenX, int screenY, Task task, Paint taskPaint) {
-        taskPaint.setColor(Color.WHITE);
-        canvas.drawRect(150, (int) (screenY / 2.0 - 50), screenX - 150, (int) (screenY / 2.0 + 50), taskPaint);
+        taskPaint.setColor(Color.RED);
+
+        //crveni obrbu
+        taskPaint.setColor(Color.RED);
+        canvas.drawRoundRect((float) 0.1 * screenX - 4, (float) 0.4 * screenY - 4,
+                (float) (screenX - 0.1 * screenX + 4), (float) (screenY - 0.4 * screenY + 4),
+                100, 100, taskPaint);
+        //pozadina - pozadina
         taskPaint.setColor(Color.BLACK);
+        canvas.drawRoundRect((float) 0.1 * screenX, (float) 0.4 * screenY,
+                (float) (screenX - 0.1 * screenX), (float) (screenY - 0.4 * screenY),
+                100, 100, taskPaint);
+
+        taskPaint.setTextAlign(Paint.Align.CENTER);
+
+        taskPaint.setColor(Color.WHITE);
         canvas.drawText("Now collect : " + task.getTaskText(), (float) (screenX / 2.0), (float) (screenY / 2.0), taskPaint);
+
+
     }
 
 

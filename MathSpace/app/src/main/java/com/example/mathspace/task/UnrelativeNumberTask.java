@@ -25,7 +25,7 @@ public class UnrelativeNumberTask extends NumberTask{
         } catch (Exception e) {  //trenutno kad se switcha sa rječi na brojeve pokuša se castati text na integer pa baca exception
             //napraviti vrijeme prijelaza između stvari da to ne bude slučaj
             //okej, vrijeme između prijelaza je dodano, ali nek ovo ostane just in case ^-^
-            return true;
+            return true;  //ako se dogodi exception baš u krivo vrijeme, priznaj odgovor
         }
         return false;
     }

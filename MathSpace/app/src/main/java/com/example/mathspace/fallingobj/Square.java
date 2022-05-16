@@ -19,8 +19,8 @@ public class Square extends FallingObject {
 
     public Square(String text) {
         super(text, Shape.SQUARE);
-        this.width = (int) (150);
-        this.height = (int) (150);
+        this.width = 150;
+        this.height = 150;
     }
 
 

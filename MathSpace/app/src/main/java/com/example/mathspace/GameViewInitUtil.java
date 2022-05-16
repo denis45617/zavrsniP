@@ -5,16 +5,10 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.widget.Toast;
 import com.example.mathspace.fallingobj.Shape;
 import com.example.mathspace.task.*;
 import com.example.mathspace.visual.Background;
 import com.example.mathspace.visual.Saw;
-
-import java.net.*;
-import java.io.*;
-
-import java.io.IOException;
 import java.util.*;
 
 public class GameViewInitUtil {
@@ -28,30 +22,30 @@ public class GameViewInitUtil {
 
         //========================================== default tasks =====================================================
         //even
-
         Task evenTask = new UnrelativeNumberTask(" even numbers", TaskType.EVEN, 0, 500);
         tasks.add(evenTask);
+
         //odd
         Task oddTask = new UnrelativeNumberTask(" odd numbers", TaskType.ODD, 100, 250);
         tasks.add(oddTask);
 
-        int relativeNumber = (int) (1 + Math.floor(Math.random() * 20));
         //greater
-        tasks.add(new RelativeNumberTask(" numbers greater than ", TaskType.GREATER, -50, 50, 5, true));
+        tasks.add(new RelativeNumberTask(" numbers greater than ", TaskType.GREATER, -50,
+                50, 5, true));
 
         //greaterequal
-        relativeNumber = (int) (1 + Math.floor(Math.random() * 20));
-        Task greaterEqualTask = new RelativeNumberTask(" numbers greater or equal than ", TaskType.GREATEREQUAL, 0, 20, relativeNumber, true);
+        Task greaterEqualTask = new RelativeNumberTask(" numbers greater or equal than ", TaskType.GREATEREQUAL,
+                0, 20, (int) (1 + Math.floor(Math.random() * 20)), true);
         tasks.add(greaterEqualTask);
 
         //lower
-        relativeNumber = (int) (5 + Math.floor(Math.random() * 20));
-        Task lowerTask = new RelativeNumberTask(" numbers lower than ", TaskType.LOWER, 0, 20, relativeNumber, true);
+        Task lowerTask = new RelativeNumberTask(" numbers lower than ", TaskType.LOWER, 0,
+                20, (int) (5 + Math.floor(Math.random() * 20)), true);
         tasks.add(lowerTask);
 
         //lowerequal
-        relativeNumber = (int) (5 + Math.floor(Math.random() * 20));
-        tasks.add(new RelativeNumberTask(" numbers lower or equal than ", TaskType.LOWEREQUAL, 0, 20, relativeNumber, true));
+        tasks.add(new RelativeNumberTask(" numbers lower or equal than ", TaskType.LOWEREQUAL, 0,
+                20, (int) (5 + Math.floor(Math.random() * 20)), true));
 
         //shape square
         Task squareTask = new ShapeTask(" squares", TaskType.SHAPE, Shape.SQUARE);
@@ -84,7 +78,6 @@ public class GameViewInitUtil {
         complexTasks.add(evenTask);
         Task greaterOrEqualEvenNumber = new ComplexTask("greater or equal to x numbers that are even",
                 TaskType.COMPLEXTASK, complexTasks);
-
         tasks.add(greaterOrEqualEvenNumber);
 
         //geometrijski likovi unutar kruga -- nema previše smisla
@@ -93,7 +86,6 @@ public class GameViewInitUtil {
         complexTasks2.add(circleTask);
         Task geometrijskiLikoviInsideCircle = new ComplexTask("Geometrijski likovi u kružnici",
                 TaskType.COMPLEXTASK, complexTasks2);
-
         tasks.add(geometrijskiLikoviInsideCircle);
 
         //neparni broj, manji jednak u kvadratu
@@ -103,7 +95,6 @@ public class GameViewInitUtil {
         complexTasks3.add(lowerTask);
         Task squareLowerThenOdd = new ComplexTask("Square, odd, lower then x ",
                 TaskType.COMPLEXTASK, complexTasks3);
-
         tasks.add(squareLowerThenOdd);
 
         return tasks;

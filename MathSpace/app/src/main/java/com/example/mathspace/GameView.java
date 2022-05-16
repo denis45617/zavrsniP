@@ -27,6 +27,7 @@ import com.example.mathspace.visual.Saw;
 import java.util.*;
 
 
+@SuppressLint("ViewConstructor")
 public class GameView extends SurfaceView implements Runnable {
 
     private Thread thread;
@@ -34,7 +35,7 @@ public class GameView extends SurfaceView implements Runnable {
     /**
      * Array containing all background photos
      */
-    private Background[] backgrounds;
+    private final Background[] backgrounds;
     /**
      * Background down
      */
@@ -46,24 +47,25 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     private int currentBackgroundIndex = 1;
-    private int screenX, screenY;
-    private Paint paint = new Paint();
-    private Paint taskPaint = new Paint();
+    private final int screenX;
+    private final int screenY;
+    private final Paint paint = new Paint();
+    private final Paint taskPaint = new Paint();
     private int score = 0;
     private int numberOfLives = 3;
-    private Bitmap heart;
-    private Saw saw;
-    private List<FallingObject> fallingObjectList = new ArrayList<>();
-    private List<Task> tasks;
-    private int generateFallingObjectFrequency = 10;
+    private final Bitmap heart;
+    private final Saw saw;
+    private final List<FallingObject> fallingObjectList = new ArrayList<>();
+    private final List<Task> tasks;
+    private final int generateFallingObjectFrequency = 10;
     private int currentTaskIndex;
     private Timer fallingObjectTimer;
     private Timer changeTaskTimer;
     private int fallingObjectTimerPeriod = 1500;
     private boolean allowGeneratingFallingObjects = true;
     private Long showTaskTextUntil;
-    private Activity activity;
-    private List<Log> logs;
+    private final Activity activity;
+    private final List<Log> logs;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -88,12 +90,8 @@ public class GameView extends SurfaceView implements Runnable {
         this.screenX = size.x;
         this.screenY = size.y;
 
-
         // get background pictures
         this.backgrounds = GameViewInitUtil.getBackgrounds(this.screenX, this.screenY, this.getResources());
-        getResources();
-
-
         currentDownBackGround = backgrounds[0];
         currentUpBackground = backgrounds[1];
 
@@ -113,7 +111,6 @@ public class GameView extends SurfaceView implements Runnable {
         };
         this.setOnTouchListener(touchListener);
     }
-
 
     /**
      * Method used for changing tasks. uuuh samo problem ako thread.sleep, a mobitel...
@@ -163,7 +160,7 @@ public class GameView extends SurfaceView implements Runnable {
                     Math.random() * (relativeNumberTask.getMaxNumber() + 1 - relativeNumberTask.getMinNumber())));
         }
 
-        showTaskTextUntil = System.currentTimeMillis() + 4000;
+        showTaskTextUntil = System.currentTimeMillis() + 3000;
 
         logs.add(new Log("Changed task to " + tasks.get(currentTaskIndex).getTaskText()));
         allowGeneratingFallingObjects = true;    //dozvoli stvaranje novih objekata
@@ -176,40 +173,37 @@ public class GameView extends SurfaceView implements Runnable {
             updateFallingObjects();
             draw();
             sleep();
-            if (numberOfLives <= 0) { // pause + animacija + novi screen vjerojatno ili tako nešta
+            if (numberOfLives <= 0) {
                 Looper.prepare();
                 int highscore = score / 10;
-                HighScore hs = new HighScore(getContext().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE), highscore);
-                hs.saveHighScore();
-                gameOverScreen();
-
                 SharedPreferences sharedPreferences = getContext().getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+                HighScore hs = new HighScore(sharedPreferences, highscore);
+                hs.saveHighScore();   //spremi highscore; (ako to je highscore)
+                gameOverScreen();    //pokaži game over screen
 
                 //ako se koriste postavke s interneta, potrebno je spremiti rezultat na internet
-                if (!sharedPreferences.getBoolean("USEDEFAULT", true)) {
-                    String gameCode = sharedPreferences.getString("SAVEDCODE", "");
-                    String nickname = sharedPreferences.getString("NICKNAME", "guest");
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Map<String, String> mapa = new HashMap<>();
-                            mapa.put("highscore", String.valueOf(highscore));
-                            mapa.put("player_nickname", nickname);
-                            mapa.put("result", Log.toJson(logs));
-                            mapa.put("game_code", gameCode);
-                            Network.postMethod("result", mapa);
-                        }
+                if (!sharedPreferences.getBoolean("USEDEFAULT", true)) { //odnosno ako nisu defaultne postavke
+                    String gameCode = sharedPreferences.getString("SAVEDCODE", "");  //dohvati spremljeni kod
+                    String nickname = sharedPreferences.getString("NICKNAME", "guest");  // i spremljeni nickname
+                    Thread thread = new Thread(() -> {
+                        Map<String, String> mapa = new HashMap<>();  //spremi sve potrebne podatke u mapu
+                        mapa.put("highscore", String.valueOf(highscore));
+                        mapa.put("player_nickname", nickname);
+                        mapa.put("result", Log.toJson(logs));
+                        mapa.put("game_code", gameCode);
+                        Network.postMethod("result", mapa);  //napravi post sa mapom i njenim podacima
                     });
+
                     thread.start();
                     Toast.makeText(getContext(), "Post", Toast.LENGTH_LONG).show();
                 }
-
 
                 break;
             }
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void gameOverScreen() {
         try {
             Thread.sleep(100);   //čekaj 0.1 sekundu
@@ -233,25 +227,21 @@ public class GameView extends SurfaceView implements Runnable {
 
             Thread.sleep(250);
 
-            OnTouchListener touchListener2 = new OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                        if ((motionEvent.getX() > (0.15 * screenX)) && (motionEvent.getX() < (0.45 * screenX))
-                                && motionEvent.getY() > (screenY - 0.3 * screenY) && motionEvent.getY() < (screenY - 0.2 * screenY)) {
-                            activity.finish();
-                        }
-
-                        if ((motionEvent.getX() > (0.55 * screenX)) && (motionEvent.getX() < (0.85 * screenX))
-                                && motionEvent.getY() > (screenY - 0.3 * screenY) && motionEvent.getY() < (screenY - 0.2 * screenY)) {
-                            Intent intent = new Intent(activity.getApplicationContext(), GameActivity.class);
-                            activity.startActivity(intent);
-                            activity.finish();
-                        }
+            OnTouchListener touchListener2 = (view, motionEvent) -> {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {   //menu button
+                    if ((motionEvent.getX() > (0.15 * screenX)) && (motionEvent.getX() < (0.45 * screenX))
+                            && motionEvent.getY() > (screenY - 0.3 * screenY) && motionEvent.getY() < (screenY - 0.2 * screenY)) {
+                        activity.finish();
                     }
 
-                    return true;
+                    if ((motionEvent.getX() > (0.55 * screenX)) && (motionEvent.getX() < (0.85 * screenX)) //try again
+                            && motionEvent.getY() > (screenY - 0.3 * screenY) && motionEvent.getY() < (screenY - 0.2 * screenY)) {
+                        Intent intent = new Intent(activity.getApplicationContext(), GameActivity.class);
+                        activity.startActivity(intent);
+                        activity.finish();
+                    }
                 }
+                return true;
             };
 
             this.setOnTouchListener(touchListener2);
@@ -279,7 +269,6 @@ public class GameView extends SurfaceView implements Runnable {
                         numberOfLives--;
                         logs.add(new Log("-Life !!!collected :" + fallingObject.getText() + " and lost life!!!"));
                         vibrate(300);
-                        //i logaj kao pogrešku negdje
                     }
 
                     fallingObjectList.remove(i--);
@@ -295,8 +284,7 @@ public class GameView extends SurfaceView implements Runnable {
                     vibrate(50);
                     logs.add(new Log("-100 Failed to collect: " + fallingObject.getText()));
                 }
-                fallingObjectList.remove(i--);    //dodati u listu missed
-
+                fallingObjectList.remove(i--);
             }
         }
 
@@ -324,57 +312,11 @@ public class GameView extends SurfaceView implements Runnable {
                     List<Task> tasksFromComplexTask = ((ComplexTask) task).getTasks();
                     task = tasksFromComplexTask.get((int) (Math.random() * tasksFromComplexTask.size()));
                 }
-                addNewFallingObject(task);
-
+                fallingObjectList.add(task.makeFallingObject());
             }
         } catch (Exception e) {
             //do nothing ... dogodi se expcetion kad se novi stvara dok se istovremeno promijeni task
         }
-    }
-
-    private boolean addNewFallingObject(Task task) {
-
-        if (task instanceof ShapeTask) {
-
-            switch ((int) Math.floor(Math.random() * 2)) {
-                case 0:
-                    fallingObjectList.add(new Square(String.valueOf((int) Math.floor(Math.random() * 21))));
-                    return true;
-                case 1:
-                    fallingObjectList.add(new Circle(String.valueOf((int) Math.floor(Math.random() * 21))));
-                    return true;
-            }
-        } else if (task instanceof NumberTask) {
-            NumberTask numberTask = (NumberTask) task;
-            switch ((int) Math.floor(Math.random() * 2)) {
-                case 0:
-                    fallingObjectList.add(new Square(String.valueOf((int) (numberTask.getMinNumber() +
-                            Math.random() * (numberTask.getMaxNumber() + 1 - numberTask.getMinNumber())))));
-                    return true;
-                case 1:
-                    fallingObjectList.add(new Circle(String.valueOf((int) (numberTask.getMinNumber() +
-                            Math.random() * (numberTask.getMaxNumber() + 1 - numberTask.getMinNumber())))));
-                    return true;
-            }
-        } else if (task instanceof WordsTask) {
-            switch ((int) Math.floor(Math.random() * 4)) {
-                case 0:
-                    fallingObjectList.add(
-                            new Square(((((WordsTask) task).getRandomCorrectWord()))));
-                    return true;
-                case 1:
-                    fallingObjectList.add(new Circle(((((WordsTask) task).getRandomCorrectWord()))));
-                    return true;
-                case 2:
-                    fallingObjectList.add(new Circle(((((WordsTask) task).getRandomIncorrectWord()))));
-                    return true;
-                case 3:
-                    fallingObjectList.add(new Square(((((WordsTask) task).getRandomIncorrectWord()))));
-                    return true;
-
-            }
-        }
-        return false;
     }
 
 
@@ -404,38 +346,41 @@ public class GameView extends SurfaceView implements Runnable {
      * Draw all content on the screen
      */
     private void draw() {
-        if (getHolder().getSurface().isValid()) {
-            Canvas canvas = getHolder().lockCanvas();
-            //pozadina
-            GameViewDrawUtil.drawBackground(canvas, currentUpBackground, currentDownBackGround, paint);
-            //score
-            GameViewDrawUtil.drawScore(canvas, score, paint);
-            //objekti
-            GameViewDrawUtil.drawFallingObjects(canvas, fallingObjectList);
-            //pila i linija
-            GameViewDrawUtil.drawSaw(canvas, saw, screenX, paint);
-            //hearts
-            GameViewDrawUtil.drawHearts(canvas, numberOfLives, heart, screenX, paint);
-            //what to collect
-            GameViewDrawUtil.drawTask(canvas, tasks, currentTaskIndex, screenY, paint);
+        boolean flag = true;
+        while (flag) {
+            if (getHolder().getSurface().isValid()) {
+                Canvas canvas = getHolder().lockCanvas();
+                //pozadina
+                GameViewDrawUtil.drawBackground(canvas, currentUpBackground, currentDownBackGround, paint);
+                //score
+                GameViewDrawUtil.drawScore(canvas, score, paint);
+                //objekti
+                GameViewDrawUtil.drawFallingObjects(canvas, fallingObjectList);
+                //pila i linija
+                GameViewDrawUtil.drawSaw(canvas, saw, screenX, paint);
+                //hearts
+                GameViewDrawUtil.drawHearts(canvas, numberOfLives, heart, screenX, paint);
+                //what to collect
+                GameViewDrawUtil.drawTask(canvas, tasks, currentTaskIndex, screenY, paint);
 
-            if (showTaskTextUntil != null && System.currentTimeMillis() < showTaskTextUntil) {
-                GameViewDrawUtil.drawNewTaskText(canvas, screenX, screenY, tasks.get(currentTaskIndex), taskPaint);
-            } else {
-                showTaskTextUntil = null;
+                if (showTaskTextUntil != null && System.currentTimeMillis() < showTaskTextUntil) {
+                    GameViewDrawUtil.drawNewTaskText(canvas, screenX, screenY, tasks.get(currentTaskIndex), taskPaint);
+                } else {
+                    showTaskTextUntil = null;
+                }
+                flag = false;
+                getHolder().unlockCanvasAndPost(canvas);
             }
-
-            getHolder().unlockCanvasAndPost(canvas);
         }
     }
 
 
     /**
-     * Eh joj ovo će biti problemi (prebrzo na dobrim mobitelima, presporo na lošim); AAAAAAAAAA
+     * Ovo zapravo nije niti potrebno, surface view dozvoljava osvježvanje svakih 16ms, što je meni taman
      */
     private void sleep() {
         try {
-            Thread.sleep(1); //133.20fps 8.3.. => 8 //igra se presporo obavlja već svejedno :kekl: pfffff
+            Thread.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

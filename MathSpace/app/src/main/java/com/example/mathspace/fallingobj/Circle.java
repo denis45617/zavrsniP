@@ -6,11 +6,11 @@ import android.graphics.Paint;
 import com.example.mathspace.visual.Saw;
 
 public class Circle extends FallingObject {
-    private int radius;
+    private final int radius;
 
     public Circle(String text) {
         super(text, Shape.CIRCLE);
-        this.radius = (int) (80);
+        this.radius = 80;
     }
 
 

@@ -33,7 +33,6 @@ public class HighScore extends AppCompatActivity {
             whatHighscore = "HIGH_SCORE" + gameCode;
         }
 
-
         if (score > highscore) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt(whatHighscore, score);

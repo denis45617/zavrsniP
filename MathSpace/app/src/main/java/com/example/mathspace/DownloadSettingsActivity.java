@@ -78,47 +78,38 @@ public class DownloadSettingsActivity extends AppCompatActivity {
 
 
         //==========================================DOWNLOAD===========================================================
-        downloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(DownloadSettingsActivity.this, "Settings downloading...", Toast.LENGTH_LONG).show();
-                Thread thread = new Thread(() -> {  //Network ne smije biti na main thread!
-                    String downloaded_settings = Network.getMethod("settings/" + sharedPreferences.getString("SAVEDCODE", "1"));
-                    if (!downloaded_settings.equals("null")) {
-                        editor.putBoolean("HASDOWNLOADED", true);
-                        editor.putString("DOWNLOADED_SETTINGS", downloaded_settings);
-                    } else {
-                        editor.putString("SAVEDCODE", "");
-                        editor.putBoolean("HASDOWNLOADED", false);
-                    }
-                    editor.apply();
+        downloadButton.setOnClickListener(view -> {
+            Toast.makeText(DownloadSettingsActivity.this, "Settings downloading...", Toast.LENGTH_LONG).show();
+            Thread thread = new Thread(() -> {  //Network ne smije biti na main thread!
+                String downloaded_settings = Network.getMethod("settings/" + sharedPreferences.getString("SAVEDCODE", "1"));
+                if (!downloaded_settings.equals("null")) {
+                    editor.putBoolean("HASDOWNLOADED", true);
+                    editor.putString("DOWNLOADED_SETTINGS", downloaded_settings);
+                } else {
+                    editor.putString("SAVEDCODE", "");
+                    editor.putBoolean("HASDOWNLOADED", false);
+                }
+                editor.apply();
 
-                });
-                thread.start();
-            }
+            });
+            thread.start();
         });
 
         //==========================================CLEAR===============================================================
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(DownloadSettingsActivity.this, "Setting cleared", Toast.LENGTH_SHORT).show();
-                code.setText("");
-                editor.putString("SAVEDCODE", "");
-                editor.putBoolean("HASDOWNLOADED", false);
-                editor.putBoolean("USEDEFAULT", true);
-                editor.putString("DOWNLOADED_SETTINGS", "");
-                editor.apply();
-            }
+        clearButton.setOnClickListener(view -> {
+            Toast.makeText(DownloadSettingsActivity.this, "Setting cleared", Toast.LENGTH_SHORT).show();
+            code.setText("");
+            editor.putString("SAVEDCODE", "");
+            editor.putBoolean("HASDOWNLOADED", false);
+            editor.putBoolean("USEDEFAULT", true);
+            editor.putString("DOWNLOADED_SETTINGS", "");
+            editor.apply();
         });
 
         //==========================================SETTING TEXT========================================================
-        settingsText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String text = sharedPreferences.getString("DOWNLOADED_SETTINGS", "null");
-                Toast.makeText(DownloadSettingsActivity.this, text, Toast.LENGTH_LONG).show();
-            }
+        settingsText.setOnClickListener(view -> {
+            String text = sharedPreferences.getString("DOWNLOADED_SETTINGS", "null");
+            Toast.makeText(DownloadSettingsActivity.this, text, Toast.LENGTH_LONG).show();
         });
 
     }
