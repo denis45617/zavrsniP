@@ -390,6 +390,7 @@ public class GameView extends SurfaceView implements Runnable {
         isNotPaused = true;
         thread = new Thread(this);
         thread.start();
+        showTaskTextUntil = System.currentTimeMillis() + 3000;
 
         //dodaj falling object svakih neki period
         fallingObjectTimer = new Timer();
