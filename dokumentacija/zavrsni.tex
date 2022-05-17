@@ -40,6 +40,23 @@
 \SetTblrTemplate{middlehead,lasthead}{normal}
 
 
+%Programski kod
+\usepackage{courier} %% Sets font for listing as Courier.
+\usepackage{listings, xcolor}
+\lstset{
+tabsize = 4, %% set tab space width
+showstringspaces = false, %% prevent space marking in strings, string is defined as the text that is generally printed directly to the console
+numbers = left, %% display line numbers on the left
+commentstyle = \color{green}, %% set comment color
+keywordstyle = \color{blue}, %% set keyword color
+stringstyle = \color{red}, %% set string color
+rulecolor = \color{black}, %% set frame color to avoid being affected by text color
+basicstyle = \scriptsize \ttfamily , %% set listing font and size
+breaklines = true, %% enable line breaking
+numberstyle = \tiny,
+}
+
+
 
 
 \begin{document}
@@ -94,8 +111,63 @@ Podpoglavlje 1.1
 \section{Introduction}
 Podpoglavlje 1.2
 
-\chapter{Naslov2}
-Poglavlje 2
+\chapter{Implementacija mobilne igre}
+
+	\section{Pozadina}
+	Pozadina je tematski zamišljena kao put iz središta zemlje  do dubokog svemira. Mobilna igra je takozvani endless runner, što znači da se potencijalno može igrati beskonačno,
+	odnosno ne postoji način na koji igra završava osim u slučaja da igrač izgubi sve živote, stoga je osim samog efekta "putovanja ka svemiru" potrebno osigurati i beskonačno pomicanje same pozadine.
+	
+	Pozadina kao takva se u konačnici sastoji od 20ak slika čije spajanje vertikalno daje efekt kontinuiranosti. Dok poznati pokretački strojevi (engl. \textit{game engine}) poput Unity nudi opcije manipulacija
+	pozadinom, kao što je beskonačno ponavljajuća pozadina, ta mogućnost u ovakvom razvoju aplikacije nije moguća, već ju je potrebno iskodirati samostalno. 
+	Za početak je potrebno učitati slike pozadina kao Bitmap te ih omotati u objekte kako bi im se dala različita svojstva poput x i y koordinata gdje se trenutno nalaze. Takvi objekti pohranjeni su u polje.
+	
+	Radi jednostavnosti, svaka slika pozadine se  vertikalno i horizontalno skalira na broj piksela koje zaslon mobitela ima; zbog toga, u jednom trenutku na zaslonu se mogu vidjeti maksimalno dvije slike
+	pozadine od jednom. Na samom početku igre uzimaju se prva dva objekta pozadine iz polja. Prvi objekt predstavlja donju pozadinu koja će biti prikazana, a drugi gornju pozadinu.  Donju pozadinu potrebno je inicijalizirati
+	na lokaciju sa x koordinatom 0 i y koordinatom 0, odnosno želimo da se pokazuje od početka zaslona vertikalno i horizontalno. Drugu sliku inicijaliziramo opet tako da joj damo x koordinatu 0, no y koordinatu postavljamo
+	na minus vertikalnu veličinu zaslona. Na svako ponovno osvježavanje igre, pozadina se vertikalno spušta ka dolje čime se stvara efekt putovanja igrača prema gore. Spuštanje pozadine prema dolje implementacijski je 
+	ostvareno tako što se svakim osvježavanjem zaslona povećava y koordinata obje slike za određenu vrijednost, ovisno o tome kojom brzinom želimo da "igrač putuje ka svemiru". 
+	
+	Na sljedećoj slici može se vidjeti način iscrtavanja pozadine na ekranu i izvan njega.
+	
+	\begin{figure}[H]
+			\includegraphics[scale=0.6]{"slike/background.png"} 
+			\centering
+			\caption{Pomicanje pozadine}
+			\label{fig:pomicanjepozadine}
+		\end{figure}
+		
+
+	
+	U trenutku kada y koordinata donje slike izađe izvan ekrana (odnosno kada je vrijednost y osi veća od y dimenzije ekrana) nova donja slika sada je slika koja je bila gore, a novu gornju sliku uzimamo 
+	kao sljedeći član polja. 
+	Zadnja slika prikazuje svemir pun zvijezdi i nju u polje učitavamo dva puta (dva različita objekta). U trenutku kad smo u igri došli do te slike, tim dvijema slikama se konstanto mijenjaju vrijednosti y osi.
+	Odnosno kad donja slika izađe dolje s ekrana, ponovno se postavljaju vrijednosti y osi za obje slike. 
+	
+	
+	Cijeli način implementacije pomicanja pozadine možemo prikazati sljedećim kodom:
+	
+	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = last , escapeinside={(*@}{@*)}]
+   private void updateBackground() {
+        currentDownBackground.setY(currentDownBackground.getY() + 5);
+        currentUpBackground.setY(currentUpBackground.getY() + 5);
+
+        if (currentDownBackground.getY() > screenY) {
+            currentDownBackground = currentUpBackground;
+            if (currentBackgroundIndex < backgrounds.length - 1)     
+                currentUpBackground = backgrounds[++currentBackgroundIndex]; 
+            else {
+                currentDownBackground = backgrounds[backgrounds.length - 2];
+                currentDownBackground.setY(0);
+                currentUpBackground = backgrounds[backgrounds.length - 1];
+            }
+            currentUpBackground.setY(-screenY);
+        }
+    }
+	\end{lstlisting}
+
+	
+	
+	
 
 
 

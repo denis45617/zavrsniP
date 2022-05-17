@@ -13,11 +13,8 @@ import android.os.Vibrator;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
-import android.view.View;
 import android.widget.Toast;
-import com.example.mathspace.fallingobj.Circle;
 import com.example.mathspace.fallingobj.FallingObject;
-import com.example.mathspace.fallingobj.Square;
 import com.example.mathspace.hs.HighScore;
 import com.example.mathspace.task.*;
 import com.example.mathspace.visual.Background;
@@ -39,7 +36,7 @@ public class GameView extends SurfaceView implements Runnable {
     /**
      * Background down
      */
-    private Background currentDownBackGround;
+    private Background currentDownBackground;
     /**
      * Background up
      */
@@ -66,6 +63,7 @@ public class GameView extends SurfaceView implements Runnable {
     private Long showTaskTextUntil;
     private final Activity activity;
     private final List<Log> logs;
+    private long sleepUntil = System.currentTimeMillis();
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -92,7 +90,7 @@ public class GameView extends SurfaceView implements Runnable {
 
         // get background pictures
         this.backgrounds = GameViewInitUtil.getBackgrounds(this.screenX, this.screenY, this.getResources());
-        currentDownBackGround = backgrounds[0];
+        currentDownBackground = backgrounds[0];
         currentUpBackground = backgrounds[1];
 
         //get saw instance
@@ -172,6 +170,7 @@ public class GameView extends SurfaceView implements Runnable {
             updateBackground();
             updateFallingObjects();
             draw();
+            score += 1;
             sleep();
             if (numberOfLives <= 0) {
                 Looper.prepare();
@@ -219,7 +218,7 @@ public class GameView extends SurfaceView implements Runnable {
             //pokaži taj end screen thing
             if (getHolder().getSurface().isValid()) {
                 Canvas canvas = getHolder().lockCanvas();
-                GameViewDrawUtil.drawBackground(canvas, currentUpBackground, currentDownBackGround, paint);
+                GameViewDrawUtil.drawBackground(canvas, currentUpBackground, currentDownBackground, paint);
                 GameViewDrawUtil.drawScore(canvas, score, paint);
                 GameViewDrawUtil.drawGameOverScreen(canvas, screenX, screenY, score, highScore, paint);
                 getHolder().unlockCanvasAndPost(canvas);
@@ -324,17 +323,16 @@ public class GameView extends SurfaceView implements Runnable {
      * Updates background
      */
     private void updateBackground() {
-        currentDownBackGround.setY(currentDownBackGround.getY() + 5);
+        currentDownBackground.setY(currentDownBackground.getY() + 5);
         currentUpBackground.setY(currentUpBackground.getY() + 5);
-        score += 1;
 
-        if (currentDownBackGround.getY() > screenY) {
-            currentDownBackGround = currentUpBackground;
+        if (currentDownBackground.getY() > screenY) {
+            currentDownBackground = currentUpBackground;
             if (currentBackgroundIndex < backgrounds.length - 1)       //ako ima još različitih slika
                 currentUpBackground = backgrounds[++currentBackgroundIndex];  //neka bude sljedeća
             else {
-                currentDownBackGround = backgrounds[backgrounds.length - 2];  //Inače vrti zadnju u krug
-                currentDownBackGround.setY(0);
+                currentDownBackground = backgrounds[backgrounds.length - 2];  //Inače vrti zadnju u krug
+                currentDownBackground.setY(0);
                 currentUpBackground = backgrounds[backgrounds.length - 1];
             }
             currentUpBackground.setY(-screenY);
@@ -351,7 +349,7 @@ public class GameView extends SurfaceView implements Runnable {
             if (getHolder().getSurface().isValid()) {
                 Canvas canvas = getHolder().lockCanvas();
                 //pozadina
-                GameViewDrawUtil.drawBackground(canvas, currentUpBackground, currentDownBackGround, paint);
+                GameViewDrawUtil.drawBackground(canvas, currentUpBackground, currentDownBackground, paint);
                 //score
                 GameViewDrawUtil.drawScore(canvas, score, paint);
                 //objekti
@@ -376,14 +374,21 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     /**
-     * Ovo zapravo nije niti potrebno, surface view dozvoljava osvježvanje svakih 16ms, što je meni taman
+     * Ovo zapravo nije niti potrebno, surface view dozvoljava osvježvanje svakih 16ms, što je meni taman,
+     * no ipak je... jer ako je češće zna usporiti procesor i previše!
      */
     private void sleep() {
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        while (System.currentTimeMillis() < sleepUntil) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
+
+        sleepUntil = System.currentTimeMillis() + 16;
+
     }
 
     public void resume() {

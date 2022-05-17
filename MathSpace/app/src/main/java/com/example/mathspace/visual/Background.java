@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class Background {
-    int x = 0, y = 0;
+    private int x = 0, y = 0;
 
     private Bitmap background;
 
@@ -14,7 +14,7 @@ public class Background {
         background = Bitmap.createScaledBitmap(background, screenX, screenY, false);
     }
 
-    public Bitmap getBackground(){
+    public Bitmap getBackground() {
         return background;
     }
 
