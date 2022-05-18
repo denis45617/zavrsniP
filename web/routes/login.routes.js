@@ -4,6 +4,10 @@ const User = require('../models/UserModel')
 
 
 router.get('/', function (req, res, next) {
+    if (req.session.user !== undefined) {
+        return res.redirect('/');
+    }
+
     res.render('login', {
         title: 'Login',
         user: req.session.user,
@@ -12,7 +16,6 @@ router.get('/', function (req, res, next) {
     });
 
 });
-
 
 
 router.post('/', function (req, res, next) {

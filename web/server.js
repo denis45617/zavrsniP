@@ -14,7 +14,7 @@ const loginRoute = require('./routes/login.routes');
 const logoutRoute = require('./routes/logout.routes');
 const signupRoute = require('./routes/signup.routes');
 const userRoute = require('./routes/user.routes');
-const gameCodeRoute = require('./routes/gamecode')
+const gameCodeRoute = require('./routes/gamecode.routes')
 
 //middleware - predlošci (ejs)
 app.set('views', path.join(__dirname, 'views'));

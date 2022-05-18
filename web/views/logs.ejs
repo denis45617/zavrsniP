@@ -25,11 +25,28 @@
                         <th style="text-align: center; width: 50%">Log</th>
                         <th style="text-align: center; width: 50%">Time</th>
                     </tr>
-                    <% for(let log of logs.result){ %>
+                    <% for(let log of logs.result){
+                    if(log.event.startsWith("+")){ %>
+                        <tr style="color: #35e03d">
+                            <td style="text-align: left; width: 50%"><%= log.event %></td>
+                            <td style="text-align: right; width: 50%"><%= log.time %></td>
+                        </tr>
+                    <% } else if(log.event.startsWith("-Life")){ %>
+                        <tr style="color: #ff0f0f">
+                            <td style="text-align: left; width: 50%"><%= log.event %></td>
+                            <td style="text-align: right; width: 50%"><%= log.time %></td>
+                        </tr>
+                    <% } else if(log.event.startsWith("-100")){ %>
+                        <tr style="color: orange">
+                            <td style="text-align: left; width: 50%"><%= log.event %></td>
+                            <td style="text-align: right; width: 50%"><%= log.time %></td>
+                        </tr>
+                    <% }else{ %>
                         <tr>
                             <td style="text-align: left; width: 50%"><%= log.event %></td>
                             <td style="text-align: right; width: 50%"><%= log.time %></td>
                         </tr>
+                    <% } %>
                     <% } %>
                 </table>
             </div>

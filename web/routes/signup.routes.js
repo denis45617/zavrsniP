@@ -3,9 +3,12 @@ const router = express.Router();
 const User = require('../models/UserModel')
 
 
-
 //vrati signup stranicu
 router.get('/', function (req, res, next) {
+    if (req.session.user !== undefined) {
+        return res.redirect('/');
+    }
+
     res.render('signup', {
         title: 'Register a new user',
         linkActive: 'signup',
@@ -44,7 +47,7 @@ router.post('/', function (req, res, next) {
         }
 
         //registriraj novog korisnika
-        user = new User(req.body.username,  req.body.password1);
+        user = new User(req.body.username, req.body.password1);
         await user.persist();
 
         req.session.user = user;

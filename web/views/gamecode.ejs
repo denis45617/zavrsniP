@@ -30,12 +30,18 @@
                     </div>
                 <% } %>
 
+                <br/>
+                <hr/>
                 <a class="btn" href="/gamecode/createNewRelativeNumberTask">Create new relative number task</a>
                 <a class="btn" href="/gamecode/createNewUnrelativeNumberTask">Create new unrelative number task</a>
+                <br/>
+                <br/>
                 <a class="btn" href="/gamecode/createNewShapeTask">Create new shape task</a>
                 <a class="btn" href="/gamecode/createNewWordsTask">Create new words task</a>
             </div>
 
+            <br/>
+            <hr/>
             <div class="centered-container">
                 <h2>Results:</h2>
                 <table style="border-spacing: 20px;">
@@ -50,7 +56,8 @@
                             <td><%= rezultat.player_nickname %></td>
                             <td><%= rezultat.time %></td>
                             <td><%= rezultat.highscore %></td>
-                            <td><a class="btn" href="/gamecode/display/details/<%= rezultat.result_id %>">Pick</a></td>
+                            <td><a class="btn link" href="/gamecode/display/details/<%= rezultat.result_id %>">See
+                                    details</a></td>
                         </tr>
                     <% } %>
                 </table>

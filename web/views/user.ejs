@@ -22,12 +22,13 @@
                     <div>
                         <a>Game <%= code.game_code %></a>
                         <a style="color: #ff0f0f">Game Code : <%= code.game_code %></a>
-                        <a class="btn" href="/gamecode/display/<%= code.game_code %>">Pick</a>
-                        <button class="btn" onclick="remove(<%= code.game_code %>)">X</button>
+                        <a class="btn link" style="margin: 5px; display: inline-block" href="/gamecode/display/<%= code.game_code %>">Pick</a>
+                        <button class="btn link" onclick="remove(<%= code.game_code %>)">X</button>
                     </div>
                 <% } %>
 
-                <a class="btn" href="/user/createnew">Create new settings</a>
+                <br />
+                <a class="btn link" style="margin: 5px; display: inline-block" href="/user/createnew">Create new settings</a>
             </div>
         </div>
     </section>

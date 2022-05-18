@@ -4,11 +4,11 @@ html {
 
 body {
     min-height: 100%;
-    background-color: #f6bebe;
+    background-color: #dbeedb;
 }
 
 .primary-color-bg {
-    background-color: #f7f7f7;
+    background-color: #fdf7f7;
 }
 
 .secondary-color-bg {
@@ -35,21 +35,6 @@ body {
     width: 700px;
 }
 
-.container-grid {
-    display: grid;
-    grid-gap: 20px;
-}
-
-.container-grid-thirds {
-    grid-template-columns: 2fr 1fr;
-}
-
-@media only screen and (max-width: 1280px) {
-    .container-grid-thirds {
-        display: block;
-    }
-}
-
 .navigation {
     padding: 15px;
 }
@@ -58,15 +43,6 @@ body {
     text-align: center;
 }
 
-.container-floated {
-    float: left;
-}
-
-.vertical-center {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
 
 .menu {
     display: flex;
@@ -75,7 +51,6 @@ body {
     justify-content: center;
 }
 
-
 .link {
     color: #35e03d;
     text-decoration: none;
@@ -83,7 +58,7 @@ body {
 }
 
 .link:hover {
-    color: #f0fff0;
+    color: #b5e814;
 }
 
 .link-active {
@@ -93,21 +68,18 @@ body {
 
 
 .btn {
-
+    margin-left: 5px;
+    margin-right: 5px;
+    border: 1px solid red;
+    padding: 10px;
+    border-radius: 10px;
+    background: #f6f3a4;
 }
 
-.btn:focus {
-    outline: none;
-}
 
 .btn:hover {
     outline: none;
-    background-color: #ffffff;
-    border-color: #000000;
-}
-
-.btn-disabled {
-    color: #ffffff;
-    background-color: #ffffff;
-    border-color: #000000;
+    background: #efeb63;
+    border-color: #208be0;
+    color: #fdf7f7;
 }
