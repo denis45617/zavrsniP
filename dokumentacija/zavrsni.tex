@@ -146,7 +146,7 @@ Podpoglavlje 1.2
 	
 	Cijeli način implementacije pomicanja pozadine možemo prikazati sljedećim kodom:
 	
-	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = last , escapeinside={(*@}{@*)}]
+	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
    private void updateBackground() {
         currentDownBackground.setY(currentDownBackground.getY() + 5);
         currentUpBackground.setY(currentUpBackground.getY() + 5);
@@ -165,11 +165,62 @@ Podpoglavlje 1.2
     }
 	\end{lstlisting}
 
-	
-	
-	
 
+	\section{Objekt za skupljanje}
+	Slično kao i pozadinu, objekt koji se kontrolira, odnosno objek s kojim se skupljaju padajući objekt učitan je kao kao Bitmap, odnosno više njih, konkretnije kao dva Bitmap objekta omotana sa objektom
+	klase "Saw". Za razliku od pozadine koja je putovala prema dolje, objekt s kojim skupljamo padajuće objekte je statičan na ekranu, odnosno ne mijenja svoj položaj na ekranu bez korisničke akcije. Pod kornisničku akciju u 
+	ovom slučaju podrazumijeva se dodir ekrana. Koristeći oblikovni obrazac promatrač (engl. \textit{observer}), pri inicijalizaciji igre  subjektu (objektu konkretne klase "View", u ovom slučaju to je "SurfaceView")
+	se postavlja konkretna implementacija apstraktnog promatrača "OnTouchListener". Navedeno sučelje sastoji se od jedne funkcije:
+	\begin{lstlisting}[language = Java , frame = none , numbers=none, escapeinside={(*@}{@*)}]
+		boolean onTouch(View v, MotionEvent event); 
+	\end{lstlisting}
+	
+	Ova funkcija prima dva parametra, "View v" koji je pokazivač na "View" kojem je događaj dodira dostavljen te parametar "MotionEvent event" koji opisuje tip događaja. Primjeri tipova događaja su: 
+	"ACTION\_DOWN" koji govori da se dogodio pritisak na zaslonu, "ACTION\_UP" koji govori da je dodir zaslona otpušten, "ACTION\_MOVE" koji govori da se dogodila promjena pozicije između pritiska ("ACTION\_DOWN") i otpuštanja
+	("ACTION\_UP") te nekolicina raznih drugih akcija. Navedena funkcija vraća primitivni tip boolean koji u ovom slučaju predstavlja zastavicu koja govori da li je konkretni promatrač "konzumirao događaj do kraja".
+	
+	U nastavku je prikazan cijeli programski kod potreban za pomicanje objekta za skupljanje. Konkretna implementacija sučelja "OnTouchListener" izvedena je kao anonimni razred, odnosno zbog bolje preglednosti koda 
+	koristi se pokrata u vidu lambda izraza, dok "this" predstavlja objekt klase View.
 
+		\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+			this.setOnTouchListener((v, event) -> {
+				if (event.getAction() == MotionEvent.ACTION_MOVE) {
+					saw.setX((int) event.getX());
+				}
+				return true;
+			});
+		\end{lstlisting}
+		
+	Na ovom programskom kodu potrebno je uočiti da se kontroliranje našeg objekta može dogoditi doticanjem i pomicanjem prsta na bilo kojem dijelu ekrana, no da sam objekt kojeg kontroliramo neće promijeniti 
+	vrijednost svoje x osi, odnosno neće se pomicati vertikalno, već se isključivo mijenja vrijednost položaja na horizontalnoj osi; također je bitno uočiti da za pomicanje objekta nije potrebno stisnuti na objekt
+	te ga povući, već je dovoljno stisnuti na određeno mjesto na ekranu te će se objektov položaj na horizonalnoj osi teleportirati na željeno mjesto. Iako je ovo programsko riješenje vjerojatno najjednostavnije, 
+	kasnije će se ispostaviti da je ujedno i najbolje. Ukratko, može se dogoditi da objekt kojeg kontroliramo bude okružen s padajućim objektima koji se ne smiju pokupiti i stoga je ova mogućnost "teleportiranja" poželjna.
+	
+	
+	Kao što je već ranije navedeno, objekt za skupljanje koji se kontrolira ne mijenja svoj položaj na ekranu (bez prethodne akcije korisnika) već je potreba učitavanja više slika, odnosno stvaranja više Bitmap 
+	objekata nastala u svrhu stvaranja animacije. Animacija se stvara tako što se brzo izmijenjuju slike koje se iscrtavaju na zaslonu. Konkretno, ova animacija sastoji se od dvije slike koje se neprestano izmijenuju.
+	Prva slika nastala je jednostavnim crtanjem, dok je druga nastala rotacijom za određeni kut te dodavanjem dodatnih detalja. 
+	
+	Sljedeće dvije slike prikazuju objekt s kojim skupljamo padajuće objekte, odnosno zajedno prikazuju oštricu koja se rotira velikom brzinom.
+	
+	
+	
+		\begin{figure}[!htb]
+			\begin{minipage}{0.48\textwidth}
+				\centering
+				\includegraphics[scale=0.6]{"slike/saw1.png"} 
+				\caption{Originalna slika oštrice}
+				\label{fig:saw1}
+			\end{minipage}\hfill
+			\begin{minipage}{0.48\textwidth}
+				\centering
+				\includegraphics[scale=0.6]{"slike/saw2.png"} 
+				\caption{Zarotirana originalna slika oštrice sa dodatnim detaljima}
+				\label{fig:saw2}
+			\end{minipage}
+		\end{figure}
+	
+	\section{Padajući objekti}
 
 \chapter{Baza podataka}
 	Baze podataka su organizirane kolekcija podataka koje omogućavaju laki pristup podacima, uređivanje podataka i upravljanje istih. U sklopu ovog projekta koristio se

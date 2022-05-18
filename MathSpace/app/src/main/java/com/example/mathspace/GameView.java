@@ -99,15 +99,12 @@ public class GameView extends SurfaceView implements Runnable {
         //get heart scaled bitmap
         heart = GameViewInitUtil.getHeart(this.getResources(), this.screenX, this.screenY);
 
-
-        OnTouchListener touchListener = (v, event) -> {
+        this.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 saw.setX((int) event.getX());
             }
-
             return true;
-        };
-        this.setOnTouchListener(touchListener);
+        });
     }
 
     /**
