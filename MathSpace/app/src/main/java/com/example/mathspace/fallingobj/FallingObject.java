@@ -5,11 +5,15 @@ import com.example.mathspace.visual.Saw;
 
 public abstract class FallingObject {
     protected String text;
+    protected int value;
     protected Shape shape;
     protected int centerX;
     protected int centerY;
     protected boolean destroyed;
     protected int speed;
+    protected int[] color = new int[3];
+    protected static double howOftenComplexText;
+    private static double minSpeed = 5;
 
     public abstract void drawFallingObject(Canvas canvas);
 
@@ -20,10 +24,30 @@ public abstract class FallingObject {
     public FallingObject(String text, Shape shape) {
         this.text = text;
         this.shape = shape;
-        this.centerX = (int) (Math.random()*1080);
+        this.centerX = (int) (Math.random() * 1080);
         this.centerY = -150;
         this.destroyed = false;
-        speed = (int) (5+Math.random()*10);
+        this.speed = (int) (minSpeed + Math.random() * 10);
+        this.color[0] = (int) (Math.random() * 220);
+        this.color[1] = (int) (Math.random() * 220);
+        this.color[2] = (int) (Math.random() * 220);
+    }
+
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public static void setHowOftenComplexText(double howOftenComplexText) {
+        FallingObject.howOftenComplexText = Math.max(howOftenComplexText, 0);
+    }
+
+    public static double getHowOftenComplexText() {
+        return howOftenComplexText;
     }
 
     public int getSpeed() {
@@ -32,6 +56,14 @@ public abstract class FallingObject {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public static void setMinSpeed(double minSpeed) {
+        FallingObject.minSpeed = Math.max(minSpeed, 5);
+    }
+
+    public static double getMinSpeed() {
+        return minSpeed;
     }
 
     public String getText() {

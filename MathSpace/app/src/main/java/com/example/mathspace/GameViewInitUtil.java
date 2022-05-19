@@ -9,6 +9,7 @@ import com.example.mathspace.fallingobj.Shape;
 import com.example.mathspace.task.*;
 import com.example.mathspace.visual.Background;
 import com.example.mathspace.visual.Saw;
+
 import java.util.*;
 
 public class GameViewInitUtil {
@@ -131,7 +132,7 @@ public class GameViewInitUtil {
         List<Task> tasks = new ArrayList<>();
 
         for (String s : tasksListString) {
-            Log.d(s,s);
+            Log.d(s, s);
             System.out.println(s);
             Map<String, String> values = new HashMap<>();
             String[] keyDvalue = s.split(";");      //minNumber:-50;maxNumber:50 =>  minNumber:-50  i maxNumber:50

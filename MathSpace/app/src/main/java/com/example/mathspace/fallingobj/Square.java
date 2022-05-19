@@ -4,17 +4,19 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.fonts.Font;
 import com.example.mathspace.visual.Point;
 import com.example.mathspace.visual.Saw;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class Square extends FallingObject {
     private int width;
     private int height;
     private Rect rect;
-
+    private final Paint paint = new Paint();
 
 
     public Square(String text) {
@@ -27,21 +29,34 @@ public class Square extends FallingObject {
     @Override
     public void drawFallingObject(Canvas canvas) {
         //postavit boju na skup nekih
-        Paint paint = new Paint();
         paint.setColor(Color.RED);
+        drawRectangle(canvas, 2);
+
+        paint.setARGB(255, color[0], color[1], color[2]);
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(50);
-        drawRectangle(canvas, paint);
+        paint.setTextSize(51);
+        Paint.FontMetrics fm = paint.getFontMetrics();
+
+        int textWidth = 0;
+        do {
+            Rect bounds = new Rect();
+            paint.getTextBounds(text, 0, text.length(), bounds);
+            textWidth = bounds.width();
+            paint.setTextSize(paint.getTextSize() - 1);
+
+        } while (textWidth > width);
+
+        drawRectangle(canvas, 0);
 
         //postavit boju na neku da izgleda dobro na svim pozadinama
         paint.setColor(Color.WHITE);
-        canvas.drawText(this.getText(), (float) (this.getCenterX()), this.getCenterY(), paint); // treba staviti na sredinu text
+        canvas.drawText(this.text, (float) (this.centerX), this.centerY, paint); // treba staviti na sredinu text
 
     }
 
-    private void drawRectangle(Canvas canvas, Paint paint) {
-        rect = new Rect((int) (this.getCenterX() - width / 2.0), (int) (this.getCenterY() - height / 2.0),
-                (int) (this.getCenterX() + width / 2.0), (int) (this.getCenterY() + height / 2.0));
+    private void drawRectangle(Canvas canvas, int extra) {
+        rect = new Rect((int) (this.centerX - width / 2.0 - extra), (int) (this.centerY - height / 2.0 - extra),
+                (int) (this.centerX + width / 2.0 + extra), (int) (this.centerY + height / 2.0 + extra));
         canvas.drawRect(rect, paint);
     }
 

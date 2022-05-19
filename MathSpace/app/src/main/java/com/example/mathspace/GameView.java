@@ -54,11 +54,10 @@ public class GameView extends SurfaceView implements Runnable {
     private final Saw saw;
     private final List<FallingObject> fallingObjectList = new ArrayList<>();
     private final List<Task> tasks;
-    private final int generateFallingObjectFrequency = 10;
     private int currentTaskIndex;
     private Timer fallingObjectTimer;
     private Timer changeTaskTimer;
-    private int fallingObjectTimerPeriod = 1500;
+    private int fallingObjectTimerPeriod = 1200;
     private boolean allowGeneratingFallingObjects = true;
     private Long showTaskTextUntil;
     private final Activity activity;
@@ -100,7 +99,7 @@ public class GameView extends SurfaceView implements Runnable {
         heart = GameViewInitUtil.getHeart(this.getResources(), this.screenX, this.screenY);
 
         this.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_MOVE) {
+            if (event.getAction() == MotionEvent.ACTION_MOVE || event.getAction() == MotionEvent.ACTION_DOWN) {
                 saw.setX((int) event.getX());
             }
             return true;
@@ -199,6 +198,40 @@ public class GameView extends SurfaceView implements Runnable {
         }
     }
 
+
+    private void levelUp() {
+        int howToChange = (int) (Math.random() * 2.1); // 0 = frequency, 1 = max speed
+
+        if (howToChange == 0 && (fallingObjectTimerPeriod > 400)) {
+            if (score < 20000)
+                fallingObjectTimerPeriod -= 30;  //svakih 1 ms češće!
+            else
+                fallingObjectTimerPeriod -= 15;  //svakih 1 ms češće!
+            fallingObjectTimer.cancel();
+            fallingObjectTimer = new Timer();
+            fallingObjectTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    GameView.this.addNewFallingObjectIfNeeded();
+                }
+            }, fallingObjectTimerPeriod, fallingObjectTimerPeriod);
+            return;
+        }
+
+        if (howToChange == 1 && FallingObject.getMinSpeed() < 22) {
+            if (score < 20000)
+                FallingObject.setMinSpeed(FallingObject.getMinSpeed() + 0.4);
+            else
+                FallingObject.setMinSpeed(FallingObject.getMinSpeed() + 0.2);
+            return;
+        }
+
+        if (howToChange == 2) {
+            FallingObject.setHowOftenComplexText(FallingObject.getHowOftenComplexText() + 0.1);
+        }
+    }
+
+
     @SuppressLint("ClickableViewAccessibility")
     private void gameOverScreen() {
         try {
@@ -261,10 +294,12 @@ public class GameView extends SurfaceView implements Runnable {
                     if (shouldHaveBeenCollected) {
                         score += 1000;
                         logs.add(new Log("+100 Collected :" + fallingObject.getText()));
+                        levelUp();
                     } else {
                         numberOfLives--;
                         logs.add(new Log("-Life !!!collected :" + fallingObject.getText() + " and lost life!!!"));
                         vibrate(300);
+                        levelDownLife();
                     }
 
                     fallingObjectList.remove(i--);
@@ -279,11 +314,46 @@ public class GameView extends SurfaceView implements Runnable {
                     score -= 1000;
                     vibrate(50);
                     logs.add(new Log("-100 Failed to collect: " + fallingObject.getText()));
+                    levelDown();
                 }
                 fallingObjectList.remove(i--);
             }
         }
 
+    }
+
+
+    private void levelDownLife() {
+        FallingObject.setMinSpeed(FallingObject.getMinSpeed() - 4);
+        FallingObject.setHowOftenComplexText(FallingObject.getHowOftenComplexText() - 0.3);
+        decreaseFrequency(200);
+    }
+
+
+    private void levelDown() {
+        int whatToDo = (int) (Math.random() * 3);
+        if (whatToDo == 0) {
+            FallingObject.setMinSpeed(FallingObject.getMinSpeed() - 1);
+            return;
+        }
+        if (whatToDo == 1) {
+            FallingObject.setHowOftenComplexText(FallingObject.getHowOftenComplexText() - 0.025);
+            return;
+        }
+        decreaseFrequency(50);
+    }
+
+    private void decreaseFrequency(int amount) {
+        fallingObjectTimerPeriod += amount;
+        fallingObjectTimerPeriod = Math.min(fallingObjectTimerPeriod, 1200);
+        fallingObjectTimer.cancel();
+        fallingObjectTimer = new Timer();
+        fallingObjectTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                GameView.this.addNewFallingObjectIfNeeded();
+            }
+        }, fallingObjectTimerPeriod, fallingObjectTimerPeriod);
     }
 
 
@@ -301,18 +371,16 @@ public class GameView extends SurfaceView implements Runnable {
      * Adds new falling object to list of falling objects
      */
     private void addNewFallingObjectIfNeeded() {
-        try {
-            if (fallingObjectList.size() < 15 && allowGeneratingFallingObjects) {
-                Task task = tasks.get(currentTaskIndex);
-                if (task instanceof ComplexTask) {
-                    List<Task> tasksFromComplexTask = ((ComplexTask) task).getTasks();
-                    task = tasksFromComplexTask.get((int) (Math.random() * tasksFromComplexTask.size()));
-                }
-                fallingObjectList.add(task.makeFallingObject());
+
+        if (fallingObjectList.size() < 15 && allowGeneratingFallingObjects) {
+            Task task = tasks.get(currentTaskIndex);
+            if (task instanceof ComplexTask) {
+                List<Task> tasksFromComplexTask = ((ComplexTask) task).getTasks();
+                task = tasksFromComplexTask.get((int) (Math.random() * tasksFromComplexTask.size()));
             }
-        } catch (Exception e) {
-            //do nothing ... dogodi se expcetion kad se novi stvara dok se istovremeno promijeni task
+            fallingObjectList.add(task.makeFallingObject());
         }
+
     }
 
 
@@ -383,9 +451,7 @@ public class GameView extends SurfaceView implements Runnable {
                 e.printStackTrace();
             }
         }
-
         sleepUntil = System.currentTimeMillis() + 16;
-
     }
 
     public void resume() {

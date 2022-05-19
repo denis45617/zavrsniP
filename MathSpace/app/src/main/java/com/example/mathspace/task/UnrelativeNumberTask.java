@@ -2,7 +2,7 @@ package com.example.mathspace.task;
 
 import com.example.mathspace.fallingobj.FallingObject;
 
-public class UnrelativeNumberTask extends NumberTask{
+public class UnrelativeNumberTask extends NumberTask {
 
     public UnrelativeNumberTask(String taskText, TaskType taskType, Integer minNumber, Integer maxNumber) {
         super(taskText, taskType, minNumber, maxNumber);
@@ -18,9 +18,9 @@ public class UnrelativeNumberTask extends NumberTask{
         try {
             switch (this.getTaskType()) {
                 case EVEN:
-                    return Integer.parseInt(fallingObject.getText()) % 2 == 0;
+                    return fallingObject.getValue() % 2 == 0;
                 case ODD:
-                    return Integer.parseInt(fallingObject.getText()) % 2 != 0;
+                    return fallingObject.getValue() % 2 != 0;
             }
         } catch (Exception e) {  //trenutno kad se switcha sa rječi na brojeve pokuša se castati text na integer pa baca exception
             //napraviti vrijeme prijelaza između stvari da to ne bude slučaj

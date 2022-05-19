@@ -3,10 +3,12 @@ package com.example.mathspace.fallingobj;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import com.example.mathspace.visual.Saw;
 
 public class Circle extends FallingObject {
     private final int radius;
+    private static final Paint paint = new Paint();
 
     public Circle(String text) {
         super(text, Shape.CIRCLE);
@@ -17,14 +19,26 @@ public class Circle extends FallingObject {
     @Override
     public void drawFallingObject(Canvas canvas) {
         //postavit boju na skup nekih
-        Paint paint = new Paint();
+        paint.setColor(Color.RED);
+        canvas.drawCircle(this.centerX, this.centerY, radius + 3, paint);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(50);
-        paint.setColor(Color.WHITE);
-        canvas.drawCircle(this.getCenterX(), this.getCenterY(), radius, paint);
+        paint.setARGB(255, color[0], color[1], color[2]);
+        canvas.drawCircle(this.centerX, this.centerY, radius, paint);
         //postavit boju na neku da izgleda dobro na svim pozadinama
-        paint.setColor(Color.BLACK);
-        canvas.drawText(this.getText(), this.getCenterX(), this.getCenterY(), paint); // treba staviti na sredinu text
+        paint.setColor(Color.WHITE);
+
+
+        int textWidth = 0;
+        do {
+            Rect bounds = new Rect();
+            paint.getTextBounds(text, 0, text.length(), bounds);
+            textWidth = bounds.width();
+            paint.setTextSize(paint.getTextSize() - 1);
+
+        } while (textWidth > 2 * radius);
+
+        canvas.drawText(this.text, this.centerX, this.centerY, paint); // treba staviti na sredinu text
 
     }
 

@@ -20,7 +20,7 @@ public class WordsTask extends Task {
         this.correctWords = correctWords;
         this.incorrectWords = incorrectWords;
         this.correctWordsList.addAll(correctWords);
-        this.correctWordsList.addAll(incorrectWords);
+        this.incorrectWordsList.addAll(incorrectWords);
 
     }
 

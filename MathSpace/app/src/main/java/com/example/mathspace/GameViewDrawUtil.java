@@ -13,6 +13,7 @@ import java.util.List;
  * Util class for drawing objects on given canvases
  */
 public class GameViewDrawUtil {
+    static boolean has_software_keys = true;
 
     /**
      * Method used for drawing falling object on given canvas
@@ -62,13 +63,18 @@ public class GameViewDrawUtil {
      * @param paint            paint
      */
     static void drawTask(Canvas canvas, List<Task> tasks, int currentTaskIndex, int screenY, Paint paint) {
+        int addHeight = 0;
+        if (!has_software_keys) {
+            addHeight = 125;
+        }
+
         if (tasks.get(currentTaskIndex) instanceof ComplexTask) {
             paint.setTextSize(25);
         } else {
             paint.setTextSize(50);
         }
         //moći će biti više taskova, pa za svaki...
-        canvas.drawText("Collect: " + tasks.get(currentTaskIndex).getTaskText(), 20, screenY + 100, paint);
+        canvas.drawText("Collect: " + tasks.get(currentTaskIndex).getTaskText(), 20, screenY + 100 - addHeight, paint);
     }
 
     /**
@@ -80,13 +86,18 @@ public class GameViewDrawUtil {
      * @param paint   paint
      */
     static void drawSaw(Canvas canvas, Saw saw, int screenX, Paint paint) {
+        int addHeight = 0;
+        if (!has_software_keys) {
+            addHeight = 125;
+        }
+
         //line on which saw can move
         paint.setColor(Color.RED);
-        canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 1, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 1, paint);
-        canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 2, screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 2, paint);
+        canvas.drawLine(0, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 1 - addHeight,
+                screenX, saw.getY() + (float) saw.getSaw().getHeight() / 2 - 1 - addHeight, paint);
 
         //saw object
-        canvas.drawBitmap(saw.getSaw(), saw.getX() - (float) saw.getSaw().getWidth() / 2, saw.getY(), null);
+        canvas.drawBitmap(saw.getSaw(), saw.getX() - (float) saw.getSaw().getWidth() / 2, saw.getY() - addHeight, null);
     }
 
     /**
@@ -122,7 +133,6 @@ public class GameViewDrawUtil {
 
         taskPaint.setColor(Color.WHITE);
         canvas.drawText("Now collect : " + task.getTaskText(), (float) (screenX / 2.0), (float) (screenY / 2.0), taskPaint);
-
 
     }
 

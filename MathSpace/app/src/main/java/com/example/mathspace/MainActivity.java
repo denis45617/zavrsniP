@@ -3,13 +3,15 @@ package com.example.mathspace;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.view.View;
+import android.os.Build;
+import android.util.DisplayMetrics;
+import android.view.*;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.AppCompatButton;
-import com.example.mathspace.hs.HighScore;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,8 +34,18 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("GAME_DATA", 0);
 
-        ActivityUtil.setFlags(this.getWindow());
 
+        if (sharedPreferences.getString("HAS_SOFTWARE_BUTTON", null) == null) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("HAS_SOFTWARE_BUTTON", hasSoftKeys());
+            editor.apply();
+        }
+        GameViewDrawUtil.has_software_keys = sharedPreferences.getString("HAS_SOFTWARE_BUTTON", null).equals("true");
+        Toast.makeText(getApplicationContext(), sharedPreferences.getString("HAS_SOFTWARE_BUTTON", null),
+                Toast.LENGTH_LONG).show();
+
+
+        ActivityUtil.setFlags(this.getWindow());
 
         playButton.setOnClickListener(view -> {
             playButton.setText("Loading...");
@@ -92,6 +104,39 @@ public class MainActivity extends AppCompatActivity {
                     sharedPreferences.getInt("HIGH_SCORE" + gameCode, 0));
             leaderboardButton.setVisibility(View.VISIBLE);
         }
+    }
+
+    //https://stackoverflow.com/questions/14853039/how-to-tell-whether-an-android-device-has-hard-keys/14871974#14871974
+    public String hasSoftKeys() {
+        boolean hasSoftwareKeys = true;
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Display d = getApplicationContext().getDisplay();
+
+            DisplayMetrics realDisplayMetrics = new DisplayMetrics();
+            d.getRealMetrics(realDisplayMetrics);
+
+            int realHeight = realDisplayMetrics.heightPixels;
+            int realWidth = realDisplayMetrics.widthPixels;
+
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            d.getMetrics(displayMetrics);
+
+            int displayHeight = displayMetrics.heightPixels;
+            int displayWidth = displayMetrics.widthPixels;
+
+            hasSoftwareKeys = (realWidth - displayWidth) > 0 ||
+                    (realHeight - displayHeight) > 0;
+        } else {
+            boolean hasMenuKey = ViewConfiguration.get(getApplicationContext()).hasPermanentMenuKey();
+            boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
+            hasSoftwareKeys = !hasMenuKey && !hasBackKey;
+        }
+
+        if (hasSoftwareKeys)
+            return "true";
+        return "false";
     }
 
 }

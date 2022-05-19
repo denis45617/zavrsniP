@@ -35,17 +35,17 @@ public class RelativeNumberTask extends NumberTask {
         try {
             switch (this.getTaskType()) {
                 case EQUAL:
-                    return Integer.parseInt(fallingObject.getText()) == this.relativeNumber;
+                    return fallingObject.getValue() == this.relativeNumber;
                 case GREATER:
-                    return Integer.parseInt(fallingObject.getText()) > this.relativeNumber;
+                    return fallingObject.getValue()  > this.relativeNumber;
                 case GREATEREQUAL:
-                    return Integer.parseInt(fallingObject.getText()) >= this.relativeNumber;
+                    return fallingObject.getValue()  >= this.relativeNumber;
                 case LOWER:
-                    return Integer.parseInt(fallingObject.getText()) < this.relativeNumber;
+                    return fallingObject.getValue()  < this.relativeNumber;
                 case LOWEREQUAL:
-                    return Integer.parseInt(fallingObject.getText()) <= this.relativeNumber;
+                    return fallingObject.getValue()  <= this.relativeNumber;
                 case DIVIDABLE:
-                    return Integer.parseInt(fallingObject.getText()) % this.relativeNumber == 0;
+                    return fallingObject.getValue()  % this.relativeNumber == 0;
             }
         } catch (Exception e) {  //trenutno kad se switcha sa rječi na brojeve pokuša se castati text na integer pa baca exception
             //napraviti vrijeme prijelaza između stvari da to ne bude slučaj

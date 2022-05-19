@@ -183,12 +183,13 @@ Podpoglavlje 1.2
 	koristi se pokrata u vidu lambda izraza, dok "this" predstavlja objekt klase View.
 
 		\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
-			this.setOnTouchListener((v, event) -> {
-				if (event.getAction() == MotionEvent.ACTION_MOVE) {
-					saw.setX((int) event.getX());
-				}
-				return true;
-			});
+			 this.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_MOVE 
+					|| event.getAction() == MotionEvent.ACTION_DOWN) {
+                saw.setX((int) event.getX());
+            }
+            return true;
+        });
 		\end{lstlisting}
 		
 	Na ovom programskom kodu potrebno je uočiti da se kontroliranje našeg objekta može dogoditi doticanjem i pomicanjem prsta na bilo kojem dijelu ekrana, no da sam objekt kojeg kontroliramo neće promijeniti 
