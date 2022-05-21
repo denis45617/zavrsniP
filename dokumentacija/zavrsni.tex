@@ -102,14 +102,130 @@ griješio, ukupno vrijeme igranja i slično. Kako bi igra bila dostupna svima ko
 
 
 
-\chapter{Naslov 1}
-Poglavlje 1
+\chapter{Cilj projekta}
+Cilj projekta je izrada mobilne igre za vježbanje matematike popraćene web stranicom koja služi za zadavanje zadataka i pregled rezultata igre. Cilj mobilne igre napraviti je vježbu matematike zanimljiviju učenicima, 
+dok je cilj web stranice učiteljima olakšati zadavanje zadataka, praćenje i pohranu rezultata učenika na jednostavniji način.
 
-\section{Introduction}
-Podpoglavlje 1.1
+	\section{Mobilna igra}
+	Mobilna igra većinski je dio projekta. Kroz ovu igru učenici nižih razreda na zanimljiviji način mogu vježbati određeno gradivo matematike. Igra osim što se može igrati s predefiniram postavkama zadataka također omogućava uređivanje istih
+	te preuzimanje postavki koje su napravljene preko web sučelja za učitelja. Ukoliko učenik igra igru sa preuzetim postavkama napravljenim preko web sučelja, podaci o njegovoj igri bit će dostavljeni učitelju po završetku igre.
+	Iz glavnog menija igre možemo pristupiti glavnom ekranu igre i postavkama.
+		
+		\subsection{Glavni ekran igre}
+		Na glavnom ekranu igre nalazi se sav takoreći učenicima zanimljiv sadržaj, odnosno mjesto gdje se sama igra i igra. Igra je "endless runner" i tematski je zamišljena kao put iz središta zemlje ka dubokom svemiru, odnosno to je ono što pokazuje
+		pozadina koja putuje prema dolje, što stvara efekt putovanja objekta koji se upravlja prema gore. Objekt koji je upravljan moguće je pomicati lijevo-desno i tako skupljati padajuće objekte koje je potrebno skupiti ovisno o trenutnom zadatku,
+		odnosno izbjegavati one koji krše pravila trenutnog zadatka. Padajući objekti konstanto se stvaraju i njihov sadržaj ovisi o tome koji je trenutni zadatak ili koja je trenutna težina igre. Odnosno svaki zadatak osim što ima svoj opis ima i određene
+		parametre, tako bi recimo zadak "skupljaj brojeve veće ili jednake 18", osim navedenog opisa, relativnog broja 18 imao i definirane parametre kao što je minimalna i maksimalna granica iz kojeg seta se brojevi mogu dodjeliti; nadalje, pri većoj 
+		težini igre se na padajućem objektu možda neće prikazati broj direktno, već u obliku matematičke operacije, npr. "29 - 12".
+		\begin{figure}[H]
+			\includegraphics[scale = 0.225]{"slike/igra.png"} 
+			\centering
+			\caption{Ideja igre}
+			\label{fig:idejaigre}
+		\end{figure}
+		
+		Igranjem igre i sakupljanjem objekata koji odgovaraju trenutačnom zadatku učenici skupljaju bodove; te je cilj po završetku igre imati što veći broj bodova. Završetak igre odgovara gubitku tri života.
+		Bodovanje na primjeru  za zadatak "skupljaj parne brojeve" :
+		\begin{itemize}
+				\item  {Igrač je pokupio paran broj : +100 bodova}
+				\item  {Igrač NIJE pokupio paran broj: -100 bodova}
+				\item  {Igrač je pokupio neparan broj: Gubitak života}
+		\end{itemize}
+		
+		S obzirom da se može dogoditi situacija u kojoj se preklapaju dva objekta, odnosno situacija u kojoj se preklapaju objekt koji se ne smije pokupiti i objek koji se mora pokupiti (u ovom slučaju parni i neparni broj); kako se igrač ne bi osjećao
+		zakinutim nakon gubitka 100 bodova zbog objekta kojeg je morao propustiti kako ne bi izgubio jedan život, igrač je za svakih 10 osvježavanja ekrana nagrađen sa jednim bodom. U konačnici ispada da igrač smije propustiti jedan objekt svakih 15 do 20 sekundi
+		kako bi se poništili bonus bodovi sa izgubljenim bodovima za ne skupljanje odgovarajućeg objekta. Preklapanje dva objekta se ne događa toliko često stoga igrač samim trajenjem igre skuplja dodatne bodove.
+		\newline
+		Trenutačni broj bodova prikazan je na vrhu zaslona sa lijeve strane, dok je na desnoj strani prikazan broj života koji odgovara broju sličica srca. Na donjem dijelu ekrana moguće je vidjeti trenutačni zadatak.
+		Svaki zadatak traje od prilike pola minute, a promijena zadatka odvija se na način da prvo prestanu padati novi objekti. Kada više nema padajućih objekata na ekranu, slučajnim odabirom se bira sljedeći zadatak te se tekst novog zadatka
+		pokazuje kako u donjem dijelu ekrana tako i na samoj sredini ekrana na nekoliko sekundi kako bi igrač bio u potpunosti svjestan promjene zadatka. 
 
-\section{Introduction}
-Podpoglavlje 1.2
+		
+		\subsection{Predefinirane postavke}
+		Kako igra ne bi ovisila isključivo o postavkama koje zadaje učitelj, odnosno kako bi se mogla igrati neposredno nakon instalacije, osmišljene su predefinirane postavke koje sadrže zadatke prilagođene ponajviše prvom razredu osnovne škole.
+		Neki od predefiniranih zadataka su: 
+			\begin{itemize}
+				\item  {Skupljaj parne brojeve}
+				\item  {Skupljaj neparne brojeve}
+				\item  {Skupljaj brojeve veće od \textit{x}}
+				\item  {Skupljaj brojeve manje od \textit{x}}
+				\item  {Skupljaj brojeve veće ili jednake \textit{x} koji su parni }
+				\item  {Skupljaj kvadrate}
+				\item  {Skupljaj kružnice}
+				\item {i slično}
+		\end{itemize}
+		Osim što igra omogućava ove i druge predefinirane postavke, također omogućava i njihovo uređivanje, odnosno njihovo uključivanje te isključivanje; kako bi si učenici samostalno mogli prilagoditi zadatke na koje žele staviti naglasak dok vježbaju.
+		Svako uključivanje, odnosno isključivanje navedenog zadatka ostaje zapamćeno i koristi se pri pokretanju igre.
+		
+		\begin{figure}[H]
+			\includegraphics[scale = 0.1]{"slike/defaulttasks.png"} 
+			\centering
+			\caption{Ideja igre}
+			\label{fig:idejaigre}
+		\end{figure}
+		
+
+		\subsection{Preuzete postavke}
+		Osim predefiniranih postavki igra nudi mogućnost preuzimanja postakvi izrađenih preko web stranice. Kako bi igrač mogao preuzeti postavke prvo treba postaviti korisničko ime te nakon toga u za to previđeno polje upisati identifikator postavki
+		koje želi preuzeti i za kraj pritisnuti tipku za preuzimanje postavki. 
+	
+		\begin{figure}[H]
+			\includegraphics[scale = 0.2]{"slike/downloadsettings.png"} 
+			\centering
+			\caption{Preuzimanje postavki s interneta}
+			\label{fig:preuzimanjepostavki}
+		\end{figure}
+		
+		Jednom kad je igrač preuzeo postavke s interneta sada mu se na izbor u glavnom meniju postavki pruža mogućnost odabira koje postavke želi koristiti; one preuzete s interneta ili one predefinirane!
+		
+				\begin{figure}[!htb]
+			\begin{minipage}{0.48\textwidth}
+				\centering
+				\includegraphics[scale=0.25]{"slike/usedefault.jpg"} 
+				\caption{Odabir korištenja predefiniranih postavki}
+				\label{fig:saw1}
+			\end{minipage}\hfill
+			\begin{minipage}{0.48\textwidth}
+				\centering
+				\includegraphics[scale=0.25]{"slike/usedownloaded.jpg"} 
+				\caption{Odabir korištenja preuzetih postavki}
+				\label{fig:saw2}
+			\end{minipage}
+		\end{figure}
+		
+		
+
+	\section{Web stranica}
+	Podpoglavlje 1.2
+	\subsection{Izrada postavki}
+	\subsection{Pregled rezultata}
+
+\chapter{Slične igre}
+Poglavlje 2 - prednosti i nedostatci svake, screenshot, url
+
+	\section{Slična igra 1}
+	Podpoglavlje 2.1
+	
+	\section{Slična igra 2}
+	Podpoglavlje 2.2
+
+	\section{Slična igra 3}
+	Podpoglavlje 2.3
+
+	\section{Slična igra 4}
+	Podpoglavlje 2.4
+
+\chapter{Korištene tehnologije}
+Poglavlje 3
+
+	\section{Java}
+	Podpoglavlje 3.1
+	
+	\section{Node.js}
+	Podpoglavlje 3.2
+
+	\section{HTML, CSS}
+	Podpoglavlje 3.3
 
 \chapter{Implementacija mobilne igre}
 
@@ -134,7 +250,7 @@ Podpoglavlje 1.2
 			\centering
 			\caption{Pomicanje pozadine}
 			\label{fig:pomicanjepozadine}
-		\end{figure}
+	\end{figure}
 		
 
 	

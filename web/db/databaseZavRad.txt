@@ -40,7 +40,7 @@ CREATE TABLE Results
   time VARCHAR(500) NOT NULL,
   highscore INT NOT NULL,
   player_nickname VARCHAR(40) NOT NULL,
-  result_text VARCHAR(4000) NOT NULL,
+  result_text VARCHAR(65000) NOT NULL,
   game_code INT NOT NULL,
   PRIMARY KEY (result_id),
   FOREIGN KEY (game_code) REFERENCES Game_Settings(game_code)

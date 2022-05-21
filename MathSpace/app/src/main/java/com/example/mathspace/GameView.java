@@ -200,7 +200,7 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     private void levelUp() {
-        int howToChange = (int) (Math.random() * 2.1); // 0 = frequency, 1 = max speed
+        int howToChange = (int) (Math.random() * 2.2); // 0 = frequency, 1 = max speed
 
         if (howToChange == 0 && (fallingObjectTimerPeriod > 400)) {
             if (score < 20000)
@@ -325,7 +325,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void levelDownLife() {
         FallingObject.setMinSpeed(FallingObject.getMinSpeed() - 4);
-        FallingObject.setHowOftenComplexText(FallingObject.getHowOftenComplexText() - 0.3);
+        FallingObject.setHowOftenComplexText(FallingObject.getHowOftenComplexText() - 0.2);
         decreaseFrequency(200);
     }
 

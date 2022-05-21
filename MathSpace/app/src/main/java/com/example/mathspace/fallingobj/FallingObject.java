@@ -12,7 +12,7 @@ public abstract class FallingObject {
     protected boolean destroyed;
     protected int speed;
     protected int[] color = new int[3];
-    protected static double howOftenComplexText;
+    protected static double howOftenComplexText = 0.1;
     private static double minSpeed = 5;
 
     public abstract void drawFallingObject(Canvas canvas);
@@ -43,7 +43,7 @@ public abstract class FallingObject {
     }
 
     public static void setHowOftenComplexText(double howOftenComplexText) {
-        FallingObject.howOftenComplexText = Math.max(howOftenComplexText, 0);
+        FallingObject.howOftenComplexText = Math.max(howOftenComplexText, 0.1);
     }
 
     public static double getHowOftenComplexText() {
