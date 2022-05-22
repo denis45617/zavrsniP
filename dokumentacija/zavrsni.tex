@@ -153,14 +153,14 @@ dok je cilj web stranice učiteljima olakšati zadavanje zadataka, praćenje i p
 				\item  {Skupljaj kvadrate}
 				\item  {Skupljaj kružnice}
 				\item {i slično}
-		\end{itemize}
+			\end{itemize}
 		Osim što igra omogućava ove i druge predefinirane postavke, također omogućava i njihovo uređivanje, odnosno njihovo uključivanje te isključivanje; kako bi si učenici samostalno mogli prilagoditi zadatke na koje žele staviti naglasak dok vježbaju.
 		Svako uključivanje, odnosno isključivanje navedenog zadatka ostaje zapamćeno i koristi se pri pokretanju igre.
 		
 		\begin{figure}[H]
 			\includegraphics[scale = 0.1]{"slike/defaulttasks.png"} 
 			\centering
-			\caption{Ideja igre}
+			\caption{Ideja Uključivanje/isključivanje predefiniranih postavki}
 			\label{fig:idejaigre}
 		\end{figure}
 		
@@ -196,11 +196,74 @@ dok je cilj web stranice učiteljima olakšati zadavanje zadataka, praćenje i p
 		
 
 	\section{Web stranica}
-	Podpoglavlje 1.2
-	\subsection{Izrada postavki}
-	\subsection{Pregled rezultata}
+	Web stranica drugi je dio projekta, ujedno i manji. Kroz ovu web stranicu učiteljima se na jednostavan način omogućava izrada zadataka, odnosno postavljanje pravila na osnovu kojih će se zadaci automatski generirati.
+	Osim zadavanja zadataka stranica nudi i mogućnost pregleda rezultata pojedinih učenika i dodatne dalje svakog igranja. Za mogućnost izrade postavki, stoga i pregled rezultata igrara korisnik se mora prvo prijaviti u sustav, odnosno
+	registrirati ukoliko nema korisnički račun.
 
-\chapter{Slične igre}
+	\subsection{Izrada postavki}
+	Izrada postavki generalno je jednostavan i izravan (engl. \textit{straightforward}) proces. Nakon logiranja u sustav korisniku se nudi opcija "\textit{My Games}" na izbornoj traci. Odabirom ove stavke korisniku se prikazuju sve
+	njegove postojeće grupe postavke igara i mogućnost izrada nove grupe postavki. 
+	
+		\begin{figure}[H]
+			\includegraphics[scale = 0.7]{"slike/izradapostavki.png"} 
+			\centering
+			\caption{My Games}
+			\label{fig:izradapostavki}
+		\end{figure}
+	
+	Odabir postojeće grupe postavki moguće je učiniti pritiskom na gumb "\textit{Pick}" uz postavke koje želimo odabrati, odnosno ukloniti grupu postavki klikom na  gumb "\textit{X}". Izrada nove grupe postavki može se napraviti klikom na gumb
+	 "\textit{Create new settings}". 
+	 
+
+	 Nakon odabira određene grupe postavki korisniku se nudi mogućnost pregleda do sad napravljenih postavki pa tako i dodavanja nove postavki u odabranu grupu. Kako bi korisnik dodao novu postavku u grupu postavki prvo se treba odlučiti koji 
+	 tip postavke želi dodati. 
+	 	\begin{figure}[H]
+			\includegraphics[scale = 0.7]{"slike/zadavanjepostavki.png"} 
+			\centering
+			\caption{Pregled i izrada postavki unutar neke grupe postavki}
+			\label{fig:pregledpostavki}
+		\end{figure}
+	Na primjer, ukoliko korisnik želi zadati postavku koja od igrača mobilne igre traži da skuplja brojeve djeljive sa tri, potrebno je pritisnuti \textit{Create new relative number task} nakon čega se prikazuje novi ekran koji to omogućava.
+	\begin{figure}[H]
+		\includegraphics[scale = 0.9]{"slike/zadavanjekonkretnepostavke.png"} 
+		\centering
+		\caption{Izrada konkretne postavke}
+		\label{fig:izradapostavkedjeljenje}
+	\end{figure}
+		
+		Web stranica od korisnika traži unos teksta koji će opisivati zadatak, odabir tipa zadatka, donju i gornju granicu iz koje će se generirati brojevi na padajućim objektima, relativan broj odnosno, s obzirom da želimo zadati da je zadatak
+		skupljati brojeve djeljive sa 3 - to je u ovom slučaju broj 3! Za kraj nudi se opcija promjene relativnog broja po završetku zadatka (novi broj slučajno bi se odredio iz skupa [lowerbound number, upperbound number]), što u ovom slučaju ne bismo
+		htjeli. Ova opcija najviše je pogodna za zadatke koji od korisnika traže da skupljaju brojeve veće/manje od relativnog broja. Za završetak izrade postavke potrebno je odabrati \textit{Add task to game}.
+	
+	\subsection{Pregled rezultata}
+	Nakon igranja igre na mobilnoj igri s preuzetim postavkama rezultati igre i njeni detalji postaju vidljivi korisniku web stranice koji je napravio korištene postavke. 
+	Površni pregled koji prikazuje zapise o igrama prikazuje samo ime igrača, vrijeme prihvata podataka i konačni rezultat.
+	\begin{figure}[H]
+		\includegraphics[scale = 0.9]{"slike/pregledsvihrezultata.png"} 
+		\centering
+		\caption{Pregled svih rezultata}
+		\label{fig:pregledsvihrezultata}
+	\end{figure}
+	
+	Odabirom gumba \textit{See details} korisniku web stranice pruža se mogućnost pregleda više detalja, odnosno mogućnost pregleda detalja cijelog tijek igre. Konkretnije omogućen je uvid u svaki značajniji događaj i njegovo vrijeme.
+	Značajniji događaji su:
+		\begin{itemize}
+				\item  {Promjena zadatka - prikazano crnom bojom}
+				\item  {Skupljen odgovarajući padajući objekt (+100 bodova) - prikazano zelenom bojom}
+				\item  {Nije skupljen odgovarajući padajući objekt (-100 bodova) - prikazano naračastom bojom}
+				\item  {Skupljen neodgovarajući objekt (izgubljen život) - prikazano crvenom bojom}
+		\end{itemize}
+	Radi jednostavnosti pregleda događaja igre, određeni događaji su istaknuti određenom bojom.
+	
+	\begin{figure}[H]
+		\includegraphics[scale = 0.9]{"slike/detaljanpregledrezultata.png"} 
+		\centering
+		\caption{Detaljan pregled jedne igre}
+		\label{fig:pregledjedneigre}
+	\end{figure}
+	
+
+\chapter{Usporedba sa sličnim igrama}
 Poglavlje 2 - prednosti i nedostatci svake, screenshot, url
 
 	\section{Slična igra 1}
