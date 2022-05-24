@@ -331,15 +331,29 @@ Igrica omogućava odabir tipa zadataka, odnosno zadatak tipa "skupljaj parne bro
 prikazuju samo odgovori, no način igranja je i dalje isti; 3 trake sa neresponzivnim kontrolama. Ova igrica je potencijalno "endless runner". 
 
 \chapter{Korištene tehnologije}
-Poglavlje 3
+U sklopu ovog rada korištena je nekolicina različitih tehnologija. Dok su odabrane opisane u nastavku, valja naglasiti da ove tehnologije nisu nužno najbolje. U svrhu izrade ovog rada birane su tehnologije koje su prikladnije za samu kompleksnost izrade rada.
+Konkretnije, korištenje poznatog pokretačkog stroja (engl. \textit{game engine}) Unity značajno bi olakašlo izradu igre. Jedan od takvih primjera opisan je u poglavlju 5.1. "Implementacija mobilne igre - Pozadina". 
+U sklopu ovog rada programski jezik Java jedini je jezik koji se koristi za potrebe izrade mobilne igre. Iako je mobilna igra djelomično samostalna, odnosno ne treba joj web poslužitelj kako bi se mogla igrati sa pretpostavljenim postavkama, za potrebe 
+preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js server. Ovaj server koristi se i za potrebe web stranice, dok je sam prikaz web stranice napravljen korištenjem EJS.
+
 
 	\section{Java}
-	Podpoglavlje 3.1
+	Java je objektno orijentirani programski jezik objavljen krajem 1995. kada tvrka Sun Microsystems objavljuje prvu verziju ovog programskog jezika. Programski jezik java ozmišljen je, odnosno njegova je ideja i velika prednost platformska neovisnost,
+	što znači da se jednom prevedeni programski kod može pokrenuti na bilo kojem sustavu, odnosno računalu. No, ovo za sobom povlači to da se program ne može direktno prevesti u strojni kod određenog procesora, već na svakom računalu treba biti
+	instalirana podrška za izvođenje Java programa (JVM - Java Virtual Machine). 
+	Jedna od prednosti programskog jezika Java je i ta da uz to što jezik biva kontinuirano nadograđivan, generalno je unatrag kompatiblan (engl. \textit{backwards compatible}), što znači da će se jednom napisani kod moći pokrenuti i nakon nove nadogradnje.
+	Kao česti nedostatak programskog jezika Java navodi se "verbosity" odnosno opširnost pisanja koda, koju ja osobno smatram kao prednost jer u konačnici pruža preglednost koda i lakše razumijevanje, čemu doprinosi i statičko tipiziranje, odnosno 
+	potreba za navođenjem svakog tipa podatka eksplicitno. 
+	
+	Programski jezik Java veliku popularnost doživljava pojavom Android uređaja, gdje je dugotrajni niz godina bio glavni jezik za razvoj aplikacija. Prethodnih godina, veliki zamah za razvoj android mobilnih aplikacija doživljava programski jezik 
+	Kotlin koji se u konačnici oslanja na JVM, no uvodi razne sintaksne pokrate. 
+	
+	
 	
 	\section{Node.js}
 	Podpoglavlje 3.2
 
-	\section{HTML, CSS}
+	\section{HTML, CSS, EJS}
 	Podpoglavlje 3.3
 
 \chapter{Implementacija mobilne igre}
