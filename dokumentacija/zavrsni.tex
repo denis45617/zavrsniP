@@ -24,6 +24,8 @@
 
 \usepackage{float}
 \usepackage{setspace}
+
+\usepackage{pdfpages}
 \restylefloat{table}
 
 
@@ -73,7 +75,7 @@ numberstyle = \tiny,
 \maketitle
 
 % Ispis stranice s napomenom o umetanju izvornika rada. Uklonite naredbu \izvornik ako želite izbaciti tu stranicu.
-\izvornik
+\includepdf[pages={1}]{izvornik.pdf}
 
 % Dodavanje zahvale ili prazne stranice. Ako ne želite dodati zahvalu, naredbu ostavite radi prazne stranice.
 \zahvala{}
@@ -265,32 +267,30 @@ dok je cilj web stranice učiteljima olakšati zadavanje zadataka, praćenje i p
 
 \chapter{Usporedba sa sličnim igrama}
 Postoje mnogobrojne Android igre dostupne na Google Play marketu koje kao su prikazane kao igre koje služe u edukativne svrhe, odnosno specifično kao igre za vježbanje matematike.  U nastavku je usporedba igre koja je tema ovog rada sa naizgled 
-sličnim postojećim igrama; uz to valja i napomenuti da je po slobonoj procijeni više od 90% matematičkih igara bazirano na tipu kviza sa 4 ponuđena odgovora. Prednost igre koja je tema ovog rada nad navedenim igrama je mogućnost pregleda tijeka događaja.
+sličnim postojećim igrama; uz to valja i napomenuti da je po slobonoj procijeni više od 90 posto matematičkih igara bazirano na tipu kviza sa 4 ponuđena odgovora. Prednost igre koja je tema ovog rada nad navedenim igrama je mogućnost pregleda tijeka događaja.
 	
 	\section{Toon Math Runner} 
 	"\textit{Toon Math Runner}" (u nastavku TMR) je vizualno lijepa 2.5D mobilna igra za vježbanje matematike. Ova igra nudi opciju otključavanja raznih karaktera u zamijenu za novčiće koje igrač može skupljati. Igrač upravlja karakterom
 		na način da upravljenog karaktera može pozicionirati u jednoj od tri linije, osim toga nudi se mogućnost skakanja i saginjanja. Ova igrica uvelike podsjeća na popularnu igricu "\textit{Subway Surfers}" kako po načinu igranja, tako i vizualno.
-	
-		\begin{figure}[!htb]
-			\begin{minipage}{0.48\textwidth}
-				\centering
-				\includegraphics[scale=0.15]{"slike/igre/toonmath1.png"} 
-				\caption{Većina igre - skupljanje novčića}
-				\label{fig:skupljewnjenovcica}
-			\end{minipage}\hfill
-			\begin{minipage}{0.48\textwidth}
-				\centering
-				\includegraphics[scale=0.15]{"slike/igre/toonmath2.png"} 
-				\caption{Matematički zadatak}
-				\label{fig:toonmathmath}
-			\end{minipage}
-		\end{figure}
+	 Nažalost, TMR nije tkz. "endless runner" uz to što niti vježbanje matematike nije u glavnom fokusu. Glavni fokus igre je sakupljanje novčića uz pojavljivanje jednog matematičkog zadatka u prosjeku jednom u pola minute. Osim što se ova igra 
+	 pokušava nazvati igrom za vježbanje matematike, valja naglasiti da je velika zastupljenost reklama u istoj. \begin{figure}[!htb]
+		\begin{minipage}{0.48\textwidth}
+			\centering
+			\includegraphics[scale=0.15]{"slike/igre/toonmath1.png"} 
+			\caption{Većina igre - skupljanje novčića}
+			\label{fig:skupljewnjenovcica}
+		\end{minipage}\hfill
+		\begin{minipage}{0.48\textwidth}
+			\centering
+			\includegraphics[scale=0.15]{"slike/igre/toonmath2.png"} 
+			\caption{Matematički zadatak}
+			\label{fig:toonmathmath}
+		\end{minipage}
+	\end{figure}
+ 
+	 Prednost ove igre u odnosu na igru ovog rada je svakako vizualni izgled i mogućnost napretka u vidu otključavanja drugih karaktera, dok je nedostatak manjak matematičkih zadataka te količina reklama. 
 		
-		 Nažalost, TMR nije tkz. "endless runner" uz to što niti vježbanje matematike nije u glavnom fokusu. Glavni fokus igre je sakupljanje novčića uz pojavljivanje jednog matematičkog zadatka u prosjeku jednom u pola minute. Osim što se ova igra 
-		 pokušava nazvati igrom za vježbanje matematike, valja naglasiti da je velika zastupljenost reklama u istoj. 
-		 
-		 Prednost ove igre u odnosu na igru ovog rada je svakako vizualni izgled i mogućnost napretka u vidu otključavanja drugih karaktera, dok je nedostatak manjak matematičkih zadataka te količina reklama.
-		 
+
 	
 	\section{Math jumps: Math Games}
 	"\textit{Math jumps: Math Games}" (u nastavku MJMG) je vizualno lijepa 2.5D mobilna igrica za vježbanje matematike. Ova igrica osim što je vizualno ugodna, osmišljena je na zanimljiv način. Igrač koji igra igricu predstavljen je kao karakter
@@ -351,10 +351,27 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	
 	
 	\section{Node.js}
-	Podpoglavlje 3.2
-
+	Node.js je \textit{open-source, cross-platform, back-end JavaScript runtime} okruženje i izvršava JavaScript kod izvan web-preglednika. "Node.js je incijalno napisan od strane  Ryan Dahl u 2009. godini, otprilike 13 godina poslije predstavljanja
+	prvog  \textit{server-side} Javascript okruženja." [SAD OVDJE LINK NA IZVOR] (wiki, node.js)
+	
+	Node.js omogućava jednostavnu izradu Web servera i drugih mrežnih alata korištenjem JavaScripta uz razne biblioteke. Iako Node.js nativno podržava samo JavaScript, programski kod je moguće pisati i u programskim jezicima koju su prevodivi u JavaScrpt kao 
+	što je to npr. TypeScript, odnosno Dart. Node.js koristi skriptiranje na poslužiteljskoj strani; što znači da se skripte pokreću na poslužitelju, gdje se i generira dinamički sadržaj web stranice koji se potom šalje korisnikovom web pregledniku. 
+	
 	\section{HTML, CSS, EJS}
-	Podpoglavlje 3.3
+	HTML je jezik za označavanje (engl. \textit{markup}) koji opisuje strukturu web stranice koju web preglednici koriste za strukturirani prikaz web stranice. HTML elementi su elementi za koje se može reći da predstavljaju blokove koje je moguće slagati
+	i ugnježđavati jedan unutar drugoga. HTML pruža semantiku kako za oblikovanje teksta tako i za direktan unos sadržaja na stranicu poput slika.
+	Dva su glavna tipa oznake; prvi tip je takav da okružuje tekst. Npr sa: 
+		\begin{lstlisting}[language = HTML , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+		<h1> Naslov </h1>
+		\end{lstlisting}
+		definirao bi se prikaz jednog naslova. Element se otvara oznakom "<h1>" poslije koje slijedi sadržaj koji se u konačnici zatvara sa "</h1>. Drugi tip elementa je samozatvarajuć kao što je "<br />" koji predstavlja prelom retka.
+
+	HTML kao jezik veoma je ograničen jezik kada se govori o stiliziranju te se za te potrebe koristi jezik CSS. CSS je jezik koji dodatno opisuje kako se određeni elementi trebaju prikazivati. Neke od primjena CSSa je opisivanje boja, pozadina, obruba,
+	margina, raznih udaljenosti, širine, visine, poravnanja, fontova i raznih drugih detalja. CSS kod može se izravno postavljati na svaki element, može se definirati unutar iste datoteke ili se može uključiti kao vanjska biblioteka. 
+	
+	\textit{Embedded JavaScript templates} (nadalje EJS) je jednostavan i elegantan jezik za pisanje HTML predložaka koristeći čisti JavaScript kod. Prilikom izvođenja EJS izvodi dio JavaScript koda kao što i zamijenuje varijable stvarnim vrijednostima te
+	u konačnici stvara čistu HTML, CSS stranicu.
+	
 
 \chapter{Implementacija mobilne igre}
 
@@ -450,7 +467,6 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	Sljedeće dvije slike prikazuju objekt s kojim skupljamo padajuće objekte, odnosno zajedno prikazuju oštricu koja se rotira velikom brzinom.
 	
 	
-	
 		\begin{figure}[!htb]
 			\begin{minipage}{0.48\textwidth}
 				\centering
@@ -467,6 +483,64 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 		\end{figure}
 	
 	\section{Padajući objekti}
+	Padajući objekti implementirani su kao apstraktna klasa "FallingObject" čije su konkretne implementacije "Square" (kvadrat) i "Circle" (Krug). Ova apstraktna klasa definira nekolicinu zajedničkih vrijednosti, 
+	odnosno vrijednost koju treba imati svaki padajući element kao što su položaj padajućeg objekta, njegova boja, brzina i slično.
+	Brzina je slučajna vrijednost koja je padajućem objektu pridjeljena prilikom stvaranja te ona iznosi između X i X + slučajan broj između 0 i 10, gdje X označava minimalnu brzinu kojom objekt pada i ta vrijednost
+	varijable X ovisi o trenutnoj težini igre, odnosno iznosi 5 na samom početku igre. Taj broj, slično kao i spuštanju pozadine označava za koliku udaljenost će se ovaj objekt pomaknuti prema dolje svakim osvježavanjem ekrana.
+	Uz to nudi i razne konkretne implementacije metoda te metode koje različite konkretne implementacije ove apstraktne klase trebaju nadjačati, odnosno ponuditi svoje implementacije. 
+	
+	
+		\begin{figure}[!htb]
+			\begin{minipage}{0.48\textwidth}
+				\centering
+				\includegraphics[scale=0.6]{"slike/square.png"} 
+				\caption{Primjer padajućeg objekta - Kvadrat}
+				\label{fig:squre}
+			\end{minipage}\hfill
+			\begin{minipage}{0.48\textwidth}
+				\centering
+				\includegraphics[scale=0.6]{"slike/circle.png"} 
+				\caption{Primjer padajućeg objekta - Krug}
+				\label{fig:circle}
+			\end{minipage}
+		\end{figure}
+		
+		Generalno govoreći jedina razlika između ove dvije konkretne implementacije abstraktne klase "FallingObject" je sami oblik padajućeg objekta i način na koji ih opisujemo, stoga se abstraktne metode metode također odnose na sami oblik objekta.
+		Tu su najznačanije dvije metode, jedna služi za samo iscrtavanje objekta na ekranu, dok druga provjerava da li se taj objekt i objekt za skupljanje drugih objekta preklapaju. Odnosno provjerava da li je korisnik skupio padajući objekt.
+		Sadržaj svakog padajućeg objekta ovisi o trenutnom zadataku. 
+		
+	\subsection{Provjera kolizije - Kružnica}
+	S obzirom da je padajući objekt "Circle" pa tako i sam objekt s kojim skupljamo padajuće objekte kružnog oblika, koliziju ovih objekta provjerava se čistim matematičkim putem. 
+	
+		\begin{figure}[H]
+			\includegraphics[scale=0.6]{"slike/circlekolizija.png"} 
+			\centering
+			\caption{Provjera kolizije za objekte kružnog oblika}
+			\label{fig:kolizijacircle}
+		\end{figure}
+	
+	Na lijevom dijelu slike vidimo dva objekta koja se ne preklapaju. To matematičkim putem dokazujemo na način da pokažemo da kvadrat udaljenosti središa ova dva objekta nije manji ili jednak kvadratu sume radiusa. Analogno, na desnom dijelu slike
+	mogu se vidjeti dvije kružnice koje imaju točke preklapanja i za njih se može vidjeti da je kvadrat udaljenost središta manji no kvadrat sume radiusa. 
+	
+	\subsection{Provjera kolizije - Kvadrat}
+	Provjera objekta s kojim skupljamo padajuće objekte i kvadrata kao padajućeg objekta više se ne može provjeriti na isti način kao i za kružnicu jer se ovaj problem svodi na preklapanje kružnice i kvadrata.
+	Ovaj problem generalno se ne može na lijep način prikazati matematički već je u ovom slučaju implementiran tako da se uzme 8 točaka s objekta s kojim skupljamo padajuće objekte i za svaku od tih 8 točaka provjeravamo nalazi li se unutar 
+	kvadrata (padajućeg objekta). Ukoliko se samo jedna točka nalazi unutar kvadrata dva objekta se preklapaju. 
+	
+			\begin{figure}[H]
+			\includegraphics[scale=0.6]{"slike/squarekolizija.png"} 
+			\centering
+			\caption{Provjera kolizije za objekte oblika kvadrata}
+			\label{fig:kolizijasquare}
+		\end{figure}
+		Na lijevom dijelu slike prikazani su objekti koji se ne preklapaju. Dok se na desnom dijelu slike vide dva objekta koja se preklapaju što je u igri dokazano tako što je pokazano da je jedna od točaka objekta za skupljanje unutar padajućeg kvadrata.
+	
+	\section{Zadaci}
+	
+	
+	
+	
+	
 
 \chapter{Baza podataka}
 	Baze podataka su organizirane kolekcija podataka koje omogućavaju laki pristup podacima, uređivanje podataka i upravljanje istih. U sklopu ovog projekta koristio se

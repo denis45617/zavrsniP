@@ -76,23 +76,4 @@ public class Saw {
         this.y = y;
     }
 
-    public List<Point> getPoints() {
-        List<Point> points = new LinkedList<>();
-
-        int sawCenterX = this.getCenterX();
-        int sawCenterY = this.getCenterY();
-        int sawRadius = this.getRadius();
-        int xyNE = (int) (sawRadius/1.4142);
-
-        points.add(new Point(sawCenterX - sawRadius, sawCenterY));  //west
-        points.add(new Point(sawCenterX + sawRadius, sawCenterY));  //north
-        points.add(new Point(sawCenterX, sawCenterY-sawRadius));    //east
-        points.add(new Point(sawCenterX, sawCenterY+sawRadius));    //south
-        points.add(new Point(sawCenterX+xyNE, sawCenterY+xyNE)); //north-east
-        points.add(new Point(sawCenterX-xyNE, sawCenterY-xyNE)); //south-west
-        points.add(new Point(sawCenterX+xyNE, sawCenterY-xyNE)); //south-east
-        points.add(new Point(sawCenterX-xyNE, sawCenterY+xyNE)); //north-west
-
-        return points;
-    }
 }

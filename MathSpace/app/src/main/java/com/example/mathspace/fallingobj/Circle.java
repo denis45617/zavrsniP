@@ -42,20 +42,15 @@ public class Circle extends FallingObject {
 
     }
 
-
     @Override
-    public boolean checkCollision(Saw saw) {  //https://www.geeksforgeeks.org/check-two-given-circles-touch-intersect/
+    public boolean checkCollision(Saw saw) {
         int sawCenterX = saw.getCenterX();
         int sawCenterY = saw.getCenterY();
         int sawRadius = saw.getRadius();
 
-        int distSq = (int) (Math.pow(sawCenterX - this.getCenterX(), 2) +
-                Math.pow(sawCenterY - this.getCenterY(), 2));
-        int radSumSq = (sawRadius + this.radius) * (sawRadius + this.radius);
-        if (distSq == radSumSq)
-            return true;
-        return distSq <= radSumSq;
-
+        int dist2 = (int) (Math.pow(sawCenterX - this.getCenterX(), 2) + Math.pow(sawCenterY - this.getCenterY(), 2));
+        int radSum2 = (int) Math.pow((sawRadius + this.radius), 2);
+        return dist2 <= radSum2;
     }
 
     @Override

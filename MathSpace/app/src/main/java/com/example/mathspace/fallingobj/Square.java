@@ -62,7 +62,22 @@ public class Square extends FallingObject {
 
     @Override
     public boolean checkCollision(Saw saw) {
-        List<Point> points = saw.getPoints();
+        List<Point> points = new LinkedList<>();
+
+        int sawCenterX = saw.getCenterX();
+        int sawCenterY = saw.getCenterY();
+        int sawRadius = saw.getRadius();
+        int xyNE = (int) (sawRadius / 1.4142);
+
+        points.add(new Point(sawCenterX - sawRadius, sawCenterY));  //west
+        points.add(new Point(sawCenterX + sawRadius, sawCenterY));  //north
+        points.add(new Point(sawCenterX, sawCenterY - sawRadius));    //east
+        points.add(new Point(sawCenterX, sawCenterY + sawRadius));    //south
+        points.add(new Point(sawCenterX + xyNE, sawCenterY + xyNE)); //north-east
+        points.add(new Point(sawCenterX - xyNE, sawCenterY - xyNE)); //south-west
+        points.add(new Point(sawCenterX + xyNE, sawCenterY - xyNE)); //south-east
+        points.add(new Point(sawCenterX - xyNE, sawCenterY + xyNE)); //north-west
+
         for (Point point : points) {
             if (rect.contains(point.getX(), point.getY()))
                 return true;
