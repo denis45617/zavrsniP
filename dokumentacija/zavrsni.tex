@@ -536,10 +536,49 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 		Na lijevom dijelu slike prikazani su objekti koji se ne preklapaju. Dok se na desnom dijelu slike vide dva objekta koja se preklapaju što je u igri dokazano tako što je pokazano da je jedna od točaka objekta za skupljanje unutar padajućeg kvadrata.
 	
 	\section{Zadaci}
+	Zadaci su definirani apstraktnom klasom "Task". Ova klasa u sebi čuva tekst zadatka te najvažnije nudi metode koje svaki konkretni zadatak treba nadjačati. Gdje su najznačanije sljedeće metode:
+	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	public abstract boolean checkCollectedIsValid(FallingObject fallingObject);
+	public abstract FallingObject makeFallingObject();
+	\end{lstlisting}
+	Konkretne implementacije ove apstraktne klase trebaju ponuditi svoje implementacije
+	 ovih metoda tako da metoda "checkCollectedIsValid" za primljeni padajući objekt (fallingObject) provjerava da li je skupljeni objekt u skladu sa postavljenim zadatkom ovisno o tome kako je definiran sam konkretni
+	 zadatak. Slično tome, metoda "makeFallingObject" stvara padajući objekt na zahtjev;  sadržaj tog padajućeg objekta ovisiti će o trenutnom zadatku. Izvedena su 4 osnovna (primitiva) tipa zadatka iz komponente "Task"
+	 "NumberTask" koji se nadalje dijeli na "RelativeNumberTask" i "UnrelativeNumberTask", "ShapeTask" te "WordsTask". Osim osnovnih tipova zadatak definiran je i "ComplexTask"  koji je zapravo predstavlja kompozit (grupu)
+	 osnovnih tipova zadatak.
+	 Tip zadatka "RelativeNumberTask" definiran je sa donjom i gornjom granicom iz koje će se brojevi generirati, relativnim brojem, tj. brojem u odnosu na kojeg će se operacija gledati, samom operacijom te
+	 zastavicom koja govori mijenja li se relativan broj nakon promjene zadatka. Ukoliko je zastavica postavljena nakon promjene zadatka novi relativni broj bit će slučajni broj iz zadanog raspona. Tip zadatka
+	 "UnelativeNumberTask" generalno je sličan tipu zadatka "RelativeNumberTask" no ovaj tip zadatka jednostavno nema relativan broj. Primjer tipa "ShapeTask" zadatka je "Skupljaj kvadrate", odnosno jednostavno ovisi
+	 o obliku padajućeg objekta. Tip zadatka "WordsTask" omogućava zadatke poput "Skupljaj geometrijske likove" tako što u konstruktoru prima dvije liste riječi. Listu riječi koja sadržava ispravne odgovore i listu riječi
+	 koja sadrži neispravne odgovore. 
+	 
+	 Kompozit "ComplexTask" se koristi za kombiniranje zadataka i primjer takvog zadatka bio bi "Skupljaj brojeve veće od X koji su u kvadratu", tj. ovaj zadatak se sastoji od dva osnovna tipa zadatka, tj.
+	 "RelativeNumberTask" (brojevi veći od X) i "ShapeTask" (u kvadratu). Kako bi skupljeni padajući objekt bio korektno skupljen svaki od zadataka treba biti ispunjen. To se postiže delegacijom operacija na primitivne
+	 komponente, odnosno sastavne komponente (djecu) tog kompozita.
 	
+	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	 @Override
+    public boolean checkCollectedIsValid(FallingObject fallingObject) {
+        for (Task task : tasks) {
+            if (!task.checkCollectedIsValid(fallingObject)) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public FallingObject makeFallingObject() {
+        int randomTask = (int) (Math.random() * tasks.size());
+        return tasks.get(randomTask).makeFallingObject();
+    }
+	\end{lstlisting}
 	
+	\section{Komunikacija sa poslužiteljom}
+	\subsection{Dohvat zadataka}
+
+	\subsection{Slanje rezultata igre}
 	
-	
+\chapter{Implementacija poslužitelja i web stranice}
+		
 	
 
 \chapter{Baza podataka}

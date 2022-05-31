@@ -5,7 +5,7 @@ import com.example.mathspace.fallingobj.FallingObject;
 import java.util.List;
 
 public class ComplexTask extends Task {
-    private List<Task> tasks;
+    private final List<Task> tasks;
     private String taskText;
 
     public ComplexTask(String taskText, TaskType taskType, List<Task> tasks) {
