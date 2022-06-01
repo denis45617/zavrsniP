@@ -573,9 +573,70 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	\end{lstlisting}
 	
 	\section{Komunikacija sa poslužiteljom}
+	Komunikacija sa poslužiteljem ostvarena je koristeći Java klasu "HttpURLConnection". Od generalnih implementacijskih detalja potrebno je glasiti da se sav mrežni promet mora odvijati na sporednoj dretvi. 
+	Podaci koji se šalju s mobitela na poslužitelj šalju se u obliku JSON (JavaScript Object Notation). U sklopu ovog projekta nisu korištenje vanjski \textit{dependency} poput "GSON", već
+	su napisane funkcije potrebne za izradu i tumačenje svakog JSON zapisa koji se može koristiti. U sljedeća dva potpoglavlja opisani su neki detalji o tome.
 	\subsection{Dohvat zadataka}
+	Dohvat zadataka odnosi se na preuzimanje postavki koje su generirane putem web stranice. GET zahtjevom na poslužitelj programskim kodom dohvaća se JSON kojeg mobilna aplikacija prepozaje kao običan tip "String".
+	Navedeni GET zahtjev radi se na bazni URL koji je u ovom slučaju "https://denismath .herokuapp.com/gamecode/mobile/" na koji se dodaje ono što funkcija "getMethod" primi. Npr. Ukoliko korisnik mobilne igre želi preuzeti postavke
+	igre koje imaju kod "123456"  taj parametar bit će "settings/123456"; odnosno GET zahtjev otići će na "https://denismath.herokuapp.com/gamecode/mobile/ settings/123456".
+	Jednom dohvaćene postavke spremaju se u memoriju mobilnog uređaja u obliku tipa String. Pri pokretanju zaslona u kojem igra dohvaćaju se postavke iz memorije te se njihovim tumačenjem stvaraju Java objekti koji predstavljaju zadatke.
+	Ovi objekt spremaju se u listu iz koje će kasnije igra slučajnim odabirom odabirati trenutni zadatatk. Tumačenje preuzetih postavki i generiranje Java objekata svodi se na "lomljenje" sadržaja spremljene String varijable
+	na zadatke koji su bili odvojeni određenim znakovnim nizom, što je u ovom slučaju "\#DELIMITER\#".
+	Za postavke zapisane u obliku:
+	
+	
+	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	taskObjectType:RelativeNumberTask;taskText:Manjiod;taskType:lower;minNumber:-5;maxNumber:55;relativeNumber:21;allowRelativeNumberChange:0\#DELIMITER\#taskObjectType:WordsTask;taskText:geometrijske likove;taskType:WORDCONTAINED;correctWords:kruznica,trokut,kvadrat;incorrectWords:piramida,valjak,sfera
+	\end{lstlisting}
+	s ovim postupkom dobivamo sljedeće zapise koje je nadalje potrebno tumačiti.
+	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	taskObjectType:RelativeNumberTask;taskText:Manjiod;taskType:lower;minNumber:-5;maxNumber:55;relativeNumber:21;allowRelativeNumberChange:0
+	taskObjectType:WordsTask;taskText:geometrijske likove;taskType:WORDCONTAINED;correctWords:kruznica,trokut,kvadrat;incorrectWords:piramida,valjak,sfera
+	\end{lstlisting}
+	Ovaj postupak tumačenja nadalje je jednostavan. Potrebno je tekst rastaviti po točka-zarez, čiji bi rezultat temeljem prvog zapisa bio
+	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	taskObjectType:RelativeNumberTask
+	taskText:Manjiod;taskType:lower
+	minNumber:-5;maxNumber:55
+	relativeNumber:21
+	allowRelativeNumberChange:0
+	\end{lstlisting}
+	Ovaj sadržaj sada se rastavlja po znaku dvotočke te se sav sadržaj dodaje u Map<String,String> gdje je ključ sadržaj prije dvotočke, dok je vrijednost jednaka sadržaju poslije dvotočke.
+	Iz ove mape nadalje je trivijalno izraditi objekt tipa "RelativeNumberTask" koji predstavlja zadatak. 
+
 
 	\subsection{Slanje rezultata igre}
+	Slanje rezultata sličan je proces dohvatu zadataka, no ovog puta se sadržaj šalje u obliku JSON objekta kojeg je potrebno generirati te se ovo slanje rezultata izvod pomoću metode POST. 
+	Za potrebe izvođenja POST metode koristi se funkcija "postMethod" koja prima dodatak koji se pridodaje na bazni link tipa String te Map<String, String> koji sadrži sve podatke. 
+	Izrada cijelog JSON objekta napravljena je sljedećim programskim kodom:
+	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	  StringBuilder makingJson = new StringBuilder();
+            makingJson.append("{");
+
+            for (Map.Entry<String, String> keyvalue : body.entrySet()) {
+                if (!keyvalue.getValue().startsWith("[")) {
+                    makingJson.append("\"")
+					.append(keyvalue.getKey())
+					.append("\":\"")
+					.append(keyvalue.getValue())
+					.append("\",");
+                } else {
+                    makingJson.append("\"")
+					.append(keyvalue.getKey())
+					.append("\":")
+					.append(keyvalue.getValue())
+					.append(",");
+                }
+
+            }
+            //makni zadnji zarez
+            makingJson = new StringBuilder(
+				makingJson.substring(0,makingJson.length() - 1));
+            makingJson.append("}");
+	\end{lstlisting}
+	
+	
 	
 \chapter{Implementacija poslužitelja i web stranice}
 		
