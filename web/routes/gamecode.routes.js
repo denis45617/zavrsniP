@@ -4,6 +4,7 @@ const authHandler = require('./helpers/auth-handler');
 const Setting = require("../models/SettingModel");
 const GameResult = require("../models/ResultModel");
 const bodyParser = require('body-parser');
+const User = require("../models/UserModel");
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
 
@@ -12,7 +13,12 @@ router.get('/display/:id', authHandler, async function (req, res, next) {
     let gameCodeSettings;
     let results;
 
+    if (!await User.checkUserHasGameCode(req.session.user.user_name, req.params.id)) {
+        return res.redirect("/login");
+    }
+
     req.session.game_code = req.params.id;
+
 
     await (async () => {
         gameCodeSettings = await Setting.getGameCodeSettings(req.params.id);
@@ -36,8 +42,14 @@ router.get('/display/details/:id', authHandler, async function (req, res, next) 
     let result_id = req.params.id;
     let logs;
 
+    console.log(req.session.game_code)
+
+
     await (async () => {
         logs = await GameResult.fetchById(result_id);
+
+        if (req.session.game_code !== logs.game_code)
+            return res.redirect("/login");
     })();
 
     logs.result = JSON.parse(logs.result);
@@ -65,6 +77,10 @@ router.get('/createNewRelativeNumberTask', authHandler, async function (req, res
 
 
 router.post('/createNewRelativeNumberTask', authHandler, async function (req, res, next) {
+    if (!await User.checkUserHasGameCode(req.session.user.user_name, req.session.game_code)) {
+        return res.redirect("/login");
+    }
+
     let objekt = "";
     objekt = objekt + "taskObjectType:RelativeNumberTask;";
     objekt = objekt + "taskText:" + req.body.taskText + ";";
@@ -96,6 +112,10 @@ router.get('/createNewUnrelativeNumberTask', authHandler, async function (req, r
 });
 
 router.post('/createNewUnrelativeNumberTask', authHandler, async function (req, res, next) {
+    if (!await User.checkUserHasGameCode(req.session.user.user_name, req.session.game_code)) {
+        return res.redirect("/login");
+    }
+
     let objekt = "";
     objekt = objekt + "taskObjectType:UnrelativeNumberTask;";
     objekt = objekt + "taskText:" + req.body.taskText + ";";
@@ -122,6 +142,10 @@ router.get('/createNewShapeTask', authHandler, async function (req, res, next) {
 });
 
 router.post('/createNewShapeTask', authHandler, async function (req, res, next) {
+    if (!await User.checkUserHasGameCode(req.session.user.user_name, req.session.game_code)) {
+        return res.redirect("/login");
+    }
+
     let objekt = "";
     objekt = objekt + "taskObjectType:ShapeTask;";
     objekt = objekt + "taskText:" + req.body.taskText + ";";
@@ -146,6 +170,10 @@ router.get('/createNewWordsTask', authHandler, async function (req, res, next) {
 });
 
 router.post('/createNewWordsTask', authHandler, async function (req, res, next) {
+    if (!await User.checkUserHasGameCode(req.session.user.user_name, req.session.game_code)) {
+        return res.redirect("/login");
+    }
+
     let objekt = "";
     objekt = objekt + "taskObjectType:WordsTask;";
     objekt = objekt + "taskText:" + req.body.taskText + ";";
@@ -206,8 +234,6 @@ router.get('/mobile/leaderboard/:id', async function (req, res, next) {
 
     return res.send(leaderboard);
 });
-
-
 
 
 module.exports = router;

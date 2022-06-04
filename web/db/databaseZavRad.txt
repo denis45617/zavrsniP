@@ -58,4 +58,4 @@ CREATE INDEX IDX_session_expire ON session(expire);
 
 
 
-INSERT INTO users (user_name,  password) VALUES ('admin', 'admin');
+INSERT INTO users (user_name,  password) VALUES ('admin', '$2b$05$TMz.afHndzdQmS5q9mSA3OUNlIcwpyzIcB0DkNQcQ1Tup8oR3F3cq');

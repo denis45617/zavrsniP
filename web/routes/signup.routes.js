@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require("bcrypt");
 const router = express.Router();
 const User = require('../models/UserModel')
 
@@ -47,7 +48,9 @@ router.post('/', function (req, res, next) {
         }
 
         //registriraj novog korisnika
-        user = new User(req.body.username, req.body.password1);
+        const hash = bcrypt.hashSync(req.body.password1, 5);
+        console.log(hash)
+        user = new User(req.body.username, hash);
         await user.persist();
 
         req.session.user = user;
