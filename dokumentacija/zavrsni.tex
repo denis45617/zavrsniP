@@ -356,6 +356,8 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	
 	Node.js omogućava jednostavnu izradu Web servera i drugih mrežnih alata korištenjem JavaScripta uz razne biblioteke. Iako Node.js nativno podržava samo JavaScript, programski kod je moguće pisati i u programskim jezicima koju su prevodivi u JavaScrpt kao 
 	što je to npr. TypeScript, odnosno Dart. Node.js koristi skriptiranje na poslužiteljskoj strani; što znači da se skripte pokreću na poslužitelju, gdje se i generira dinamički sadržaj web stranice koji se potom šalje korisnikovom web pregledniku. 
+	Konkretnije, u sklopu ovog projekta korišten je Express.js koji je okvir/kostur (engl.\textit{framework}) izgrađen na bazi Node.js. Ovaj kostur dodatno pojednostavljuje odnosno nudi razne akcije kao što su različite metode HTTP zahtjeva (GET, POST,...).
+	
 	
 	\section{HTML, CSS, EJS}
 	HTML je jezik za označavanje (engl. \textit{markup}) koji opisuje strukturu web stranice koju web preglednici koriste za strukturirani prikaz web stranice. HTML elementi su elementi za koje se može reći da predstavljaju blokove koje je moguće slagati
@@ -371,6 +373,8 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	
 	\textit{Embedded JavaScript templates} (nadalje EJS) je jednostavan i elegantan jezik za pisanje HTML predložaka koristeći čisti JavaScript kod. Prilikom izvođenja EJS izvodi dio JavaScript koda kao što i zamijenuje varijable stvarnim vrijednostima te
 	u konačnici stvara čistu HTML, CSS stranicu.
+	
+
 	
 
 \chapter{Implementacija mobilne igre}
@@ -572,6 +576,15 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
     }
 	\end{lstlisting}
 	
+	\section{Prilagođavanje težine}
+	Za prilagodbu težine igre koristi se veoma jednostavan algoritam. Padajući objekti imaju određenu brzinu padanja kao što je navedeno u poglavlju koji ih opisuju. Osim toga, zadana je i početna vjerojatnost 
+	s kojom će se pojaviti padajući objekt koji nema prikazan broj direktno, već matematički izraz. Osim toga, promijenjiva je i frekvencija kojom se padajući objekti stvaraju. Svaki dobro sakupljenim padajućim objektom
+	slučajnim odabirom bira se način otežavanja igre. Odnosno, ukoliko igrač pokupi ispravan padajući objekt igra će slučajnim odabirom odabrati hoće li ubrati stvaranje padajućih objekata ili će povećati minimalnu brzinu
+	s kojom padajući objekti padaju ili će povećati vjerojatnost pojavljivanja izraza.
+	Suprotno tome ukoliko igrač ne uspije pokupiti padajući objekt osim što će izgubiti određeni broj bodova, igra će se olakšati slučajnim odabirom. Za kraj, ukoliko igrač pokupi padajući objekt koji nije trebao, osim što će
+	izgubiti život igra će se značajnije olakšati, odnosno smanjiti će se minimalna brzina padajućeg objekta kao i frekvencija stvaranja objekata pa tako i vjerojatnost pojavljivanja izaza.
+	
+	
 	\section{Komunikacija sa poslužiteljom}
 	Komunikacija sa poslužiteljem ostvarena je koristeći Java klasu "HttpURLConnection". Od generalnih implementacijskih detalja potrebno je glasiti da se sav mrežni promet mora odvijati na sporednoj dretvi. 
 	Podaci koji se šalju s mobitela na poslužitelj šalju se u obliku JSON (JavaScript Object Notation). U sklopu ovog projekta nisu korištenje vanjski \textit{dependency} poput "GSON", već
@@ -587,7 +600,7 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	
 	
 	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
-	taskObjectType:RelativeNumberTask;taskText:Manjiod;taskType:lower;minNumber:-5;maxNumber:55;relativeNumber:21;allowRelativeNumberChange:0\#DELIMITER\#taskObjectType:WordsTask;taskText:geometrijske likove;taskType:WORDCONTAINED;correctWords:kruznica,trokut,kvadrat;incorrectWords:piramida,valjak,sfera
+	taskObjectType:RelativeNumberTask;taskText:Manjiod;taskType:lower;minNumber:-5;maxNumber:55;relativeNumber:21;allowRelativeNumberChange:0#DELIMITER#taskObjectType:WordsTask;taskText:geometrijske likove;taskType:WORDCONTAINED;correctWords:kruznica,trokut,kvadrat;incorrectWords:piramida,valjak,sfera
 	\end{lstlisting}
 	s ovim postupkom dobivamo sljedeće zapise koje je nadalje potrebno tumačiti.
 	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
@@ -639,7 +652,113 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	
 	
 \chapter{Implementacija poslužitelja i web stranice}
-		
+	\section{Izrada web servera}
+	Kao što je već ranije navedeno u sklopu ovog projekta za izradu web poslužitelja korišten je Express.js koji je kostur na bazi Node.js. Ova tehnologija omogućava izradu web poslužitelja u svega par linija koda.
+	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	const express = require('express');
+	const app = express();
+ 
+	// Postavljanje EJS
+	app.set('view engine', 'ejs');
+ 
+	app.get('/', function (req, res) {
+    res.send('Hello World');
+	})
+
+	app.listen(3000);
+	\end{lstlisting}
+	
+	Pokretanjem ovog programskog koda moće će se pristupiti web serveru koji će se nalaziti na adresi localhost:3000. Sve što je dalje potrebno je napisti funkcionalnosti pristupnih točaka (engl. \textit{endpoint}).
+
+	\section{Izrada pristupnih točaka}
+	Radi modularnosti programskog koda  pristupne točke grupirati će se u različite module koji koriste express.Router(). Jedan od napisanih modula tako je modul koji se koristi pri logiranju i on se sastoji od dvije pristupne točke. Jedna koristi HTTP metodu get, dok druga koristi metodu POST.
+	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	router.get('/', function (req, res, next) {
+		if (req.session.user !== undefined) {
+			return res.redirect('/');
+		}
+
+		res.render('login', {
+			title: 'Login',
+			linkActive: 'login',
+			err: undefined,
+		});
+	});
+	\end{lstlisting}
+	
+	Prikazani kod pruža sljedeću funkcionalnosti: provjerava da li je korisnik već ulogiran te ako je preusmjerava ga na početnu stranicu. Ukoliko korisnik nije ulogiran koristeći EJS i definirani pogled (engl. \textit{view}) korisniku se vraća
+	web stranica sa formom za login. Provjeru da li je korisnik ulogiran radi se pomoću sjednica (engl. \textit{session}) koje je također potrebno uključiti u projekt. Nakon što korisnik popuni i potvrdi formu s metodom post radi se HTTP zahtjev 
+	na drugu pristupnu točku koja pak provjerava da li korisnik postoji, je li korisnik unesao ispravnu lozinku i slično te ovisno o ispravnosti korisničkog imena/lozike vraća odgovarajuću web stranicu pogreške, odnosno preusmjerava na početnu stranicu
+	ukoliko je ulogiravanje bilo uspiješno. Ovdje je potrebno naglasiti da za provjeru ispravnosti korisničkog imena i lozinke poslužitelj poslužitelj podatke dohvaća iz baze podataka s kojom je također potrebno definirati vezu i napsati odgovarajuće SQL
+	upite. 
+	
+
+	\section{Upotreba EJS}
+	Ovaj pogled (engl. \textit{view}) za prijavu nije previše zanimljiv jer je njegov kod većinom čisti HTML te nema previše dinamičke izrade stranice. Jednostavnost, tj. lakoću korištenja EJS može se vidjeti na sljedećem programskom isječku koji 
+	generira prikaz rezultata jedne igre, odnosno zapise o igri u obliku retka HTML tablice. 
+	\begin{lstlisting}[language = HTML, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	<% 	for(let rezultat of results){ %>
+			<tr>
+				<td><%= rezultat.player_nickname %></td>
+				<td><%= rezultat.time %></td>
+				<td><%= rezultat.highscore %></td>
+				<td><a class="btn link" href="/gamecode/display/details/<%= rezultat.result_id %>"> See details</a></td>
+            </tr>
+	<% } %>
+	\end{lstlisting}
+	
+	\section{Pristupne točke za spjanje na poslužitelj preko mobilne aplikacije}
+	Pristupne točke za dohvaćanje podataka na mobilni uređaj slično su definirane kao i pristupne točke koje se koriste za web stranicu, no one umjesto da koriste EJS i vraćaju prikaz web stranice jednostavno vraćaju podatke u određenom obliku koji se potom tumače na
+	mobitelu.
+	Sljedeći progrogramski isječak definira pristupnu točku za dohvat postavki za određen id
+	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	router.get('/mobile/settings/:id', async function (req, res, next) {
+		let gameCodeSettings;
+
+		await (async () => {
+			gameCodeSettings = await Setting.getGameCodeSettingsMobile(req.params.id);
+		})();
+
+		return res.send(gameCodeSettings);
+	});
+	\end{lstlisting}
+	
+	Statička metoda getGameCodeSettingsMobile dohvaća podatke iz baze podataka, formatira ih u željeni oblik koji opisan u podpodpoglavlju "Dohvat zadataka" te ih vraća mobilnom uređaju.
+	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+    static async getGameCodeSettingsMobile(game_code) {
+        try {
+            let rezultat = await dbGetGameCodeSettingsMobile(game_code);
+            rezultat = rezultat.rows;
+
+            let formatiraniRezultat = "";
+            for (let i = 0; i < rezultat.length; ++i) {
+                formatiraniRezultat += rezultat[i].setting_text;
+                formatiraniRezultat += "#DELIMITER#";
+            }
+            formatiraniRezultat.replaceAll("\n", "")
+            return formatiraniRezultat;
+        } catch (err) {
+            console.log("ERROR getting game settings : " + JSON.stringify(this));
+            throw err;
+        }
+    }
+	\end{lstlisting}
+	Dohvaćanje podataka iz baze podataka napravljeno je metodom dbGetGameCodeSettingsMobile koja je definirana kao :
+	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	dbGetGameCodeSettingsMobile = async (game_code) => {
+		const sql = `SELECT *
+					FROM setting
+					WHERE game_code = '${game_code}'
+					and is_deleted = 0`;
+		try {
+			return await db.query(sql, []);
+		} catch (err) {
+			console.log(err);
+			throw err
+		}
+	};
+	\end{lstlisting}	
+	
 	
 
 \chapter{Baza podataka}
@@ -755,24 +874,38 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 		\end{figure}
 
 
-\chapter{Naslov 4}
-Poglavlje 4
+\chapter{Moguće nadogradnje}
+Kao nadogradnju na učinjeno, odnosno budući rad postoji mnogo opcija. Za početak prilagodba web stranice kako bi se prilagodila mobilnim uređajima, nadalje dodavanje raznih animacija u igru, izrada priče, skupljanje novčića
+i otključavanje raznih stvari poput novih motiva pozadine, objekta s kojim se skupljaju padajući objekti i slično, generalno postojanje nekog tipa napretka koji bi potaknuo korisnike na češću uporabu aplikacije.
+Nažalost, mobilnu igru nije koristila ciljana skupina ljudi, odnosno učenici nižih razreda osnovne škole stoga je teško procijeniti da li je algoritam napravljen za prilagodbu u potpunosti dobar, u najboljem slučaju potreban
+je neki tip kalibracije. 
+
+\chapter{Zaključak}
+U skolopu ovog završnog rada razvijena je mobilna igra za vježbanje matematike koja se težinom prilagođava igraču  i web stranica koja omogućava jednostavnu izradu
+postavki igre i detaljni pregled rezultata pojedinog učenika u nekoj igri. Za potrebe pohrane podataka koristi se lokalni spremnik na samom uređaju pa tako i baza podataka kojoj se pristupa preko poslužitelja.
+Ovaj projekt kao takav nije zahtjevao previše specifičnih znanja već samo osnove objektno orijentiranog programiranja, osnove pisanja web stranica i poslužitelja te osnovna znanja iz baza podataka. Shodno tome nije bilo 
+potrebe za istraživanjem različitih algoritama, već se većina toga svela na oblikovanje ideje igre te mukotrpan i vremenski zahtjevan posao. No, u konačnici kroz ovaj projekt upoznao sam se sa izradom mobilnih aplikacija 
+i dobio dobru praksu u korištenju raznih tehnologija.
+
 
 \bibliography{literatura}
 \bibliographystyle{fer}
 
 \begin{sazetak}
-Sažetak na hrvatskom jeziku.
+U skolopu ovog završnog rada razvijena je mobilna igra za vježbanje matematike koja se težinom prilagođava igraču  i web stranica koja omogućava jednostavnu izradu
+postavki igre i detaljni pregled rezultata pojedinog učenika u nekoj igri. Navedena igra i web stranice čine jedan jednostavni sustav. Unutar ovog rada detaljno je opisano što ovaj sustav sve nudi te su također opisani
+i najznačajniji implementacijski detalji.
 
-\kljucnerijeci{Ključne riječi, odvojene zarezima.}
+\kljucnerijeci{Java, Android, igra, matematika, web stranica, HTML, Node.js, Express.js, JavaScript, vježba, učenje, igrifikacija, škola}
 \end{sazetak}
 
 % TODO: Navedite naslov na engleskom jeziku.
 \engtitle{Mobile game for practicing math}
 \begin{abstract}
-Abstract.
+As part of this thesis, there've been developed mobile game for practicing mathematics that is adaptive to the player's abilities and a website that allows easy creation of game settings and a detailed overview of
+the results of each student in a game. Mentioned game and website make one simple system. Within this paper it is described what this system offers in details just like the most important implementation details.
 
-\keywords{Keywords.}
+\keywords{Java, Android, game, math, web page, HTML, Node.js, Express.js, Javascript, exercise, learning, gamification, school}
 \end{abstract}
 
 \end{document}

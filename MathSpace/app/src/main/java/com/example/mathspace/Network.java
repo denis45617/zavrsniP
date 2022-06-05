@@ -42,7 +42,6 @@ public class Network {
 
             URL url = new URL(BASE_URL + url2);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
             //Various settings of HttpURLConnection
             //Set HTTP method to POST
             conn.setRequestMethod("POST");
@@ -52,7 +51,6 @@ public class Network {
             conn.setDoOutput(true);
             //Specify Json format
             conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-
             // 2.Establish a connection
             conn.connect();
 

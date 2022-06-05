@@ -29,7 +29,6 @@ module.exports = class Task {
 
             let formatiraniRezultat = "";
             for (let i = 0; i < rezultat.length; ++i) {
-                console.log(rezultat[i].setting_text)
                 formatiraniRezultat += rezultat[i].setting_text;
                 formatiraniRezultat += "#DELIMITER#";
             }
