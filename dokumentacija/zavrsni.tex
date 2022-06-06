@@ -1,4 +1,4 @@
-\documentclass[times, utf8, zavrsni]{fer}
+\documentclass[times, utf8, zavrsni, numeric]{fer}
 \usepackage{booktabs}
 
 
@@ -99,7 +99,7 @@ brojeve djeljive s određenim brojem, samo kvadrate i slično) i sakuplja bodove
 i teža, no do te mjere da se ne postigne negativan efekt u drugom ekstremu; igra ne smije postati niti previše teška jer bi samim time postala i demotivirajuća! Stoga je cilj da se težina igre
 dinamički prilagođava mogućnostima učenika. Osim same mobilne igre, potrebno je izgraditi i jednostavno web sučelje za učitelja kako bi mogao postavljati tipove zadataka koji prate temu onoga što
 se trenutno predaje na nastavi. Kroz navedeno web sučelje nastavniku će se pružati i mogućnost pregleda rezultata pojedinog učenika te uvid u detalje igre kao što je tip zadatak na kojem je učenik 
-griješio, ukupno vrijeme igranja i slično. Kako bi igra bila dostupna svima koji ju požele igrati, odnosno kako igra ne bi ovisila o postavkama učitelja, postojati će i zadane postavke koje će se moći
+griješio, ukupno vrijeme igranja i slično. Kako bi igra bila dostupna svima koji ju požele igrati, odnosno kako igra ne bi ovisila o postavkama učitelja, postojat će i zadane postavke koje će se moći
  prilagođavati kroz postavke same igre. 
 
 
@@ -110,14 +110,14 @@ dok je cilj web stranice učiteljima olakšati zadavanje zadataka, praćenje i p
 
 	\section{Mobilna igra}
 	Mobilna igra većinski je dio projekta. Kroz ovu igru učenici nižih razreda na zanimljiviji način mogu vježbati određeno gradivo matematike. Igra osim što se može igrati s predefiniram postavkama zadataka također omogućava uređivanje istih
-	te preuzimanje postavki koje su napravljene preko web sučelja za učitelja. Ukoliko učenik igra igru sa preuzetim postavkama napravljenim preko web sučelja, podaci o njegovoj igri bit će dostavljeni učitelju po završetku igre.
+	te preuzimanje postavki koje su napravljene preko web sučelja za učitelja. Ako učenik igra igru s preuzetim postavkama napravljenim preko web sučelja, podaci o njegovoj igri bit će dostavljeni učitelju po završetku igre.
 	Iz glavnog menija igre možemo pristupiti glavnom ekranu igre i postavkama.
 		
 		\subsection{Glavni ekran igre}
 		Na glavnom ekranu igre nalazi se sav takoreći učenicima zanimljiv sadržaj, odnosno mjesto gdje se sama igra i igra. Igra je "endless runner" i tematski je zamišljena kao put iz središta zemlje ka dubokom svemiru, odnosno to je ono što pokazuje
 		pozadina koja putuje prema dolje, što stvara efekt putovanja objekta koji se upravlja prema gore. Objekt koji je upravljan moguće je pomicati lijevo-desno i tako skupljati padajuće objekte koje je potrebno skupiti ovisno o trenutnom zadatku,
-		odnosno izbjegavati one koji krše pravila trenutnog zadatka. Padajući objekti konstanto se stvaraju i njihov sadržaj ovisi o tome koji je trenutni zadatak ili koja je trenutna težina igre. Odnosno svaki zadatak osim što ima svoj opis ima i određene
-		parametre, tako bi recimo zadak "skupljaj brojeve veće ili jednake 18", osim navedenog opisa, relativnog broja 18 imao i definirane parametre kao što je minimalna i maksimalna granica iz kojeg seta se brojevi mogu dodjeliti; nadalje, pri većoj 
+		odnosno izbjegavati one koji krše pravila trenutnog zadatka. Padajući objekti konstantno se stvaraju i njihov sadržaj ovisi o tome koji je trenutni zadatak ili koja je trenutna težina igre. Odnosno svaki zadatak osim što ima svoj opis ima i određene
+		parametre, tako bi recimo zadak "skupljaj brojeve veće ili jednake 18", osim navedenog opisa, relativnog broja 18 imao i definirane parametre kao što je minimalna i maksimalna granica iz kojeg seta se brojevi mogu dodijeliti; nadalje, pri većoj 
 		težini igre se na padajućem objektu možda neće prikazati broj direktno, već u obliku matematičke operacije, npr. "29 - 12".
 		\begin{figure}[H]
 			\includegraphics[scale = 0.225]{"slike/igra.png"} 
@@ -134,12 +134,12 @@ dok je cilj web stranice učiteljima olakšati zadavanje zadataka, praćenje i p
 				\item  {Igrač je pokupio neparan broj: Gubitak života}
 		\end{itemize}
 		
-		S obzirom da se može dogoditi situacija u kojoj se preklapaju dva objekta, odnosno situacija u kojoj se preklapaju objekt koji se ne smije pokupiti i objek koji se mora pokupiti (u ovom slučaju parni i neparni broj); kako se igrač ne bi osjećao
-		zakinutim nakon gubitka 100 bodova zbog objekta kojeg je morao propustiti kako ne bi izgubio jedan život, igrač je za svakih 10 osvježavanja ekrana nagrađen sa jednim bodom. U konačnici ispada da igrač smije propustiti jedan objekt svakih 15 do 20 sekundi
-		kako bi se poništili bonus bodovi sa izgubljenim bodovima za ne skupljanje odgovarajućeg objekta. Preklapanje dva objekta se ne događa toliko često stoga igrač samim trajenjem igre skuplja dodatne bodove.
+		S obzirom na to da se može dogoditi situacija u kojoj se preklapaju dva objekta, odnosno situacija u kojoj se preklapaju objekt koji se ne smije pokupiti i objekt koji se mora pokupiti (u ovom slučaju parni i neparni broj); kako se igrač ne bi osjećao
+		zakinutim nakon gubitka 100 bodova zbog objekta kojeg je morao propustiti kako ne bi izgubio jedan život, igrač je za svakih 10 osvježavanja ekrana nagrađen s jednim bodom. U konačnici ispada da igrač smije propustiti jedan objekt svakih 15 do 20 sekundi
+		kako bi se poništili bonus bodovi s izgubljenim bodovima za ne skupljanje odgovarajućeg objekta. Preklapanje dva objekta se ne događa toliko često stoga igrač samim trajanjem igre skuplja dodatne bodove.
 		\newline
 		Trenutačni broj bodova prikazan je na vrhu zaslona sa lijeve strane, dok je na desnoj strani prikazan broj života koji odgovara broju sličica srca. Na donjem dijelu ekrana moguće je vidjeti trenutačni zadatak.
-		Svaki zadatak traje od prilike pola minute, a promijena zadatka odvija se na način da prvo prestanu padati novi objekti. Kada više nema padajućih objekata na ekranu, slučajnim odabirom se bira sljedeći zadatak te se tekst novog zadatka
+		Svaki zadatak traje od prilike pola minute, a promjena zadatka odvija se tako da prvo prestanu padati novi objekti. Kada više nema padajućih objekata na ekranu, slučajnim odabirom se bira sljedeći zadatak te se tekst novog zadatka
 		pokazuje kako u donjem dijelu ekrana tako i na samoj sredini ekrana na nekoliko sekundi kako bi igrač bio u potpunosti svjestan promjene zadatka. 
 
 		
@@ -168,7 +168,7 @@ dok je cilj web stranice učiteljima olakšati zadavanje zadataka, praćenje i p
 		
 
 		\subsection{Preuzete postavke}
-		Osim predefiniranih postavki igra nudi mogućnost preuzimanja postakvi izrađenih preko web stranice. Kako bi igrač mogao preuzeti postavke prvo treba postaviti korisničko ime te nakon toga u za to previđeno polje upisati identifikator postavki
+		Osim predefiniranih postavki igra nudi mogućnost preuzimanja postavki izrađenih preko web stranice. Kako bi igrač mogao preuzeti postavke prvo treba postaviti korisničko ime te nakon toga u za to previđeno polje upisati identifikator postavki
 		koje želi preuzeti i za kraj pritisnuti tipku za preuzimanje postavki. 
 	
 		\begin{figure}[H]
@@ -199,8 +199,8 @@ dok je cilj web stranice učiteljima olakšati zadavanje zadataka, praćenje i p
 
 	\section{Web stranica}
 	Web stranica drugi je dio projekta, ujedno i manji. Kroz ovu web stranicu učiteljima se na jednostavan način omogućava izrada zadataka, odnosno postavljanje pravila na osnovu kojih će se zadaci automatski generirati.
-	Osim zadavanja zadataka stranica nudi i mogućnost pregleda rezultata pojedinih učenika i dodatne dalje svakog igranja. Za mogućnost izrade postavki, stoga i pregled rezultata igrara korisnik se mora prvo prijaviti u sustav, odnosno
-	registrirati ukoliko nema korisnički račun.
+	Osim zadavanja zadataka stranica nudi i mogućnost pregleda rezultata pojedinih učenika i dodatne dalje svakog igranja. Za mogućnost izrade postavki, stoga i pregled rezultata igara korisnik se mora prvo prijaviti u sustav, odnosno
+	registrirati ako nema korisnički račun.
 
 	\subsection{Izrada postavki}
 	Izrada postavki generalno je jednostavan i izravan (engl. \textit{straightforward}) proces. Nakon logiranja u sustav korisniku se nudi opcija "\textit{My Games}" na izbornoj traci. Odabirom ove stavke korisniku se prikazuju sve
@@ -225,7 +225,7 @@ dok je cilj web stranice učiteljima olakšati zadavanje zadataka, praćenje i p
 			\caption{Pregled i izrada postavki unutar neke grupe postavki}
 			\label{fig:pregledpostavki}
 		\end{figure}
-	Na primjer, ukoliko korisnik želi zadati postavku koja od igrača mobilne igre traži da skuplja brojeve djeljive sa tri, potrebno je pritisnuti \textit{Create new relative number task} nakon čega se prikazuje novi ekran koji to omogućava.
+	Na primjer, ako korisnik želi zadati postavku koja od igrača mobilne igre traži da skuplja brojeve djeljive s tri, potrebno je pritisnuti \textit{Create new relative number task} nakon čega se prikazuje novi ekran koji to omogućava.
 	\begin{figure}[H]
 		\includegraphics[scale = 0.9]{"slike/zadavanjekonkretnepostavke.png"} 
 		\centering
@@ -233,8 +233,8 @@ dok je cilj web stranice učiteljima olakšati zadavanje zadataka, praćenje i p
 		\label{fig:izradapostavkedjeljenje}
 	\end{figure}
 		
-		Web stranica od korisnika traži unos teksta koji će opisivati zadatak, odabir tipa zadatka, donju i gornju granicu iz koje će se generirati brojevi na padajućim objektima, relativan broj odnosno, s obzirom da želimo zadati da je zadatak
-		skupljati brojeve djeljive sa 3 - to je u ovom slučaju broj 3! Za kraj nudi se opcija promjene relativnog broja po završetku zadatka (novi broj slučajno bi se odredio iz skupa [lowerbound number, upperbound number]), što u ovom slučaju ne bismo
+		Web stranica od korisnika traži unos teksta koji će opisivati zadatak, odabir tipa zadatka, donju i gornju granicu iz koje će se generirati brojevi na padajućim objektima, relativan broj odnosno, s obzirom na to da želimo zadati da je zadatak
+		skupljati brojeve djeljive s 3 - to je u ovom slučaju broj 3! Za kraj nudi se opcija promjene relativnog broja po završetku zadatka (novi broj slučajno bi se odredio iz skupa [lowerbound number, upperbound number]), što u ovom slučaju ne bismo
 		htjeli. Ova opcija najviše je pogodna za zadatke koji od korisnika traže da skupljaju brojeve veće/manje od relativnog broja. Za završetak izrade postavke potrebno je odabrati \textit{Add task to game}.
 	
 	\subsection{Pregled rezultata}
@@ -266,13 +266,13 @@ dok je cilj web stranice učiteljima olakšati zadavanje zadataka, praćenje i p
 	
 
 \chapter{Usporedba sa sličnim igrama}
-Postoje mnogobrojne Android igre dostupne na Google Play marketu koje kao su prikazane kao igre koje služe u edukativne svrhe, odnosno specifično kao igre za vježbanje matematike.  U nastavku je usporedba igre koja je tema ovog rada sa naizgled 
-sličnim postojećim igrama; uz to valja i napomenuti da je po slobonoj procijeni više od 90 posto matematičkih igara bazirano na tipu kviza sa 4 ponuđena odgovora. Prednost igre koja je tema ovog rada nad navedenim igrama je mogućnost pregleda tijeka događaja.
+Postoje mnogobrojne Android igre dostupne na Google Play marketu koje kao su prikazane kao igre koje služe u edukativne svrhe, odnosno specifično kao igre za vježbanje matematike.  U nastavku je usporedba igre koja je tema ovog rada s naizgled 
+sličnim postojećim igrama; uz to valja i napomenuti da je po slobodnoj procijeni više od 90 posto matematičkih igara bazirano na tipu kviza s 4 ponuđena odgovora. Prednost igre koja je tema ovog rada nad navedenim igrama je mogućnost pregleda tijeka događaja.
 	
 	\section{Toon Math Runner} 
-	"\textit{Toon Math Runner}" (u nastavku TMR) je vizualno lijepa 2.5D mobilna igra za vježbanje matematike. Ova igra nudi opciju otključavanja raznih karaktera u zamijenu za novčiće koje igrač može skupljati. Igrač upravlja karakterom
-		na način da upravljenog karaktera može pozicionirati u jednoj od tri linije, osim toga nudi se mogućnost skakanja i saginjanja. Ova igrica uvelike podsjeća na popularnu igricu "\textit{Subway Surfers}" kako po načinu igranja, tako i vizualno.
-	 Nažalost, TMR nije tkz. "endless runner" uz to što niti vježbanje matematike nije u glavnom fokusu. Glavni fokus igre je sakupljanje novčića uz pojavljivanje jednog matematičkog zadatka u prosjeku jednom u pola minute. Osim što se ova igra 
+	"\textit{Toon Math Runner}" (u nastavku TMR) je vizualno lijepa 2.5D mobilna igra za vježbanje matematike. Ova igra nudi opciju otključavanja raznih karaktera u zamjenu za novčiće koje igrač može skupljati. Igrač upravlja karakterom
+		tako da upravljenog karaktera može pozicionirati u jednoj od tri linije, osim toga nudi se mogućnost skakanja i saginjanja. Ova igrica uvelike podsjeća na popularnu igricu "\textit{Subway Surfers}" kako po načinu igranja, tako i vizualno.
+	 Nažalost, TMR nije tzv. "endless runner" uz to što niti vježbanje matematike nije u glavnom fokusu. Glavni fokus igre je sakupljanje novčića uz pojavljivanje jednog matematičkog zadatka u prosjeku jednom u pola minute. Osim što se ova igra 
 	 pokušava nazvati igrom za vježbanje matematike, valja naglasiti da je velika zastupljenost reklama u istoj. \begin{figure}[!htb]
 		\begin{minipage}{0.48\textwidth}
 			\centering
@@ -295,7 +295,7 @@ sličnim postojećim igrama; uz to valja i napomenuti da je po slobonoj procijen
 	\section{Math jumps: Math Games}
 	"\textit{Math jumps: Math Games}" (u nastavku MJMG) je vizualno lijepa 2.5D mobilna igrica za vježbanje matematike. Ova igrica osim što je vizualno ugodna, osmišljena je na zanimljiv način. Igrač koji igra igricu predstavljen je kao karakter
 	u vagonu koji se vozi po tračnicama. Ovim karakterom ne upravlja se izravno već se njegovo postupanje odvija u skladu s time da li je igrač točno odgovorio na postavljeno matematičko pitanje. Npr. ukoliko igrača ispravno odgovori na zadano matematičko
-	pitanje, vagon će poskočiti, odnosno skrenuti kada za tim ima potrebu, suprotno vagon će samo nastaviti voziti ravno i odletiti u provaliju, u tom slučaju igrač gubi život. Igrica je tkz. "endless runner" i moguće je podešavati računske operacije
+	pitanje, vagon će poskočiti, odnosno skrenuti kada za tim ima potrebu, suprotno vagon će samo nastaviti voziti ravno i odletjeti u provaliju, u tom slučaju igrač gubi život. Igrica je tzv. "endless runner" i moguće je podešavati računske operacije
 	koje se mogu pojaviti u zadacima. Ova igra također nudi otključavanje raznih "skinova".
 	
 	\begin{figure}[H]
@@ -305,11 +305,11 @@ sličnim postojećim igrama; uz to valja i napomenuti da je po slobonoj procijen
 		\label{fig:mjmg}
 	\end{figure}
 	
-	MJMG je u večini aspekata bolja igrica od igrice koja je tema ovog rada no moglo bi se reći da je nedostatak MJMG taj da se sva interakcija odvija putem 4 gumba za odgovore, generalno igrica je običan kviz.
+	MJMG je u većini aspekata bolja igrica od igrice koja je tema ovog rada no moglo bi se reći da je nedostatak MJMG taj da se sva interakcija odvija putem 4 gumba za odgovore, generalno igrica je običan kviz.
 	
 	
 	\section{Mathematical Run (Math games)}
-	"\textit{Mathematical Run (Math games)}" (u nastavku MRMG) je 2D mobila igrica za vježbanje matematike. Igrač koji igra igru upravlja sa malom točkicom koja se može nalaziti u jednoj od tri trake. Na ekranu se prvobitno pojavljuje zadatak, a potom 3
+	"\textit{Mathematical Run (Math games)}" (u nastavku MRMG) je 2D mobila igrica za vježbanje matematike. Igrač koji igra igru upravlja s malom točkicom koja se može nalaziti u jednoj od tri trake. Na ekranu se prvobitno pojavljuje zadatak, a potom 3
 	ponuđena odgovora. Kako bi igrač pokupio ispravan odgovor, treba se pozicionirati u za to odgovarajuću traku. Same kontrole upravljanja su dosta loše, dosta često neresponzivne.
 	
 			\begin{figure}[!htb]
@@ -327,21 +327,21 @@ sličnim postojećim igrama; uz to valja i napomenuti da je po slobonoj procijen
 			\end{minipage}
 		\end{figure}
 
-Igrica omogućava odabir tipa zadataka, odnosno zadatak tipa "skupljaj parne brojeve", zadatak tipa "skupljaj manje od x" no ne i sve te zadatke na način da se izmijenuju, već igrač može igrati isključivo jedan zadatak "at the time", tada se na ekranu 
+Igrica omogućava odabir tipa zadataka, odnosno zadatak tipa "skupljaj parne brojeve", zadatak tipa "skupljaj manje od x" no ne i sve te zadatke tako da se izmijenuju, već igrač može igrati isključivo jedan zadatak "at the time", tada se na ekranu 
 prikazuju samo odgovori, no način igranja je i dalje isti; 3 trake sa neresponzivnim kontrolama. Ova igrica je potencijalno "endless runner". 
 
 \chapter{Korištene tehnologije}
 U sklopu ovog rada korištena je nekolicina različitih tehnologija. Dok su odabrane opisane u nastavku, valja naglasiti da ove tehnologije nisu nužno najbolje. U svrhu izrade ovog rada birane su tehnologije koje su prikladnije za samu kompleksnost izrade rada.
-Konkretnije, korištenje poznatog pokretačkog stroja (engl. \textit{game engine}) Unity značajno bi olakašlo izradu igre. Jedan od takvih primjera opisan je u poglavlju 5.1. "Implementacija mobilne igre - Pozadina". 
-U sklopu ovog rada programski jezik Java jedini je jezik koji se koristi za potrebe izrade mobilne igre. Iako je mobilna igra djelomično samostalna, odnosno ne treba joj web poslužitelj kako bi se mogla igrati sa pretpostavljenim postavkama, za potrebe 
+Konkretnije, korištenje poznatog pokretačkog stroja (engl. \textit{game engine}) Unity značajno bi olakšao izradu igre. Jedan od takvih primjera opisan je u poglavlju 5.1. "Implementacija mobilne igre - Pozadina". 
+U sklopu ovog rada programski jezik Java jedini je jezik koji se koristi za potrebe izrade mobilne igre. Iako je mobilna igra djelomično samostalna, odnosno ne treba joj web poslužitelj kako bi se mogla igrati s pretpostavljenim postavkama, za potrebe 
 preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js server. Ovaj server koristi se i za potrebe web stranice, dok je sam prikaz web stranice napravljen korištenjem EJS.
 
 
 	\section{Java}
-	Java je objektno orijentirani programski jezik objavljen krajem 1995. kada tvrka Sun Microsystems objavljuje prvu verziju ovog programskog jezika. Programski jezik java ozmišljen je, odnosno njegova je ideja i velika prednost platformska neovisnost,
+	Java je objektno orijentirani programski jezik objavljen krajem 1995. kada tvrtka Sun Microsystems objavljuje prvu verziju ovog programskog jezika. Programski jezik java osmišljen je, odnosno njegova je ideja i velika prednost platformska neovisnost,
 	što znači da se jednom prevedeni programski kod može pokrenuti na bilo kojem sustavu, odnosno računalu. No, ovo za sobom povlači to da se program ne može direktno prevesti u strojni kod određenog procesora, već na svakom računalu treba biti
 	instalirana podrška za izvođenje Java programa (JVM - Java Virtual Machine). 
-	Jedna od prednosti programskog jezika Java je i ta da uz to što jezik biva kontinuirano nadograđivan, generalno je unatrag kompatiblan (engl. \textit{backwards compatible}), što znači da će se jednom napisani kod moći pokrenuti i nakon nove nadogradnje.
+	Jedna od prednosti programskog jezika Java je i ta da uz to što jezik biva kontinuirano nadograđivan, generalno je unatrag kompatibilan (engl. \textit{backwards compatible}), što znači da će se jednom napisani kod moći pokrenuti i nakon nove nadogradnje.
 	Kao česti nedostatak programskog jezika Java navodi se "verbosity" odnosno opširnost pisanja koda, koju ja osobno smatram kao prednost jer u konačnici pruža preglednost koda i lakše razumijevanje, čemu doprinosi i statičko tipiziranje, odnosno 
 	potreba za navođenjem svakog tipa podatka eksplicitno. 
 	
@@ -351,7 +351,7 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	
 	
 	\section{Node.js}
-	Node.js je \textit{open-source, cross-platform, back-end JavaScript runtime} okruženje i izvršava JavaScript kod izvan web-preglednika. "Node.js je incijalno napisan od strane  Ryan Dahl u 2009. godini, otprilike 13 godina poslije predstavljanja
+	Node.js je \textit{open-source, cross-platform, back-end JavaScript runtime} okruženje i izvršava JavaScript kod izvan web-preglednika. "Node.js je inicijalno napisan od strane  Ryan Dahl u 2009. godini, otprilike 13 godina poslije predstavljanja
 	prvog  \textit{server-side} Javascript okruženja." [SAD OVDJE LINK NA IZVOR] (wiki, node.js)
 	
 	Node.js omogućava jednostavnu izradu Web servera i drugih mrežnih alata korištenjem JavaScripta uz razne biblioteke. Iako Node.js nativno podržava samo JavaScript, programski kod je moguće pisati i u programskim jezicima koju su prevodivi u JavaScrpt kao 
@@ -361,17 +361,17 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	
 	\section{HTML, CSS, EJS}
 	HTML je jezik za označavanje (engl. \textit{markup}) koji opisuje strukturu web stranice koju web preglednici koriste za strukturirani prikaz web stranice. HTML elementi su elementi za koje se može reći da predstavljaju blokove koje je moguće slagati
-	i ugnježđavati jedan unutar drugoga. HTML pruža semantiku kako za oblikovanje teksta tako i za direktan unos sadržaja na stranicu poput slika.
+	i ugnježđivati jedan unutar drugoga. HTML pruža semantiku kako za oblikovanje teksta tako i za direktan unos sadržaja na stranicu poput slika.
 	Dva su glavna tipa oznake; prvi tip je takav da okružuje tekst. Npr sa: 
-		\begin{lstlisting}[language = HTML , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+		\begin{lstlisting}[language = HTML, numbers=none, escapeinside={(*@}{@*)}]
 		<h1> Naslov </h1>
 		\end{lstlisting}
-		definirao bi se prikaz jednog naslova. Element se otvara oznakom "<h1>" poslije koje slijedi sadržaj koji se u konačnici zatvara sa "</h1>. Drugi tip elementa je samozatvarajuć kao što je "<br />" koji predstavlja prelom retka.
+		definirao bi se prikaz jednog naslova. Element se otvara oznakom "<h1>" poslije koje slijedi sadržaj koji se u konačnici zatvara sa "</h1>". Drugi tip elementa je samozatvarajući kao što je "<br />" koji predstavlja prelom retka.
 
 	HTML kao jezik veoma je ograničen jezik kada se govori o stiliziranju te se za te potrebe koristi jezik CSS. CSS je jezik koji dodatno opisuje kako se određeni elementi trebaju prikazivati. Neke od primjena CSSa je opisivanje boja, pozadina, obruba,
 	margina, raznih udaljenosti, širine, visine, poravnanja, fontova i raznih drugih detalja. CSS kod može se izravno postavljati na svaki element, može se definirati unutar iste datoteke ili se može uključiti kao vanjska biblioteka. 
 	
-	\textit{Embedded JavaScript templates} (nadalje EJS) je jednostavan i elegantan jezik za pisanje HTML predložaka koristeći čisti JavaScript kod. Prilikom izvođenja EJS izvodi dio JavaScript koda kao što i zamijenuje varijable stvarnim vrijednostima te
+	\textit{Embedded JavaScript templates} (nadalje EJS) je jednostavan i elegantan jezik za pisanje HTML predložaka koristeći čisti JavaScript kod. Prilikom izvođenja EJS izvodi dio JavaScript koda kao što i zamijenjuje varijable stvarnim vrijednostima te
 	u konačnici stvara čistu HTML, CSS stranicu.
 	
 
@@ -389,7 +389,7 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	
 	Radi jednostavnosti, svaka slika pozadine se  vertikalno i horizontalno skalira na broj piksela koje zaslon mobitela ima; zbog toga, u jednom trenutku na zaslonu se mogu vidjeti maksimalno dvije slike
 	pozadine od jednom. Na samom početku igre uzimaju se prva dva objekta pozadine iz polja. Prvi objekt predstavlja donju pozadinu koja će biti prikazana, a drugi gornju pozadinu.  Donju pozadinu potrebno je inicijalizirati
-	na lokaciju sa x koordinatom 0 i y koordinatom 0, odnosno želimo da se pokazuje od početka zaslona vertikalno i horizontalno. Drugu sliku inicijaliziramo opet tako da joj damo x koordinatu 0, no y koordinatu postavljamo
+	na lokaciju s x koordinatom 0 i y koordinatom 0, odnosno želimo da se pokazuje od početka zaslona vertikalno i horizontalno. Drugu sliku inicijaliziramo opet tako da joj damo x koordinatu 0, no y koordinatu postavljamo
 	na minus vertikalnu veličinu zaslona. Na svako ponovno osvježavanje igre, pozadina se vertikalno spušta ka dolje čime se stvara efekt putovanja igrača prema gore. Spuštanje pozadine prema dolje implementacijski je 
 	ostvareno tako što se svakim osvježavanjem zaslona povećava y koordinata obje slike za određenu vrijednost, ovisno o tome kojom brzinom želimo da "igrač putuje ka svemiru". 
 	
@@ -406,13 +406,13 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	
 	U trenutku kada y koordinata donje slike izađe izvan ekrana (odnosno kada je vrijednost y osi veća od y dimenzije ekrana) nova donja slika sada je slika koja je bila gore, a novu gornju sliku uzimamo 
 	kao sljedeći član polja. 
-	Zadnja slika prikazuje svemir pun zvijezdi i nju u polje učitavamo dva puta (dva različita objekta). U trenutku kad smo u igri došli do te slike, tim dvijema slikama se konstanto mijenjaju vrijednosti y osi.
+	Zadnja slika prikazuje svemir pun zvijezdi i nju u polje učitavamo dva puta (dva različita objekta). U trenutku kad smo u igri došli do te slike, tim dvjema slikama se konstantno mijenjaju vrijednosti y osi.
 	Odnosno kad donja slika izađe dolje s ekrana, ponovno se postavljaju vrijednosti y osi za obje slike. 
 	
 	
 	Cijeli način implementacije pomicanja pozadine možemo prikazati sljedećim kodom:
-	
-	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	\renewcommand{\lstlistingname}{Kôd}
+	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)},caption={Implementacija pomicanja pozadine},captionpos=b]
    private void updateBackground() {
         currentDownBackground.setY(currentDownBackground.getY() + 5);
         currentUpBackground.setY(currentUpBackground.getY() + 5);
@@ -432,9 +432,10 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	\end{lstlisting}
 
 
+
 	\section{Objekt za skupljanje}
-	Slično kao i pozadinu, objekt koji se kontrolira, odnosno objek s kojim se skupljaju padajući objekt učitan je kao kao Bitmap, odnosno više njih, konkretnije kao dva Bitmap objekta omotana sa objektom
-	klase "Saw". Za razliku od pozadine koja je putovala prema dolje, objekt s kojim skupljamo padajuće objekte je statičan na ekranu, odnosno ne mijenja svoj položaj na ekranu bez korisničke akcije. Pod kornisničku akciju u 
+	Slično kao i pozadinu, objekt koji se kontrolira, odnosno objekt s kojim se skupljaju padajući objekt učitan je kao  Bitmap, odnosno više njih, konkretnije kao dva Bitmap objekta omotana s objektom
+	klase "Saw". Za razliku od pozadine koja je putovala prema dolje, objekt s kojim skupljamo padajuće objekte je statičan na ekranu, odnosno ne mijenja svoj položaj na ekranu bez korisničke akcije. Pod korisničku akciju u 
 	ovom slučaju podrazumijeva se dodir ekrana. Koristeći oblikovni obrazac promatrač (engl. \textit{observer}), pri inicijalizaciji igre  subjektu (objektu konkretne klase "View", u ovom slučaju to je "SurfaceView")
 	se postavlja konkretna implementacija apstraktnog promatrača "OnTouchListener". Navedeno sučelje sastoji se od jedne funkcije:
 	\begin{lstlisting}[language = Java , frame = none , numbers=none, escapeinside={(*@}{@*)}]
@@ -447,8 +448,8 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	
 	U nastavku je prikazan cijeli programski kod potreban za pomicanje objekta za skupljanje. Konkretna implementacija sučelja "OnTouchListener" izvedena je kao anonimni razred, odnosno zbog bolje preglednosti koda 
 	koristi se pokrata u vidu lambda izraza, dok "this" predstavlja objekt klase View.
-
-		\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+		 \renewcommand{\lstlistingname}{Kôd}
+		\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)},caption={Implementacija pomicanja objekta za skupljanje},captionpos=b]
 			 this.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_MOVE 
 					|| event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -457,19 +458,20 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
             return true;
         });
 		\end{lstlisting}
+
+
 		
 	Na ovom programskom kodu potrebno je uočiti da se kontroliranje našeg objekta može dogoditi doticanjem i pomicanjem prsta na bilo kojem dijelu ekrana, no da sam objekt kojeg kontroliramo neće promijeniti 
 	vrijednost svoje x osi, odnosno neće se pomicati vertikalno, već se isključivo mijenja vrijednost položaja na horizontalnoj osi; također je bitno uočiti da za pomicanje objekta nije potrebno stisnuti na objekt
-	te ga povući, već je dovoljno stisnuti na određeno mjesto na ekranu te će se objektov položaj na horizonalnoj osi teleportirati na željeno mjesto. Iako je ovo programsko riješenje vjerojatno najjednostavnije, 
+	te ga povući, već je dovoljno stisnuti na određeno mjesto na ekranu te će se objektov položaj na horizontalnoj  osi teleportirati na željeno mjesto. Iako je ovo programsko rješenje vjerojatno najjednostavnije, 
 	kasnije će se ispostaviti da je ujedno i najbolje. Ukratko, može se dogoditi da objekt kojeg kontroliramo bude okružen s padajućim objektima koji se ne smiju pokupiti i stoga je ova mogućnost "teleportiranja" poželjna.
 	
 	
 	Kao što je već ranije navedeno, objekt za skupljanje koji se kontrolira ne mijenja svoj položaj na ekranu (bez prethodne akcije korisnika) već je potreba učitavanja više slika, odnosno stvaranja više Bitmap 
-	objekata nastala u svrhu stvaranja animacije. Animacija se stvara tako što se brzo izmijenjuju slike koje se iscrtavaju na zaslonu. Konkretno, ova animacija sastoji se od dvije slike koje se neprestano izmijenuju.
+	objekata nastala u svrhu stvaranja animacije. Animacija se stvara tako što se brzo izmjenjuju slike koje se iscrtavaju na zaslonu. Konkretno, ova animacija sastoji se od dvije slike koje se neprestano izmjenjuju.
 	Prva slika nastala je jednostavnim crtanjem, dok je druga nastala rotacijom za određeni kut te dodavanjem dodatnih detalja. 
 	
 	Sljedeće dvije slike prikazuju objekt s kojim skupljamo padajuće objekte, odnosno zajedno prikazuju oštricu koja se rotira velikom brzinom.
-	
 	
 		\begin{figure}[!htb]
 			\begin{minipage}{0.48\textwidth}
@@ -489,7 +491,7 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	\section{Padajući objekti}
 	Padajući objekti implementirani su kao apstraktna klasa "FallingObject" čije su konkretne implementacije "Square" (kvadrat) i "Circle" (Krug). Ova apstraktna klasa definira nekolicinu zajedničkih vrijednosti, 
 	odnosno vrijednost koju treba imati svaki padajući element kao što su položaj padajućeg objekta, njegova boja, brzina i slično.
-	Brzina je slučajna vrijednost koja je padajućem objektu pridjeljena prilikom stvaranja te ona iznosi između X i X + slučajan broj između 0 i 10, gdje X označava minimalnu brzinu kojom objekt pada i ta vrijednost
+	Brzina je slučajna vrijednost koja je padajućem objektu pridijeljena prilikom stvaranja te ona iznosi između X i X + slučajan broj između 0 i 10, gdje X označava minimalnu brzinu kojom objekt pada i ta vrijednost
 	varijable X ovisi o trenutnoj težini igre, odnosno iznosi 5 na samom početku igre. Taj broj, slično kao i spuštanju pozadine označava za koliku udaljenost će se ovaj objekt pomaknuti prema dolje svakim osvježavanjem ekrana.
 	Uz to nudi i razne konkretne implementacije metoda te metode koje različite konkretne implementacije ove apstraktne klase trebaju nadjačati, odnosno ponuditi svoje implementacije. 
 	
@@ -509,12 +511,12 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 			\end{minipage}
 		\end{figure}
 		
-		Generalno govoreći jedina razlika između ove dvije konkretne implementacije abstraktne klase "FallingObject" je sami oblik padajućeg objekta i način na koji ih opisujemo, stoga se abstraktne metode metode također odnose na sami oblik objekta.
-		Tu su najznačanije dvije metode, jedna služi za samo iscrtavanje objekta na ekranu, dok druga provjerava da li se taj objekt i objekt za skupljanje drugih objekta preklapaju. Odnosno provjerava da li je korisnik skupio padajući objekt.
+		Generalno govoreći jedina razlika između ove dvije konkretne implementacije apstraktne klase "FallingObject" je sami oblik padajućeg objekta i način na koji ih opisujemo, stoga se apstraktne metode također odnose na sami oblik objekta.
+		Tu su najznačajnije  dvije metode, jedna služi za samo iscrtavanje objekta na ekranu, dok druga provjerava da li se taj objekt i objekt za skupljanje drugih objekta preklapaju. Odnosno provjerava da li je korisnik skupio padajući objekt.
 		Sadržaj svakog padajućeg objekta ovisi o trenutnom zadataku. 
 		
 	\subsection{Provjera kolizije - Kružnica}
-	S obzirom da je padajući objekt "Circle" pa tako i sam objekt s kojim skupljamo padajuće objekte kružnog oblika, koliziju ovih objekta provjerava se čistim matematičkim putem. 
+	S obzirom na to da su padajući objekt "Circle" pa tako i sam objekt s kojim skupljamo padajuće objekte kružnog oblika, koliziju ovih objekta provjerava se čistim matematičkim putem. 
 	
 		\begin{figure}[H]
 			\includegraphics[scale=0.6]{"slike/circlekolizija.png"} 
@@ -523,15 +525,15 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 			\label{fig:kolizijacircle}
 		\end{figure}
 	
-	Na lijevom dijelu slike vidimo dva objekta koja se ne preklapaju. To matematičkim putem dokazujemo na način da pokažemo da kvadrat udaljenosti središa ova dva objekta nije manji ili jednak kvadratu sume radiusa. Analogno, na desnom dijelu slike
+	Na lijevom dijelu slike vidimo dva objekta koja se ne preklapaju. To matematičkim putem dokazujemo na način da pokažemo da kvadrat udaljenosti središta ova dva objekta nije manji ili jednak kvadratu sume radiusa. Analogno, na desnom dijelu slike
 	mogu se vidjeti dvije kružnice koje imaju točke preklapanja i za njih se može vidjeti da je kvadrat udaljenost središta manji no kvadrat sume radiusa. 
 	
 	\subsection{Provjera kolizije - Kvadrat}
 	Provjera objekta s kojim skupljamo padajuće objekte i kvadrata kao padajućeg objekta više se ne može provjeriti na isti način kao i za kružnicu jer se ovaj problem svodi na preklapanje kružnice i kvadrata.
 	Ovaj problem generalno se ne može na lijep način prikazati matematički već je u ovom slučaju implementiran tako da se uzme 8 točaka s objekta s kojim skupljamo padajuće objekte i za svaku od tih 8 točaka provjeravamo nalazi li se unutar 
-	kvadrata (padajućeg objekta). Ukoliko se samo jedna točka nalazi unutar kvadrata dva objekta se preklapaju. 
+	kvadrata (padajućeg objekta). Ako se samo jedna točka nalazi unutar kvadrata dva objekta se preklapaju. 
 	
-			\begin{figure}[H]
+		\begin{figure}[H]
 			\includegraphics[scale=0.6]{"slike/squarekolizija.png"} 
 			\centering
 			\caption{Provjera kolizije za objekte oblika kvadrata}
@@ -540,18 +542,18 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 		Na lijevom dijelu slike prikazani su objekti koji se ne preklapaju. Dok se na desnom dijelu slike vide dva objekta koja se preklapaju što je u igri dokazano tako što je pokazano da je jedna od točaka objekta za skupljanje unutar padajućeg kvadrata.
 	
 	\section{Zadaci}
-	Zadaci su definirani apstraktnom klasom "Task". Ova klasa u sebi čuva tekst zadatka te najvažnije nudi metode koje svaki konkretni zadatak treba nadjačati. Gdje su najznačanije sljedeće metode:
-	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	Zadaci su definirani apstraktnom klasom "Task". Ova klasa u sebi čuva tekst zadatka te najvažnije nudi metode koje svaki konkretni zadatak treba nadjačati. Gdje su najznačajnije  sljedeće metode:
+	\begin{lstlisting}[language = Java , numbers=none , escapeinside={(*@}{@*)}]
 	public abstract boolean checkCollectedIsValid(FallingObject fallingObject);
 	public abstract FallingObject makeFallingObject();
 	\end{lstlisting}
 	Konkretne implementacije ove apstraktne klase trebaju ponuditi svoje implementacije
-	 ovih metoda tako da metoda "checkCollectedIsValid" za primljeni padajući objekt (fallingObject) provjerava da li je skupljeni objekt u skladu sa postavljenim zadatkom ovisno o tome kako je definiran sam konkretni
-	 zadatak. Slično tome, metoda "makeFallingObject" stvara padajući objekt na zahtjev;  sadržaj tog padajućeg objekta ovisiti će o trenutnom zadatku. Izvedena su 4 osnovna (primitiva) tipa zadatka iz komponente "Task"
+	 ovih metoda tako da metoda "checkCollectedIsValid" za primljeni padajući objekt (fallingObject) provjerava da li je skupljeni objekt u skladu s postavljenim zadatkom ovisno o tome kako je definiran sam konkretni
+	 zadatak. Slično tome, metoda "makeFallingObject" stvara padajući objekt na zahtjev;  sadržaj tog padajućeg objekta ovisit će o trenutnom zadatku. Izvedena su 4 osnovna (primitiva) tipa zadatka iz komponente "Task"
 	 "NumberTask" koji se nadalje dijeli na "RelativeNumberTask" i "UnrelativeNumberTask", "ShapeTask" te "WordsTask". Osim osnovnih tipova zadatak definiran je i "ComplexTask"  koji je zapravo predstavlja kompozit (grupu)
 	 osnovnih tipova zadatak.
-	 Tip zadatka "RelativeNumberTask" definiran je sa donjom i gornjom granicom iz koje će se brojevi generirati, relativnim brojem, tj. brojem u odnosu na kojeg će se operacija gledati, samom operacijom te
-	 zastavicom koja govori mijenja li se relativan broj nakon promjene zadatka. Ukoliko je zastavica postavljena nakon promjene zadatka novi relativni broj bit će slučajni broj iz zadanog raspona. Tip zadatka
+	 Tip zadatka "RelativeNumberTask" definiran je s donjom i gornjom granicom iz koje će se brojevi generirati, relativnim brojem, tj. brojem u odnosu na kojeg će se operacija gledati, samom operacijom te
+	 zastavicom koja govori mijenja li se relativan broj nakon promjene zadatka. Ako je zastavica postavljena nakon promjene zadatka novi relativni broj bit će slučajni broj iz zadanog raspona. Tip zadatka
 	 "UnelativeNumberTask" generalno je sličan tipu zadatka "RelativeNumberTask" no ovaj tip zadatka jednostavno nema relativan broj. Primjer tipa "ShapeTask" zadatka je "Skupljaj kvadrate", odnosno jednostavno ovisi
 	 o obliku padajućeg objekta. Tip zadatka "WordsTask" omogućava zadatke poput "Skupljaj geometrijske likove" tako što u konstruktoru prima dvije liste riječi. Listu riječi koja sadržava ispravne odgovore i listu riječi
 	 koja sadrži neispravne odgovore. 
@@ -559,8 +561,8 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	 Kompozit "ComplexTask" se koristi za kombiniranje zadataka i primjer takvog zadatka bio bi "Skupljaj brojeve veće od X koji su u kvadratu", tj. ovaj zadatak se sastoji od dva osnovna tipa zadatka, tj.
 	 "RelativeNumberTask" (brojevi veći od X) i "ShapeTask" (u kvadratu). Kako bi skupljeni padajući objekt bio korektno skupljen svaki od zadataka treba biti ispunjen. To se postiže delegacijom operacija na primitivne
 	 komponente, odnosno sastavne komponente (djecu) tog kompozita.
-	
-	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	 \renewcommand{\lstlistingname}{Kôd}
+	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)},caption={Konkretna implementacija metoda sučelja Task},captionpos=b]
 	 @Override
     public boolean checkCollectedIsValid(FallingObject fallingObject) {
         for (Task task : tasks) {
@@ -578,23 +580,23 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	
 	\section{Prilagođavanje težine}
 	Za prilagodbu težine igre koristi se veoma jednostavan algoritam. Padajući objekti imaju određenu brzinu padanja kao što je navedeno u poglavlju koji ih opisuju. Osim toga, zadana je i početna vjerojatnost 
-	s kojom će se pojaviti padajući objekt koji nema prikazan broj direktno, već matematički izraz. Osim toga, promijenjiva je i frekvencija kojom se padajući objekti stvaraju. Svaki dobro sakupljenim padajućim objektom
-	slučajnim odabirom bira se način otežavanja igre. Odnosno, ukoliko igrač pokupi ispravan padajući objekt igra će slučajnim odabirom odabrati hoće li ubrati stvaranje padajućih objekata ili će povećati minimalnu brzinu
+	s kojom će se pojaviti padajući objekt koji nema prikazan broj direktno, već matematički izraz. Osim toga, promjenjiva je i frekvencija kojom se padajući objekti stvaraju. Svaki dobro sakupljenim padajućim objektom
+	slučajnim odabirom bira se način otežavanja igre. Odnosno, ako igrač pokupi ispravan padajući objekt igra će slučajnim odabirom odabrati hoće li ubrati stvaranje padajućih objekata ili će povećati minimalnu brzinu
 	s kojom padajući objekti padaju ili će povećati vjerojatnost pojavljivanja izraza.
-	Suprotno tome ukoliko igrač ne uspije pokupiti padajući objekt osim što će izgubiti određeni broj bodova, igra će se olakšati slučajnim odabirom. Za kraj, ukoliko igrač pokupi padajući objekt koji nije trebao, osim što će
-	izgubiti život igra će se značajnije olakšati, odnosno smanjiti će se minimalna brzina padajućeg objekta kao i frekvencija stvaranja objekata pa tako i vjerojatnost pojavljivanja izaza.
+	Suprotno tome ako igrač ne uspije pokupiti padajući objekt osim što će izgubiti određeni broj bodova, igra će se olakšati slučajnim odabirom. Za kraj, ako igrač pokupi padajući objekt koji nije trebao, osim što će
+	izgubiti život igra će se značajnije olakšati, odnosno smanjit će se minimalna brzina padajućeg objekta kao i frekvencija stvaranja objekata pa tako i vjerojatnost pojavljivanja izaza.
 	
 	
-	\section{Komunikacija sa poslužiteljom}
-	Komunikacija sa poslužiteljem ostvarena je koristeći Java klasu "HttpURLConnection". Od generalnih implementacijskih detalja potrebno je glasiti da se sav mrežni promet mora odvijati na sporednoj dretvi. 
+	\section{Komunikacija s poslužiteljom}
+	Komunikacija s poslužiteljem ostvarena je koristeći Java klasu "HttpURLConnection". Od generalnih implementacijskih detalja potrebno je glasiti da se sav mrežni promet mora odvijati na sporednoj dretvi. 
 	Podaci koji se šalju s mobitela na poslužitelj šalju se u obliku JSON (JavaScript Object Notation). U sklopu ovog projekta nisu korištenje vanjski \textit{dependency} poput "GSON", već
 	su napisane funkcije potrebne za izradu i tumačenje svakog JSON zapisa koji se može koristiti. U sljedeća dva potpoglavlja opisani su neki detalji o tome.
 	\subsection{Dohvat zadataka}
 	Dohvat zadataka odnosi se na preuzimanje postavki koje su generirane putem web stranice. GET zahtjevom na poslužitelj programskim kodom dohvaća se JSON kojeg mobilna aplikacija prepozaje kao običan tip "String".
-	Navedeni GET zahtjev radi se na bazni URL koji je u ovom slučaju "https://denismath .herokuapp.com/gamecode/mobile/" na koji se dodaje ono što funkcija "getMethod" primi. Npr. Ukoliko korisnik mobilne igre želi preuzeti postavke
+	Navedeni GET zahtjev radi se na bazni URL koji je u ovom slučaju "https://denismath .herokuapp.com/gamecode/mobile/" na koji se dodaje ono što funkcija "getMethod" primi. Npr. ako korisnik mobilne igre želi preuzeti postavke
 	igre koje imaju kod "123456"  taj parametar bit će "settings/123456"; odnosno GET zahtjev otići će na "https://denismath.herokuapp.com/gamecode/mobile/ settings/123456".
 	Jednom dohvaćene postavke spremaju se u memoriju mobilnog uređaja u obliku tipa String. Pri pokretanju zaslona u kojem igra dohvaćaju se postavke iz memorije te se njihovim tumačenjem stvaraju Java objekti koji predstavljaju zadatke.
-	Ovi objekt spremaju se u listu iz koje će kasnije igra slučajnim odabirom odabirati trenutni zadatatk. Tumačenje preuzetih postavki i generiranje Java objekata svodi se na "lomljenje" sadržaja spremljene String varijable
+	Ovi objekt spremaju se u listu iz koje će kasnije igra slučajnim odabirom odabirati trenutni zadatak. Tumačenje preuzetih postavki i generiranje Java objekata svodi se na "lomljenje" sadržaja spremljene String varijable
 	na zadatke koji su bili odvojeni određenim znakovnim nizom, što je u ovom slučaju "\#DELIMITER\#".
 	Za postavke zapisane u obliku:
 	
@@ -623,7 +625,9 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	Slanje rezultata sličan je proces dohvatu zadataka, no ovog puta se sadržaj šalje u obliku JSON objekta kojeg je potrebno generirati te se ovo slanje rezultata izvod pomoću metode POST. 
 	Za potrebe izvođenja POST metode koristi se funkcija "postMethod" koja prima dodatak koji se pridodaje na bazni link tipa String te Map<String, String> koji sadrži sve podatke. 
 	Izrada cijelog JSON objekta napravljena je sljedećim programskim kodom:
-	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	
+	\renewcommand{\lstlistingname}{Kôd}
+	\begin{lstlisting}[language = Java , frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}, caption={Izrada JSON objekta},captionpos=b]
 	  StringBuilder makingJson = new StringBuilder();
             makingJson.append("{");
 
@@ -650,11 +654,11 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	\end{lstlisting}
 	
 	
-	
 \chapter{Implementacija poslužitelja i web stranice}
 	\section{Izrada web servera}
 	Kao što je već ranije navedeno u sklopu ovog projekta za izradu web poslužitelja korišten je Express.js koji je kostur na bazi Node.js. Ova tehnologija omogućava izradu web poslužitelja u svega par linija koda.
-	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	\renewcommand{\lstlistingname}{Kôd}
+	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}, caption={Programski kod potreban za izradu poslužitelja},captionpos=b]
 	const express = require('express');
 	const app = express();
  
@@ -668,11 +672,13 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	app.listen(3000);
 	\end{lstlisting}
 	
-	Pokretanjem ovog programskog koda moće će se pristupiti web serveru koji će se nalaziti na adresi localhost:3000. Sve što je dalje potrebno je napisti funkcionalnosti pristupnih točaka (engl. \textit{endpoint}).
+	Pokretanjem ovog programskog koda moći će se pristupiti web serveru koji će se nalaziti na adresi localhost:3000. Sve što je dalje potrebno je napisti funkcionalnosti pristupnih točaka (engl. \textit{endpoint}).
 
 	\section{Izrada pristupnih točaka}
-	Radi modularnosti programskog koda  pristupne točke grupirati će se u različite module koji koriste express.Router(). Jedan od napisanih modula tako je modul koji se koristi pri logiranju i on se sastoji od dvije pristupne točke. Jedna koristi HTTP metodu get, dok druga koristi metodu POST.
-	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	Radi modularnosti programskog koda  pristupne točke grupirat će se u različite module koji koriste express.Router(). Jedan od napisanih modula tako je modul koji se koristi pri logiranju i on se sastoji od dvije pristupne točke. 
+	Jedna koristi HTTP metodu get, dok druga koristi metodu POST.
+	\renewcommand{\lstlistingname}{Kôd}
+	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}, caption={Pristupna točka za stranicu login},captionpos=b]
 	router.get('/', function (req, res, next) {
 		if (req.session.user !== undefined) {
 			return res.redirect('/');
@@ -686,17 +692,18 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	});
 	\end{lstlisting}
 	
-	Prikazani kod pruža sljedeću funkcionalnosti: provjerava da li je korisnik već ulogiran te ako je preusmjerava ga na početnu stranicu. Ukoliko korisnik nije ulogiran koristeći EJS i definirani pogled (engl. \textit{view}) korisniku se vraća
-	web stranica sa formom za login. Provjeru da li je korisnik ulogiran radi se pomoću sjednica (engl. \textit{session}) koje je također potrebno uključiti u projekt. Nakon što korisnik popuni i potvrdi formu s metodom post radi se HTTP zahtjev 
-	na drugu pristupnu točku koja pak provjerava da li korisnik postoji, je li korisnik unesao ispravnu lozinku i slično te ovisno o ispravnosti korisničkog imena/lozike vraća odgovarajuću web stranicu pogreške, odnosno preusmjerava na početnu stranicu
-	ukoliko je ulogiravanje bilo uspiješno. Ovdje je potrebno naglasiti da za provjeru ispravnosti korisničkog imena i lozinke poslužitelj poslužitelj podatke dohvaća iz baze podataka s kojom je također potrebno definirati vezu i napsati odgovarajuće SQL
+	Prikazani kod pruža sljedeću funkcionalnosti: provjerava da li je korisnik već ulogiran te ako je preusmjerava ga na početnu stranicu. Ako korisnik nije ulogiran koristeći EJS i definirani pogled (engl. \textit{view}) korisniku se vraća
+	web stranica s formom za login. Provjeru da li je korisnik ulogiran radi se pomoću sjednica (engl. \textit{session}) koje je također potrebno uključiti u projekt. Nakon što korisnik popuni i potvrdi formu s metodom post radi se HTTP zahtjev 
+	na drugu pristupnu točku koja pak provjerava da li korisnik postoji, je li korisnik unesao ispravnu lozinku i slično te ovisno o ispravnosti korisničkog imena/lozinke vraća odgovarajuću web stranicu pogreške, odnosno preusmjerava na početnu stranicu
+	ako je ulogiravanje bilo uspješno. Ovdje je potrebno naglasiti da za provjeru ispravnosti korisničkog imena i lozinke poslužitelj poslužitelj podatke dohvaća iz baze podataka s kojom je također potrebno definirati vezu i napisati odgovarajuće SQL
 	upite. 
 	
 
 	\section{Upotreba EJS}
 	Ovaj pogled (engl. \textit{view}) za prijavu nije previše zanimljiv jer je njegov kod većinom čisti HTML te nema previše dinamičke izrade stranice. Jednostavnost, tj. lakoću korištenja EJS može se vidjeti na sljedećem programskom isječku koji 
-	generira prikaz rezultata jedne igre, odnosno zapise o igri u obliku retka HTML tablice. 
-	\begin{lstlisting}[language = HTML, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	generira prikaz rezultata jedne igre, odnosno zapise o igri u obliku retka HTML tablice.
+	\renewcommand{\lstlistingname}{Kôd}
+	\begin{lstlisting}[language = HTML, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}, caption={Generiranje sadržaja stranice korištenjem EJS},captionpos=b]
 	<% 	for(let rezultat of results){ %>
 			<tr>
 				<td><%= rezultat.player_nickname %></td>
@@ -707,11 +714,12 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	<% } %>
 	\end{lstlisting}
 	
-	\section{Pristupne točke za spjanje na poslužitelj preko mobilne aplikacije}
+	\section{Pristupne točke za spajanje na poslužitelj preko mobilne aplikacije}
 	Pristupne točke za dohvaćanje podataka na mobilni uređaj slično su definirane kao i pristupne točke koje se koriste za web stranicu, no one umjesto da koriste EJS i vraćaju prikaz web stranice jednostavno vraćaju podatke u određenom obliku koji se potom tumače na
 	mobitelu.
-	Sljedeći progrogramski isječak definira pristupnu točku za dohvat postavki za određen id
-	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	Sljedeći programski isječak definira pristupnu točku za dohvat postavki za određen id
+	\renewcommand{\lstlistingname}{Kôd}
+	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}, caption={Pristupna točka za preuzimanje postavki igre},captionpos=b]
 	router.get('/mobile/settings/:id', async function (req, res, next) {
 		let gameCodeSettings;
 
@@ -724,7 +732,8 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 	\end{lstlisting}
 	
 	Statička metoda getGameCodeSettingsMobile dohvaća podatke iz baze podataka, formatira ih u željeni oblik koji opisan u podpodpoglavlju "Dohvat zadataka" te ih vraća mobilnom uređaju.
-	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+		\renewcommand{\lstlistingname}{Kôd}
+	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}, caption={Dohvat i formatiranje podataka},captionpos=b]
     static async getGameCodeSettingsMobile(game_code) {
         try {
             let rezultat = await dbGetGameCodeSettingsMobile(game_code);
@@ -743,8 +752,10 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
         }
     }
 	\end{lstlisting}
+	
 	Dohvaćanje podataka iz baze podataka napravljeno je metodom dbGetGameCodeSettingsMobile koja je definirana kao :
-	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}]
+	\renewcommand{\lstlistingname}{Kôd}
+	\begin{lstlisting}[language = Java, frame = trBL , firstnumber = 1 , escapeinside={(*@}{@*)}, caption={Pristup bazi podataka},captionpos=b]
 	dbGetGameCodeSettingsMobile = async (game_code) => {
 		const sql = `SELECT *
 					FROM setting
@@ -757,10 +768,9 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 			throw err
 		}
 	};
-	\end{lstlisting}	
-	
-	
+	\end{lstlisting}
 
+	
 \chapter{Baza podataka}
 	Baze podataka su organizirane kolekcija podataka koje omogućavaju laki pristup podacima, uređivanje podataka i upravljanje istih. U sklopu ovog projekta koristio se
 	SQL tip baze podataka, konkretnije PostgreSQL. PostgreSQL je besplatni, open-source sustav za upravljanje bazom podataka (SUBP) iza kojeg je više od 30 godina aktivnog razvoja.
@@ -784,8 +794,9 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 			Ovaj entitet u vezi je \textit{One-To-Many} s entitetom Game\_ Settings preko atributa user\_name.}
 				
 				\begin{longtblr}[
-					label=none,
-					entry=none
+					label=userstbl,
+					entry=Relacija Users,
+					caption=Relacija Users
 					]{
 						width = \textwidth,
 						colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
@@ -804,39 +815,40 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 			entitetom Setting preko atributa game\_ code te u vezi \textit{One-To-Many} s entitetom Result preko atributa game\_ code.}
 				
 				\begin{longtblr}[
-					label=none,
-					entry=none
+					label=gamesettings,
+					entry=Relacija Game\_Settings,
+					caption=Relacija Game\_Settings
 					]{
 						width = \textwidth,
 						colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 						rowhead = 1,
 					} 
 					\hline \multicolumn{3}{|c|}{\textbf{Game\_ Settings}}	 \\ \hline[3pt]
-					\SetCell{LightGreen}game\_ code & INT	&  	jedinstveni idenfitikator game\_ settings   	\\ \hline
+					\SetCell{LightGreen}game\_ code & INT	&  	jedinstveni identifikator  game\_ settings   	\\ \hline
 					is\_ deleted & INT & zastavica koja govori jesu li "game room" obrisan \\ \hline
 					\SetCell{LightBlue}user\_ name & VARCHAR & oznaka korisnika kojem "game room" pripada \\ \hline
 				\end{longtblr}
 
 
 			\textbf {Setting} \hspace{5mm}
-			{Ovaj entitet označava jedanu postavku. Sadrži atribute: setting\_ id, setting\_ desc, setting\_ text i is\_ deleted.
+			{Ovaj entitet označava jednu postavku. Sadrži atribute: setting\_ id, setting\_ desc, setting\_ text i is\_ deleted.
 			Ovaj entitet u vezi je \textit{Many-To-One} s entitetom Game\_ Settings preko atributa game\_ code.}
 				
 				\begin{longtblr}[
-					label=none,
-					entry=none
+					label=settingtbl,
+					entry=Relacija Setting,
+					caption=Relacija Setting
 					]{
 						width = \textwidth,
 						colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 						rowhead = 1,
 					} 
 					\hline \multicolumn{3}{|c|}{\textbf{Setting}}	 \\ \hline[3pt]
-					\SetCell{LightGreen}setting\_ id & INT	&  	jedinstveni idenfitikator za Setting  	\\ \hline
+					\SetCell{LightGreen}setting\_ id & INT	&  	jedinstveni identifikator za Setting  	\\ \hline
 					setting\_desc & VARCHAR & tekst koji opisuje cilj zadatka \\ \hline
 					setting\_text & VARCHAR & postavka formatirana tako da bude razumljiva mobilnoj igri \\ \hline
 					is\_ deleted & INT & zastavica koja govori je li postavka obrisana \\ \hline
-					\SetCell{LightBlue}game\_code & INT & oznaka Game\_Settings kojem Setting pripada \\ \hline
-					
+					\SetCell{LightBlue}game\_code & INT & oznaka Game\_Settings kojem Setting pripada \\ \hline	
 				\end{longtblr}
 				
 			
@@ -846,8 +858,9 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 			Ovaj entitet u vezi je \textit{Many-To-One} s entitetom Game\_ Settings preko atributa game\_ code.}
 				
 				\begin{longtblr}[
-					label=none,
-					entry=none
+					label=resultbl,
+					entry=Relacija Result,
+					caption=Realacija Result
 					]{
 						width = \textwidth,
 						colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
@@ -860,7 +873,6 @@ preuzimanja postavki i slanja rezultata igre učiteljici koristi se Node.js serv
 					player\_ nickname & VARCHAR & nadimak igrača  \\ \hline
 					result\_text & VARCHAR & JSON polje s događajima igre  \\ \hline
 					\SetCell{LightBlue}game\_code & INT & oznaka Game\_Settings kojem Result pripada \\ \hline
-					
 				\end{longtblr}
 
 	\newpage
@@ -881,10 +893,10 @@ Nažalost, mobilnu igru nije koristila ciljana skupina ljudi, odnosno učenici n
 je neki tip kalibracije. 
 
 \chapter{Zaključak}
-U skolopu ovog završnog rada razvijena je mobilna igra za vježbanje matematike koja se težinom prilagođava igraču  i web stranica koja omogućava jednostavnu izradu
+U sklopu ovog završnog rada razvijena je mobilna igra za vježbanje matematike koja se težinom prilagođava igraču  i web stranica koja omogućava jednostavnu izradu
 postavki igre i detaljni pregled rezultata pojedinog učenika u nekoj igri. Za potrebe pohrane podataka koristi se lokalni spremnik na samom uređaju pa tako i baza podataka kojoj se pristupa preko poslužitelja.
-Ovaj projekt kao takav nije zahtjevao previše specifičnih znanja već samo osnove objektno orijentiranog programiranja, osnove pisanja web stranica i poslužitelja te osnovna znanja iz baza podataka. Shodno tome nije bilo 
-potrebe za istraživanjem različitih algoritama, već se većina toga svela na oblikovanje ideje igre te mukotrpan i vremenski zahtjevan posao. No, u konačnici kroz ovaj projekt upoznao sam se sa izradom mobilnih aplikacija 
+Ovaj projekt kao takav nije zahtijevao previše specifičnih znanja već samo osnove objektno orijentiranog programiranja, osnove pisanja web stranica i poslužitelja te osnovna znanja iz baza podataka. Shodno tome nije bilo 
+potrebe za istraživanjem različitih algoritama, već se većina toga svela na oblikovanje ideje igre te mukotrpan i vremenski zahtjevan posao. No, u konačnici kroz ovaj projekt upoznao sam se ss izradom mobilnih aplikacija 
 i dobio dobru praksu u korištenju raznih tehnologija.
 
 
@@ -892,7 +904,7 @@ i dobio dobru praksu u korištenju raznih tehnologija.
 \bibliographystyle{fer}
 
 \begin{sazetak}
-U skolopu ovog završnog rada razvijena je mobilna igra za vježbanje matematike koja se težinom prilagođava igraču  i web stranica koja omogućava jednostavnu izradu
+U sklopu ovog završnog rada razvijena je mobilna igra za vježbanje matematike koja se težinom prilagođava igraču  i web stranica koja omogućava jednostavnu izradu
 postavki igre i detaljni pregled rezultata pojedinog učenika u nekoj igri. Navedena igra i web stranice čine jedan jednostavni sustav. Unutar ovog rada detaljno je opisano što ovaj sustav sve nudi te su također opisani
 i najznačajniji implementacijski detalji.
 
@@ -902,7 +914,7 @@ i najznačajniji implementacijski detalji.
 % TODO: Navedite naslov na engleskom jeziku.
 \engtitle{Mobile game for practicing math}
 \begin{abstract}
-As part of this thesis, there've been developed mobile game for practicing mathematics that is adaptive to the player's abilities and a website that allows easy creation of game settings and a detailed overview of
+As part of this thesis, there was developed mobile game for practicing mathematics that is adaptive to the player's abilities and a website that allows easy creation of game settings and a detailed overview of
 the results of each student in a game. Mentioned game and website make one simple system. Within this paper it is described what this system offers in details just like the most important implementation details.
 
 \keywords{Java, Android, game, math, web page, HTML, Node.js, Express.js, Javascript, exercise, learning, gamification, school}
